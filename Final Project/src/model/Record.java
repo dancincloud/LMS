@@ -1,6 +1,6 @@
 package model;
 
-public class ZoomMeeting {
+public class Record {
     private String name;
     private String link;
 
@@ -11,5 +11,4 @@ public class ZoomMeeting {
     public void setLink(String link) {
         this.link = link;
     }
-
 }
