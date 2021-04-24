@@ -156,13 +156,16 @@ public class DBIntializer {
 
     public static boolean validateTableNameExist(String tableName, Connection con) {
         ResultSet rs = null;
+        boolean res = false;
         try {
             rs = con.getMetaData().getTables(null, null, tableName, null);
-            return !rs.next();
+            res = rs.next();
+            rs.close();
+            return res;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return res;
     }
 
     public static void main(String[] args) {
