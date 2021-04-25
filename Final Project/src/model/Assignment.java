@@ -1,5 +1,9 @@
 package model;
 
+/**
+ *
+ * @author Ke
+ */
 public class Assignment {
     private String name;
     private double aveGrade;
