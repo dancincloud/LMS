@@ -106,43 +106,43 @@ public class DBIntializer {
             PreparedStatement stat = null;
 
             // create table Assignment
-            if (validateTableNameExist("Assignment", conn)) {
+            if (!validateTableNameExist("Assignment", conn)) {
                 stat = conn.prepareStatement(ASSIGNMENT_CREATION);
                 stat.executeUpdate();
             }
 
             // create table Course
-            if (validateTableNameExist("Course", conn)) {
+            if (!validateTableNameExist("Course", conn)) {
                 stat = conn.prepareStatement(COURSE_CREATION);
                 stat.executeUpdate();
             }
 
             // create table File
-            if (validateTableNameExist("File", conn)) {
+            if (!validateTableNameExist("File", conn)) {
                 stat = conn.prepareStatement(FILE_CREATION);
                 stat.executeUpdate();
             }
 
             // create table Instructor
-            if (validateTableNameExist("Instructor", conn)) {
+            if (!validateTableNameExist("Instructor", conn)) {
                 stat = conn.prepareStatement(INSTRUCTOR_CREATION);
                 stat.executeUpdate();
             }
 
             // create table Record
-            if (validateTableNameExist("Record", conn)) {
+            if (!validateTableNameExist("Record", conn)) {
                 stat = conn.prepareStatement(RECORD_CREATION);
                 stat.executeUpdate();
             }
 
             // create table Student
-            if (validateTableNameExist("Student", conn)) {
+            if (!validateTableNameExist("Student", conn)) {
                 stat = conn.prepareStatement(STUDENT_CREATION);
                 stat.executeUpdate();
             }
 
             // create table ZoomMeeting
-            if (validateTableNameExist("ZoomMeeting", conn)) {
+            if (!validateTableNameExist("ZoomMeeting", conn)) {
                 stat = conn.prepareStatement(ZOOM_MEETING_CREATION);
                 stat.executeUpdate();
             }
