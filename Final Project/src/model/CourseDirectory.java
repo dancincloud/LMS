@@ -1,15 +1,15 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CourseDirectory {
-    private ArrayList<Course> courseList;
+    private List<Course> courseList;
 
-    public ArrayList<Course> getCourseList() {
+    public List<Course> getCourseList() {
         return courseList;
     }
 
-    public void setCourseList(ArrayList<Course> courseList) {
+    public void setCourseList(List<Course> courseList) {
         this.courseList = courseList;
     }
 }

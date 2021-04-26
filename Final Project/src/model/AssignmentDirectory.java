@@ -1,15 +1,15 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AssignmentDirectory {
-    private ArrayList<Assignment> assignmentList;
+    private List<Assignment> assignmentList;
 
-    public ArrayList<Assignment> getAssignmentList() {
+    public List<Assignment> getAssignmentList() {
         return assignmentList;
     }
 
-    public void setAssignmentList(ArrayList<Assignment> assignmentList) {
+    public void setAssignmentList(List<Assignment> assignmentList) {
         this.assignmentList = assignmentList;
     }
 }

@@ -1,15 +1,15 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RecordDirectory {
-    private ArrayList<Record> recordList;
+    private List<Record> recordList;
 
-    public ArrayList<Record> getRecordList() {
+    public List<Record> getRecordList() {
         return recordList;
     }
 
-    public void setRecordList(ArrayList<Record> recordList) {
+    public void setRecordList(List<Record> recordList) {
         this.recordList = recordList;
     }
 }

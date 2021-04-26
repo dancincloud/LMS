@@ -1,23 +1,24 @@
 package DBUtil;
 
 import model.Assignment;
+import model.AssignmentDirectory;
+import model.Course;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- /**
  * @author : Ethan Zhang
  * @description : Database utilities for Assignment class
  * @createTime : [2021/4/25 0:04]
- * @updateTime : [2021/4/25 0:04]
  */
 public class AssignmentDBUtil {
 
     public static void add(Assignment assignment) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO `lmsdb`.`assignment` (`name`, `aveGrade`) VALUES (?, ?)";
+        String sql = "INSERT INTO Assignment (`name`, `aveGrade`) VALUES (?, ?)";
 
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
@@ -32,7 +33,7 @@ public class AssignmentDBUtil {
 
     public static void add(List<Assignment> assignments) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO `lmsdb`.`assignment` (`name`, `aveGrade`) VALUES (?, ?)";
+        String sql = "INSERT INTO Assignment (`name`, `aveGrade`) VALUES (?, ?)";
 
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
@@ -51,10 +52,21 @@ public class AssignmentDBUtil {
     public static void delete(String name) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "delete from Assignment where name = ?";
+
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, name);
             stat.executeUpdate();
+
+            // update courses
+            Assignment underDeletionAssignment = select(name);
+            List<Course> courses = CourseDBUtil.selectAll();
+            for (Course course : courses) {
+                List<Assignment> assignments = course.getAssignmentDirectory().getAssignmentList();
+                assignments.remove(underDeletionAssignment);
+                CourseDBUtil.update(course);
+            }
+
             DBConnection.closeDB(conn, stat, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,6 +82,15 @@ public class AssignmentDBUtil {
             for (String name : names) {
                 stat.setString(1, name);
                 stat.executeUpdate();
+
+                // update courses
+                Assignment underDeletionAssignment = select(name);
+                List<Course> courses = CourseDBUtil.selectAll();
+                for (Course course : courses) {
+                    List<Assignment> assignments = course.getAssignmentDirectory().getAssignmentList();
+                    assignments.remove(underDeletionAssignment);
+                    CourseDBUtil.update(course);
+                }
             }
 
             DBConnection.closeDB(conn, stat, null);
@@ -124,7 +145,7 @@ public class AssignmentDBUtil {
 
     public static Assignment select(String name) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from assignment where name = ?";
+        String sql = "SELECT * from Assignment where name = ?";
         Assignment assignment = new Assignment();
 
         try {
@@ -149,7 +170,7 @@ public class AssignmentDBUtil {
 
     public static List<Assignment> select(List<String> names) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from assignment where name = ?";
+        String sql = "SELECT * from Assignment where name = ?";
         List<Assignment> res = new ArrayList<>();
 
         try {
@@ -178,7 +199,7 @@ public class AssignmentDBUtil {
 
     public static List<Assignment> selectAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from assignment";
+        String sql = "SELECT * from Assignment";
         List<Assignment> res = new ArrayList<>();
 
         try {
@@ -201,18 +222,18 @@ public class AssignmentDBUtil {
     }
 
     public static void main(String[] args) {
-        Assignment assignment1 = new Assignment();
-        assignment1.setName("first");
-        assignment1.setAveGrade(90.1);
-
-        Assignment assignment2 = new Assignment();
-        assignment2.setName("second");
-        assignment2.setAveGrade(90.2);
-
-        Assignment assignment3 = new Assignment();
-        assignment3.setName("third");
-        assignment3.setAveGrade(90.3);
-
+//        Assignment assignment1 = new Assignment();
+//        assignment1.setName("first");
+//        assignment1.setAveGrade(90.1);
+//
+//        Assignment assignment2 = new Assignment();
+//        assignment2.setName("second");
+//        assignment2.setAveGrade(90.2);
+//
+//        Assignment assignment3 = new Assignment();
+//        assignment3.setName("third");
+//        assignment3.setAveGrade(90.3);
+//
 //        add(assignment1);
 //
 //        List<Assignment> assignments = new ArrayList<>();

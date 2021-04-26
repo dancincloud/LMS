@@ -18,7 +18,7 @@ public class DBIntializer {
 
     static final String COURSE_CREATION = "CREATE TABLE `Course` (" +
             "  `name` varchar(255) NOT NULL," +
-            "  `courseID` bigint NOT NULL," +
+            "  `courseID` varchar(255) NOT NULL," +
             "  `zoomMeetingDirectory` varchar(1000) NULL," +
             "  `recordDirectory` varchar(1000) NULL," +
             "  `assignmentDirectory` varchar(1000) NULL," +
@@ -34,7 +34,7 @@ public class DBIntializer {
 
     static final String INSTRUCTOR_CREATION = "CREATE TABLE `Instructor`  (" +
             "  `name` varchar(255) NOT NULL," +
-            "  `instructorID` bigint NOT NULL," +
+            "  `instructorID` varchar(255) NOT NULL," +
             "  `email` varchar(255) NULL," +
             "  `courseDirectory` varchar(1000) NULL," +
             "  PRIMARY KEY (`instructorID`)" +
@@ -47,7 +47,7 @@ public class DBIntializer {
             ")";
 
     static final String STUDENT_CREATION = "CREATE TABLE `Student`  (" +
-            "  `studentID` bigint NOT NULL," +
+            "  `studentID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
             "  `gpa` double(255, 1) NULL," +
             "  `email` varchar(255) NULL," +

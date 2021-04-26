@@ -1,15 +1,15 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FileDirectory {
-    private ArrayList<File> fileList;
+    private List<File> fileList;
 
-    public ArrayList<File> getFileList() {
+    public List<File> getFileList() {
         return fileList;
     }
 
-    public void setFileList(ArrayList<File> fileList) {
+    public void setFileList(List<File> fileList) {
         this.fileList = fileList;
     }
 }

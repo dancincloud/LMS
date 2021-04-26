@@ -1,15 +1,15 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ZoomMeetingDirectory {
-    private ArrayList<ZoomMeeting> zoomMeetingList;
+    private List<ZoomMeeting> zoomMeetingList;
 
-    public ArrayList<ZoomMeeting> getZoomMeetingList() {
+    public List<ZoomMeeting> getZoomMeetingList() {
         return zoomMeetingList;
     }
 
-    public void setZoomMeetingList(ArrayList<ZoomMeeting> zoomMeetingList) {
+    public void setZoomMeetingList(List<ZoomMeeting> zoomMeetingList) {
         this.zoomMeetingList = zoomMeetingList;
     }
 }
