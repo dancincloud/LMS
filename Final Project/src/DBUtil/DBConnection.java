@@ -1,6 +1,10 @@
 package DBUtil;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 /**
  * @author : Ethan Zhang
@@ -10,13 +14,26 @@ import java.sql.*;
  */
 public class DBConnection {
 
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DEFAULT_DB_URL = "jdbc:mysql://localhost:3306/sys?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/LMSDB?useSSL=false&serverTimezone=UTC";
+    private static Properties prop;
+    static{
+        try {
+            prop = new Properties();
+            prop.load(new FileInputStream("./Final Project/resources/database.properties"));
+        } catch (FileNotFoundException e) {
+            System.out.println("database.properties not found!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static final String JDBC_DRIVER = prop.getProperty("JDBC_DRIVER");
+    static final String DEFAULT_DB_URL = prop.getProperty("DEFAULT_DB_URL");
+    static final String DB_URL = prop.getProperty("DB_URL");
 
     // user and password
-    static final String USER = "root";
-    static final String PASS = "123456";
+    static final String USER = prop.getProperty("USER");
+    static final String PASS = prop.getProperty("PASS");
 
     public static Connection getConnection(String url) {
         Connection conn = null;
@@ -61,4 +78,16 @@ public class DBConnection {
         }
     }
 
+
+    public static void main(String[] args) {
+        Connection coon = getConnection(DB_URL);
+
+        System.out.println(JDBC_DRIVER);
+        System.out.println(DEFAULT_DB_URL);
+        System.out.println(DB_URL);
+        System.out.println(USER);
+        System.out.println(PASS);
+
+        closeDB(coon ,null, null);
+    }
 }
