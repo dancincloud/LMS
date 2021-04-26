@@ -1,5 +1,9 @@
 package model;
 
+/**
+ *
+ * @author Ke
+ */
 public class Instructor {
     private String name;
     private String instructorID;

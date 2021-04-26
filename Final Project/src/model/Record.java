@@ -1,5 +1,9 @@
 package model;
 
+/**
+ *
+ * @author Ke
+ */
 public class Record {
     private String name;
     private String link;
