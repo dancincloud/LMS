@@ -5,7 +5,7 @@
  */
 package ui;
 
-import DBUtil.DBIntializer;
+
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -41,6 +41,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         userProcessContainer = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         LoginJPanel = new javax.swing.JPanel();
         loginJButton = new javax.swing.JButton();
         userNameJTextField = new javax.swing.JTextField();
@@ -55,8 +57,21 @@ public class MainJFrame extends javax.swing.JFrame {
         jSplitPane1.setDividerLocation(150);
 
         userProcessContainer.setLayout(new java.awt.CardLayout());
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(null);
+
+        jLabel3.setFont(new java.awt.Font("Skia", 1, 48)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(99, 148, 249));
+        jLabel3.setText("WELCOME");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(280, 200, 280, 120);
+
+        userProcessContainer.add(jPanel1, "card2");
+
         jSplitPane1.setRightComponent(userProcessContainer);
 
+        LoginJPanel.setBackground(new java.awt.Color(51, 153, 255));
         LoginJPanel.setLayout(null);
 
         loginJButton.setText("Login");
@@ -66,19 +81,23 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         LoginJPanel.add(loginJButton);
-        loginJButton.setBounds(14, 157, 92, 37);
+        loginJButton.setBounds(50, 300, 92, 37);
         LoginJPanel.add(userNameJTextField);
-        userNameJTextField.setBounds(14, 52, 118, 24);
+        userNameJTextField.setBounds(10, 170, 118, 26);
         LoginJPanel.add(passwordField);
-        passwordField.setBounds(14, 115, 118, 24);
+        passwordField.setBounds(10, 240, 118, 26);
 
+        jLabel1.setFont(new java.awt.Font("PingFang HK", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("User Name");
         LoginJPanel.add(jLabel1);
-        jLabel1.setBounds(14, 21, 72, 18);
+        jLabel1.setBounds(10, 140, 90, 20);
 
+        jLabel2.setFont(new java.awt.Font("PingFang HK", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Password");
         LoginJPanel.add(jLabel2);
-        jLabel2.setBounds(14, 90, 64, 18);
+        jLabel2.setBounds(10, 210, 70, 20);
         LoginJPanel.add(loginJLabel);
         loginJLabel.setBounds(132, 588, 0, 0);
 
@@ -90,7 +109,7 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         LoginJPanel.add(logoutJButton);
-        logoutJButton.setBounds(14, 233, 92, 38);
+        logoutJButton.setBounds(50, 360, 92, 38);
 
         jSplitPane1.setLeftComponent(LoginJPanel);
 
@@ -98,32 +117,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void loginJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButtonActionPerformed
-
-        String userName = userNameJTextField.getText();
-        char[] passwordCharArray = passwordField.getPassword();
-        String password = String.valueOf(passwordCharArray);
-        
-        Student student=data.authenticateUser(userName, password);
-        
-        if(student==null){
-            JOptionPane.showMessageDialog(null, "Invalid credentials");
-            return;
-        }
-        else{
-            MainJPanel mainJPanel = new MainJPanel(userProcessContainer,student);
-            userProcessContainer.add("mainJPanel", mainJPanel);
-            CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-            layout.next(userProcessContainer);
-        }
-        
-        loginJButton.setEnabled(false);
-        logoutJButton.setEnabled(true);
-        userNameJTextField.setEnabled(false);
-        passwordField.setEnabled(false);
-
-    }//GEN-LAST:event_loginJButtonActionPerformed
 
     private void logoutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutJButtonActionPerformed
         logoutJButton.setEnabled(false);
@@ -139,8 +132,33 @@ public class MainJFrame extends javax.swing.JFrame {
         userProcessContainer.add("blank", blankJP);
         CardLayout crdLyt = (CardLayout) userProcessContainer.getLayout();
         crdLyt.next(userProcessContainer);
-        
+
     }//GEN-LAST:event_logoutJButtonActionPerformed
+
+    private void loginJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButtonActionPerformed
+
+        String userName = userNameJTextField.getText();
+        char[] passwordCharArray = passwordField.getPassword();
+        String password = String.valueOf(passwordCharArray);
+
+        Student student=data.authenticateUser(userName, password);
+
+        if(student==null){
+            JOptionPane.showMessageDialog(null, "Invalid credentials");
+            return;
+        }
+        else{
+            MainJPanel mainJPanel = new MainJPanel(userProcessContainer,student);
+            userProcessContainer.add("mainJPanel", mainJPanel);
+            CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+            layout.next(userProcessContainer);
+        }
+
+        loginJButton.setEnabled(false);
+        logoutJButton.setEnabled(true);
+        userNameJTextField.setEnabled(false);
+        passwordField.setEnabled(false);
+    }//GEN-LAST:event_loginJButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,6 +199,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel LoginJPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JButton loginJButton;
     private javax.swing.JLabel loginJLabel;
