@@ -1,12 +1,9 @@
 package DBUtil;
 
 import model.Assignment;
-import model.AssignmentDirectory;
-import model.Course;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,15 +55,6 @@ public class AssignmentDBUtil {
             stat.setString(1, name);
             stat.executeUpdate();
 
-            // update courses
-            Assignment underDeletionAssignment = select(name);
-            List<Course> courses = CourseDBUtil.selectAll();
-            for (Course course : courses) {
-                List<Assignment> assignments = course.getAssignmentDirectory().getAssignmentList();
-                assignments.remove(underDeletionAssignment);
-                CourseDBUtil.update(course);
-            }
-
             DBConnection.closeDB(conn, stat, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,15 +70,6 @@ public class AssignmentDBUtil {
             for (String name : names) {
                 stat.setString(1, name);
                 stat.executeUpdate();
-
-                // update courses
-                Assignment underDeletionAssignment = select(name);
-                List<Course> courses = CourseDBUtil.selectAll();
-                for (Course course : courses) {
-                    List<Assignment> assignments = course.getAssignmentDirectory().getAssignmentList();
-                    assignments.remove(underDeletionAssignment);
-                    CourseDBUtil.update(course);
-                }
             }
 
             DBConnection.closeDB(conn, stat, null);

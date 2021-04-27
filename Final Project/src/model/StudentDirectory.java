@@ -25,7 +25,7 @@ public class StudentDirectory {
         return studentList;
     }
 
-    public void setStudentList(ArrayList<Student> studentList) {
+    public void setStudentList(List<Student> studentList) {
         this.studentList = studentList;
     }
     

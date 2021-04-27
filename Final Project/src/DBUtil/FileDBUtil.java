@@ -1,6 +1,5 @@
 package DBUtil;
 
-import model.Assignment;
 import model.Course;
 import model.File;
 
@@ -108,6 +107,14 @@ public class FileDBUtil {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.executeUpdate();
             DBConnection.closeDB(conn, stat, null);
+
+            // update courses
+            List<Course> courses = CourseDBUtil.selectAll();
+            for (Course course : courses) {
+                course.setFileDirectory(null);
+            }
+            CourseDBUtil.update(courses);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,7 +155,7 @@ public class FileDBUtil {
     public static File select(String name) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from File where name = ?";
-        File file = new File();
+        File file = new File(null);
 
         try {
 
@@ -179,13 +186,12 @@ public class FileDBUtil {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet resultSet = null;
             for (String name : names) {
-                File file = new File();
-                file.setName(name);
 
                 stat.setString(1, name);
                 resultSet = stat.executeQuery();
 
                 while (resultSet.next()){
+                    File file = new File(name);
                     file.setLink(resultSet.getString("link"));
                     res.add(file);
                 }
@@ -209,8 +215,7 @@ public class FileDBUtil {
             ResultSet resultSet = stat.executeQuery();
 
             while (resultSet.next()){
-                File file = new File();
-                file.setName(resultSet.getString("name"));
+                File file = new File(resultSet.getString("name"));
                 file.setLink(resultSet.getString("link"));
                 res.add(file);
             }

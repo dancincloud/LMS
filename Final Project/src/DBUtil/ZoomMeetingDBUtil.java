@@ -1,7 +1,5 @@
 package DBUtil;
 
-import model.Course;
-import model.Record;
 import model.ZoomMeeting;
 
 import java.sql.Connection;
@@ -59,15 +57,6 @@ public class ZoomMeetingDBUtil {
             stat.setString(1, name);
             stat.executeUpdate();
 
-            // update courses
-            ZoomMeeting underDeletionZoomMeeting = select(name);
-            List<Course> courses = CourseDBUtil.selectAll();
-            for (Course course : courses) {
-                List<ZoomMeeting> zoomMeetings = course.getZoomMeetingDirectory().getZoomMeetingList();
-                zoomMeetings.remove(underDeletionZoomMeeting);
-                CourseDBUtil.update(course);
-            }
-
             DBConnection.closeDB(conn, stat, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,15 +73,6 @@ public class ZoomMeetingDBUtil {
             for (String name : names) {
                 stat.setString(1, name);
                 stat.executeUpdate();
-
-                // update courses
-                ZoomMeeting underDeletionZoomMeeting = select(name);
-                List<Course> courses = CourseDBUtil.selectAll();
-                for (Course course : courses) {
-                    List<ZoomMeeting> zoomMeetings = course.getZoomMeetingDirectory().getZoomMeetingList();
-                    zoomMeetings.remove(underDeletionZoomMeeting);
-                    CourseDBUtil.update(course);
-                }
             }
 
             DBConnection.closeDB(conn, stat, null);

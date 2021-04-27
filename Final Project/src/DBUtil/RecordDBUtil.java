@@ -1,7 +1,5 @@
 package DBUtil;
 
-import model.Course;
-import model.File;
 import model.Record;
 
 import java.sql.Connection;
@@ -12,13 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author : [张天祺]
- * @version : [v1.0]
- * @description : [一句话描述该类的功能]
+ * @author : Ethan Zhang
+ * @description : Database utilities for Record class
  * @createTime : [2021/4/26 8:32]
- * @updateUser : [张天祺]
- * @updateTime : [2021/4/26 8:32]
- * @updateRemark : [说明本次修改内容]
  */
 public class RecordDBUtil {
 
@@ -64,15 +58,6 @@ public class RecordDBUtil {
             stat.setString(1, name);
             stat.executeUpdate();
 
-            // update courses
-            Record underDeletionRecord = select(name);
-            List<Course> courses = CourseDBUtil.selectAll();
-            for (Course course : courses) {
-                List<Record> records = course.getRecordDirectory().getRecordList();
-                records.remove(underDeletionRecord);
-                CourseDBUtil.update(course);
-            }
-
             DBConnection.closeDB(conn, stat, null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,15 +73,6 @@ public class RecordDBUtil {
             for (String name : names) {
                 stat.setString(1, name);
                 stat.executeUpdate();
-
-                // update courses
-                Record underDeletionRecord = select(name);
-                List<Course> courses = CourseDBUtil.selectAll();
-                for (Course course : courses) {
-                    List<Record> records = course.getRecordDirectory().getRecordList();
-                    records.remove(underDeletionRecord);
-                    CourseDBUtil.update(course);
-                }
             }
 
             DBConnection.closeDB(conn, stat, null);

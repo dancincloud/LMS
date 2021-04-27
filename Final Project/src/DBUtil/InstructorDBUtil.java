@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author : [张天祺]
+ * @author : Ethan Zhang
  * @description : Database utilities for Instructor class
  * @createTime : [2021/4/26 8:45]
  */
@@ -27,7 +27,13 @@ public class InstructorDBUtil {
             stat.setString(1, instructor.getName());
             stat.setString(2, instructor.getInstructorID());
             stat.setString(3, instructor.getEmail());
-            stat.setString(4, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+
+            if (instructor.getCoursedirectory() != null) {
+                stat.setString(4, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+            } else {
+                stat.setString(4, null);
+            }
+
             stat.executeUpdate();
             DBConnection.closeDB(conn, stat, null);
         } catch (SQLException e) {
@@ -45,7 +51,13 @@ public class InstructorDBUtil {
                 stat.setString(1, instructor.getName());
                 stat.setString(2, instructor.getInstructorID());
                 stat.setString(3, instructor.getEmail());
-                stat.setString(4, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+
+                if (instructor.getCoursedirectory() != null) {
+                    stat.setString(4, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+                } else {
+                    stat.setString(4, null);
+                }
+
                 stat.executeUpdate();
             }
 
@@ -104,7 +116,13 @@ public class InstructorDBUtil {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, instructor.getName());
             stat.setString(2, instructor.getEmail());
-            stat.setString(3, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+
+            if (instructor.getCoursedirectory() != null) {
+                stat.setString(3, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+            } else {
+                stat.setString(3, null);
+            }
+
             stat.setString(4, instructor.getInstructorID());
             stat.executeUpdate();
             DBConnection.closeDB(conn, stat, null);
@@ -122,7 +140,13 @@ public class InstructorDBUtil {
             for (Instructor instructor : instructors) {
                 stat.setString(1, instructor.getName());
                 stat.setString(2, instructor.getEmail());
-                stat.setString(3, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+
+                if (instructor.getCoursedirectory() != null) {
+                    stat.setString(3, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+                } else {
+                    stat.setString(3, null);
+                }
+
                 stat.setString(4, instructor.getInstructorID());
                 stat.executeUpdate();
             }
@@ -136,7 +160,6 @@ public class InstructorDBUtil {
     public static Instructor select(String instructorID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor where instructorID = ?";
-        Instructor instructor = new Instructor();
 
         try {
 
@@ -144,23 +167,27 @@ public class InstructorDBUtil {
             stat.setString(1, instructorID);
             ResultSet resultSet = stat.executeQuery();
 
-            while (resultSet.next()){
+            if (resultSet.next()){
+                Instructor instructor = new Instructor();
                 instructor.setName(resultSet.getString("name"));
                 instructor.setInstructorID(resultSet.getString("instructorID"));
                 instructor.setEmail(resultSet.getString("email"));
 
-                CourseDirectory courseDirectory = new CourseDirectory();
-                courseDirectory.setCourseList(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                instructor.setCoursedirectory(courseDirectory);
+                if (resultSet.getString("courseDirectory") != null) {
+                    CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
+                    instructor.setCoursedirectory(courseDirectory);
+                }
+
+                DBConnection.closeDB(conn, stat, resultSet);
+                return instructor;
             }
 
-            DBConnection.closeDB(conn, stat, resultSet);
-            return instructor;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return instructor;
+        return null;
     }
 
     public static List<Instructor> select(List<String> instructorIDs) {
@@ -172,19 +199,21 @@ public class InstructorDBUtil {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet resultSet = null;
             for (String instructorID : instructorIDs) {
-                Instructor instructor = new Instructor();
-                instructor.setName(instructorID);
+
 
                 stat.setString(1, instructorID);
                 resultSet = stat.executeQuery();
 
                 while (resultSet.next()){
+                    Instructor instructor = new Instructor();
                     instructor.setName(resultSet.getString("name"));
+                    instructor.setInstructorID(instructorID);
                     instructor.setEmail(resultSet.getString("email"));
 
-                    CourseDirectory courseDirectory = new CourseDirectory();
-                    courseDirectory.setCourseList(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                    instructor.setCoursedirectory(courseDirectory);
+                    if (resultSet.getString("courseDirectory") != null) {
+                        CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
+                        instructor.setCoursedirectory(courseDirectory);
+                    }
 
                     res.add(instructor);
                 }
@@ -213,9 +242,10 @@ public class InstructorDBUtil {
                 instructor.setInstructorID(resultSet.getString("instructorID"));
                 instructor.setEmail(resultSet.getString("email"));
 
-                CourseDirectory courseDirectory = new CourseDirectory();
-                courseDirectory.setCourseList(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                instructor.setCoursedirectory(courseDirectory);
+                if (resultSet.getString("courseDirectory") != null) {
+                    CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
+                    instructor.setCoursedirectory(courseDirectory);
+                }
 
                 res.add(instructor);
             }

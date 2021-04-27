@@ -13,6 +13,11 @@ import java.util.StringJoiner;
  */
 public class DBUtil {
     public static String changeAssignmentDirectoryToString(List<Assignment> assignments) {
+
+        if (assignments == null) {
+            return null;
+        }
+
         List<String> names = new ArrayList<>();
         for (Assignment assignment : assignments) {
             names.add(assignment.getName());
@@ -22,6 +27,11 @@ public class DBUtil {
     }
 
     public static String changeCourseDirectoryToString(List<Course> courses) {
+
+        if (courses == null) {
+            return null;
+        }
+
         List<String> courseIDs = new ArrayList<>();
         for (Course course : courses) {
             courseIDs.add(course.getCourseID());
@@ -31,6 +41,11 @@ public class DBUtil {
     }
 
     public static String changeFileDirectoryToString(List<File> files) {
+
+        if (files == null) {
+            return null;
+        }
+
         List<String> names = new ArrayList<>();
         for (File file : files) {
             names.add(file.getName());
@@ -40,6 +55,11 @@ public class DBUtil {
     }
 
     public static String changeRecordDirectoryToString(List<Record> records) {
+
+        if (records == null) {
+            return null;
+        }
+
         List<String> names = new ArrayList<>();
         for (Record record : records) {
             names.add(record.getName());
@@ -49,12 +69,31 @@ public class DBUtil {
     }
 
     public static String changeZoomMeetingDirectoryToString(List<ZoomMeeting> zoomMeetings) {
+
+        if (zoomMeetings == null) {
+            return null;
+        }
+
         List<String> names = new ArrayList<>();
         for (ZoomMeeting zoomMeeting : zoomMeetings) {
             names.add(zoomMeeting.getName());
         }
 
         return mergeFields(names);
+    }
+
+    public static String changeStudentDirectoryToString(List<Student> students) {
+
+        if (students == null) {
+            return null;
+        }
+
+        List<String> studentIDs = new ArrayList<>();
+        for (Student student : students) {
+            studentIDs.add(student.getStudentID());
+        }
+
+        return mergeFields(studentIDs);
     }
 
     public static String mergeFields(List<String> fields) {

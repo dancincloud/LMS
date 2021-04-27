@@ -19,9 +19,7 @@ public class DBIntializer {
     static final String COURSE_CREATION = "CREATE TABLE `Course` (" +
             "  `name` varchar(255) NOT NULL," +
             "  `courseID` varchar(255) NOT NULL," +
-            "  `zoomMeetingDirectory` varchar(1000) NULL," +
-            "  `recordDirectory` varchar(1000) NULL," +
-            "  `assignmentDirectory` varchar(1000) NULL," +
+            "  `studentDirectory` varchar(1000) NULL," +
             "  `fileDirectory` varchar(1000) NULL," +
             "  PRIMARY KEY (`courseID`)" +
             ");";
@@ -52,6 +50,8 @@ public class DBIntializer {
             "  `gpa` double(255, 1) NULL," +
             "  `email` varchar(255) NULL," +
             "  `courseDirectory` varchar(1000) NULL," +
+            "  `username` varchar(255) NULL," +
+            "  `password` varchar(255) NULL," +
             "  PRIMARY KEY (`studentID`)" +
             ");";
 
