@@ -8,11 +8,7 @@ public class File {
     private String name;
     private String link;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public File(String name) {
         this.name = name;
     }
 
@@ -23,4 +19,13 @@ public class File {
     public void setLink(String link) {
         this.link = link;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
 }
