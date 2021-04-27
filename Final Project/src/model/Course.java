@@ -7,11 +7,17 @@ package model;
 public class Course {
     private String name;
     private String courseID;
-    private ZoomMeetingDirectory zoomMeetingDirectory;
+    private StudentDirectory studentDirectory;
+    /*private ZoomMeetingDirectory zoomMeetingDirectory;
     private RecordDirectory recordDirectory;
     private AssignmentDirectory assignmentDirectory;
-    private FileDirectory fileDirectory;
+    private FileDirectory fileDirectory;*/
 
+    public Course(String name, String courseID) {
+        this.name = name;
+        this.courseID = courseID;
+    }
+    
     public String getName() {
         return name;
     }
@@ -27,8 +33,9 @@ public class Course {
     public void setCourseID(String courseID) {
         this.courseID = courseID;
     }
+    
 
-    public ZoomMeetingDirectory getZoomMeetingDirectory() {
+    /*public ZoomMeetingDirectory getZoomMeetingDirectory() {
         return zoomMeetingDirectory;
     }
 
@@ -58,5 +65,13 @@ public class Course {
 
     public void setFileDirectory(FileDirectory fileDirectory) {
         this.fileDirectory = fileDirectory;
+    }*/
+
+    public StudentDirectory getStudentDirectory() {
+        return studentDirectory;
+    }
+
+    public void setStudentDirectory(StudentDirectory studentDirectory) {
+        this.studentDirectory = studentDirectory;
     }
 }

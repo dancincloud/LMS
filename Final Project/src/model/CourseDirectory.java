@@ -5,6 +5,10 @@ import java.util.List;
 public class CourseDirectory {
     private List<Course> courseList;
 
+    public CourseDirectory(List<Course> courseList) {
+        this.courseList = courseList;
+    }
+
     public List<Course> getCourseList() {
         return courseList;
     }

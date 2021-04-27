@@ -10,6 +10,19 @@ public class Student {
     private double gpa;
     private String email;
     private CourseDirectory coursedirectory;
+    private String username;
+    private String password;
+
+    public Student(String studentID, String name, double gpa, String email, CourseDirectory coursedirectory, String username, String password) {
+        this.studentID = studentID;
+        this.name = name;
+        this.gpa = gpa;
+        this.email = email;
+        this.coursedirectory = coursedirectory;
+        this.username = username;
+        this.password = password;
+    }
+    
 
     public String getStudentID() {
         return studentID;
@@ -50,4 +63,21 @@ public class Student {
     public void setCoursedirectory(CourseDirectory coursedirectory) {
         this.coursedirectory = coursedirectory;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
 }
