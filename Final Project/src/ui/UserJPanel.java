@@ -9,19 +9,20 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import model.Course;
 import model.Student;
+import model.User;
 
 /**
  *
- * @author Administrator
+ * @author Ke
  */
-public class StudentJPanel extends javax.swing.JPanel {
+public class UserJPanel extends javax.swing.JPanel {
     JPanel userProcessContainer;
     Course course;
 
     /**
      * Creates new form StudentJPanel
      */
-    public StudentJPanel(JPanel userProcessContainer, Course course) {
+    public UserJPanel(JPanel userProcessContainer, Course course) {
         initComponents();
         this.userProcessContainer=userProcessContainer;
         this.course = course;
@@ -32,11 +33,14 @@ public class StudentJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) studentJTable.getModel();
 
         model.setRowCount(0);
-        for (Student student : course.getStudentDirectory().getStudentList()) {
+        for (User user : course.getUserDirectory().getUserList()) {
             Object[] row = new Object[3];
-            row[0] = student.getId();
-            row[1] = student.getName();
-            row[2] = student.getGpa();
+            row[0] = user.getId();
+            row[1] = user.getName();
+            if(user.getType()==0)
+                row[2] = "Student";
+            else if(user.getType()==1)
+                row[2] = "Instructor";
 
             model.addRow(row);
         }
@@ -67,7 +71,7 @@ public class StudentJPanel extends javax.swing.JPanel {
                 {null, null, null}
             },
             new String [] {
-                "Student ID", "Student Name", "GPA"
+                "User ID", "Name", "Type"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -82,7 +86,7 @@ public class StudentJPanel extends javax.swing.JPanel {
 
         jLabel10.setFont(new java.awt.Font("Skia", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(99, 148, 249));
-        jLabel10.setText("Student");
+        jLabel10.setText("User");
 
         jLabel8.setText("—————————————————————————————————————————————————");
 
