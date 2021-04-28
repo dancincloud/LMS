@@ -1,6 +1,8 @@
 package DBUtil;
 
 import model.Assignment;
+import model.Course;
+import model.Instructor;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,159 +13,251 @@ import java.util.List;
  * @description : Database utilities for Assignment class
  * @createTime : [2021/4/25 0:04]
  */
+
+
+/**
+ * wait to complete
+ */
 public class AssignmentDBUtil {
 
-    public static void add(Assignment assignment) {
+    public static boolean add(Assignment assignment) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Assignment (`name`, `aveGrade`) VALUES (?, ?)";
+        String sql = "INSERT INTO Assignment (`assignmentID`, `name`, `content`, `type`, `grade`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, assignment.getName());
-            stat.setDouble(2, assignment.getAveGrade());
+            stat = conn.prepareStatement(sql);
+
+            stat.setString(1, assignment.getAssignmentID());
+            stat.setString(2, assignment.getName());
+            stat.setString(3, assignment.getContent());
+            stat.setString(4, assignment.getType().toString());
+            stat.setDouble(5, assignment.getGrade());
+            stat.setLong(6, System.currentTimeMillis());
+            stat.setLong(7, -1L);
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void add(List<Assignment> assignments) {
+    public static boolean add(List<Assignment> assignments) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Assignment (`name`, `aveGrade`) VALUES (?, ?)";
-
+        String sql = "INSERT INTO Assignment (`assignmentID`, `name`, `content`, `type`, `grade`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             for (Assignment assignment : assignments) {
-                stat.setString(1, assignment.getName());
-                stat.setDouble(2, assignment.getAveGrade());
+                stat.setString(1, assignment.getAssignmentID());
+                stat.setString(2, assignment.getName());
+                stat.setString(3, assignment.getContent());
+                stat.setString(4, assignment.getType().toString());
+                stat.setDouble(5, assignment.getGrade());
+                stat.setLong(6, System.currentTimeMillis());
+                stat.setLong(7, -1L);
                 stat.executeUpdate();
             }
-
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void delete(String name) {
+    public static boolean delete(String assignmentID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from Assignment where name = ?";
+        String sql = "delete from Assignment where assignmentID = ?";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, name);
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, assignmentID);
             stat.executeUpdate();
 
-            DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void delete(List<String> names) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from Assignment where name = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-
-            for (String name : names) {
-                stat.setString(1, name);
-                stat.executeUpdate();
+            // update courses
+            Assignment underDeletionAssignment = select(assignmentID);
+            List<Course> courses = CourseDBUtil.selectAll();
+            for (Course course : courses) {
+                if (course.getAssignmentDirectory() != null) {
+                    List<Assignment> assignments = course.getAssignmentDirectory().getList();
+                    assignments.remove(underDeletionAssignment);
+                    CourseDBUtil.update(course);
+                }
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void deleteAll() {
+    public static boolean delete(List<String> assignmentIDs) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "delete from Assignment where assignmentID = ?";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+            for (String assignmentID : assignmentIDs) {
+                stat.setString(1, assignmentID);
+                stat.executeUpdate();
+
+                // update courses
+                Assignment underDeletionAssignment = select(assignmentID);
+                List<Course> courses = CourseDBUtil.selectAll();
+                for (Course course : courses) {
+                    if (course.getAssignmentDirectory() != null) {
+                        List<Assignment> assignments = course.getAssignmentDirectory().getList();
+                        assignments.remove(underDeletionAssignment);
+                        CourseDBUtil.update(course);
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean deleteAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "delete from Assignment";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+
+            // update courses
+            List<Course> courses = CourseDBUtil.selectAll();
+            for (Course course : courses) {
+                course.setAssignmentDirectory(null);
+            }
+            CourseDBUtil.update(courses);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void update(Assignment assignment) {
+    public static boolean update(Assignment assignment) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Assignment set aveGrade = ? where name = ?";
+        String sql = "update Assignment set name = ?, content = ?, type = ?, grade = ?, updateTime = ? where assignmentID = ?";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setDouble(1, assignment.getAveGrade());
-            stat.setString(2, assignment.getName());
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, assignment.getName());
+            stat.setString(2, assignment.getContent());
+            stat.setString(3, assignment.getType().toString());
+            stat.setDouble(4, assignment.getGrade());
+            stat.setLong(5, System.currentTimeMillis());
+            stat.setString(6, assignment.getAssignmentID());
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void update(List<Assignment> assignments) {
+    public static boolean update(List<Assignment> assignments) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Assignment set aveGrade = ? where name = ?";
+        String sql = "update Assignment set name = ?, content = ?, type = ?, grade = ?, updateTime = ? where assignmentID = ?";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
 
             for (Assignment assignment : assignments) {
-                stat.setDouble(1, assignment.getAveGrade());
-                stat.setString(2, assignment.getName());
+                stat.setString(1, assignment.getName());
+                stat.setString(2, assignment.getContent());
+                stat.setString(3, assignment.getType().toString());
+                stat.setDouble(4, assignment.getGrade());
+                stat.setLong(5, System.currentTimeMillis());
+                stat.setString(6, assignment.getAssignmentID());
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static Assignment select(String name) {
+    public static Assignment select(String assignmentID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from Assignment where name = ?";
-        Assignment assignment = new Assignment();
+        String sql = "SELECT * from Assignment where assignmentID = ?";
 
         try {
-
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, name);
+            stat.setString(1, assignmentID);
             ResultSet resultSet = stat.executeQuery();
 
-            while (resultSet.next()){
-                assignment.setName(resultSet.getString("name"));
-                assignment.setAveGrade(resultSet.getDouble("aveGrade"));
+            if (resultSet.next()){
+                String name = resultSet.getString("name");
+                String content = resultSet.getString("content");
+                Assignment.AssignmentType type = Assignment.AssignmentType.valueOf(resultSet.getString("type"));
+
+                Assignment assignment = new Assignment(assignmentID, name, content, type);
+
+                assignment.setGrade(resultSet.getDouble("grade"));
+                assignment.setCreateTime(resultSet.getLong("createTime"));
+                assignment.setUpdateTime(resultSet.getLong("updateTime"));
+                DBConnection.closeDB(conn, stat, resultSet);
+                return assignment;
             }
 
             DBConnection.closeDB(conn, stat, resultSet);
-            return assignment;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return assignment;
+        return null;
     }
 
-    public static List<Assignment> select(List<String> names) {
+    public static List<Assignment> select(List<String> assignmentIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from Assignment where name = ?";
+        String sql = "SELECT * from Assignment where assignmentID = ?";
         List<Assignment> res = new ArrayList<>();
 
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet resultSet = null;
-            for (String name : names) {
-                Assignment assignment = new Assignment();
-                assignment.setName(name);
-
-                stat.setString(1, name);
+            for (String assignmentID : assignmentIDs) {
+                stat.setString(1, assignmentID);
                 resultSet = stat.executeQuery();
 
-                while (resultSet.next()){
-                    assignment.setAveGrade(resultSet.getDouble("aveGrade"));
+                if (resultSet.next()){
+                    String name = resultSet.getString("name");
+                    String content = resultSet.getString("content");
+                    Assignment.AssignmentType type = Assignment.AssignmentType.valueOf(resultSet.getString("type"));
+
+                    Assignment assignment = new Assignment(assignmentID, name, content, type);
+
+                    assignment.setGrade(resultSet.getDouble("grade"));
+                    assignment.setCreateTime(resultSet.getLong("createTime"));
+                    assignment.setUpdateTime(resultSet.getLong("updateTime"));
                     res.add(assignment);
                 }
             }
@@ -186,9 +280,16 @@ public class AssignmentDBUtil {
             ResultSet resultSet = stat.executeQuery();
 
             while (resultSet.next()){
-                Assignment assignment = new Assignment();
-                assignment.setName(resultSet.getString("name"));
-                assignment.setAveGrade(resultSet.getDouble("aveGrade"));
+                String assignmentID = resultSet.getString("assignmentID");
+                String name = resultSet.getString("name");
+                String content = resultSet.getString("content");
+                Assignment.AssignmentType type = Assignment.AssignmentType.valueOf(resultSet.getString("type"));
+
+                Assignment assignment = new Assignment(assignmentID, name, content, type);
+
+                assignment.setGrade(resultSet.getDouble("grade"));
+                assignment.setCreateTime(resultSet.getLong("createTime"));
+                assignment.setUpdateTime(resultSet.getLong("updateTime"));
                 res.add(assignment);
             }
 

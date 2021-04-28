@@ -1,5 +1,7 @@
 package DBUtil;
 
+import model.Course;
+import model.File;
 import model.Record;
 
 import java.sql.Connection;
@@ -16,141 +18,216 @@ import java.util.List;
  */
 public class RecordDBUtil {
 
-    public static void add(Record record) {
+    public static boolean add(Record record) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Record (`name`, `link`) VALUES (?, ?)";
+        String sql = "INSERT INTO Record (`recordID`, `name`, `link`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, record.getName());
-            stat.setString(2, record.getLink());
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, record.getRecordID());
+            stat.setString(2, record.getName());
+            stat.setString(3, record.getLink());
+            stat.setLong(4, System.currentTimeMillis());
+            stat.setLong(5, -1L);
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void add(List<Record> records) {
+    public static boolean add(List<Record> records) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Record (`name`, `link`) VALUES (?, ?)";
+        String sql = "INSERT INTO Record (`recordID`, `name`, `link`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
+        try {
+            stat = conn.prepareStatement(sql);
+            for (Record record : records) {
+                stat.setString(1, record.getRecordID());
+                stat.setString(2, record.getName());
+                stat.setString(3, record.getLink());
+                stat.setLong(4, System.currentTimeMillis());
+                stat.setLong(5, -1L);
+                stat.executeUpdate();
+            }
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean delete(String recordID) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "delete from Record where recordID = ?";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, recordID);
+            stat.executeUpdate();
+
+            // update courses
+            Record underDeletionRecord = select(recordID);
+            List<Course> courses = CourseDBUtil.selectAll();
+            for (Course course : courses) {
+                if (course.getRecordDirectory() != null) {
+                    List<Record> records = course.getRecordDirectory().getList();
+                    records.remove(underDeletionRecord);
+                    CourseDBUtil.update(course);
+                }
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean delete(List<String> recordIDs) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "delete from Record where recordID = ?";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+
+            for (String recordID : recordIDs) {
+                stat.setString(1, recordID);
+                stat.executeUpdate();
+
+                // update courses
+                Record underDeletionRecord = select(recordID);
+                List<Course> courses = CourseDBUtil.selectAll();
+                for (Course course : courses) {
+                    if (course.getRecordDirectory() != null) {
+                        List<Record> records = course.getRecordDirectory().getList();
+                        records.remove(underDeletionRecord);
+                        CourseDBUtil.update(course);
+                    }
+                }
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean deleteAll() {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "delete from Record";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.executeUpdate();
+
+            // update courses
+            List<Course> courses = CourseDBUtil.selectAll();
+            for (Course course : courses) {
+                course.setRecordDirectory(null);
+            }
+            CourseDBUtil.update(courses);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean update(Record record) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "update Record set name = ?, link = ?, updateTime = ? where recordID = ?";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, record.getName());
+            stat.setString(2, record.getLink());
+            stat.setLong(3, System.currentTimeMillis());
+            stat.setString(4, record.getRecordID());
+            stat.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean update(List<Record> records) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "update Record set name = ?, link = ?, updateTime = ? where recordID = ?";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+
             for (Record record : records) {
                 stat.setString(1, record.getName());
                 stat.setString(2, record.getLink());
+                stat.setLong(3, System.currentTimeMillis());
+                stat.setString(4, record.getRecordID());
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void delete(String name) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from Record where name = ?";
-
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, name);
-            stat.executeUpdate();
-
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void delete(List<String> names) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from Record where name = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-
-            for (String name : names) {
-                stat.setString(1, name);
-                stat.executeUpdate();
-            }
-
+            return false;
+        } finally {
             DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    public static void deleteAll() {
+    public static Record select(String recordID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from Record";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void update(Record record) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Record set link = ? where name = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, record.getLink());
-            stat.setString(2, record.getName());
-            stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void update(List<Record> records) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Record set link = ? where name = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-
-            for (Record record : records) {
-                stat.setString(1, record.getLink());
-                stat.setString(2, record.getName());
-                stat.executeUpdate();
-            }
-
-            DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Record select(String name) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from Record where name = ?";
-        Record record = new Record();
+        String sql = "SELECT * from Record where recordID = ?";
+        PreparedStatement stat = null;
 
         try {
-
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, name);
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, recordID);
             ResultSet resultSet = stat.executeQuery();
 
-            while (resultSet.next()){
-                record.setName(resultSet.getString("name"));
-                record.setLink(resultSet.getString("link"));
+            if (resultSet.next()){
+                String name = resultSet.getString("name");
+                String link = resultSet.getString("link");
+                Record record = new Record(recordID, name, link);
+                record.setCreateTime(resultSet.getLong("createTime"));
+                record.setUpdateTime(resultSet.getLong("updateTime"));
+
+                DBConnection.closeDB(conn, stat, resultSet);
+                return record;
             }
 
             DBConnection.closeDB(conn, stat, resultSet);
-            return record;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return record;
+        return null;
     }
 
-    public static List<Record> select(List<String> names) {
+    public static List<Record> select(List<String> recordIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Record where name = ?";
         List<Record> res = new ArrayList<>();
@@ -158,20 +235,21 @@ public class RecordDBUtil {
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet resultSet = null;
-            for (String name : names) {
-                Record record = new Record();
-                record.setName(name);
-
-                stat.setString(1, name);
+            for (String recordID : recordIDs) {
+                stat.setString(1, recordID);
                 resultSet = stat.executeQuery();
 
-                while (resultSet.next()){
-                    record.setLink(resultSet.getString("link"));
+                if (resultSet.next()){
+                    String name = resultSet.getString("name");
+                    String link = resultSet.getString("link");
+                    Record record = new Record(recordID, name, link);
+                    record.setCreateTime(resultSet.getLong("createTime"));
+                    record.setUpdateTime(resultSet.getLong("updateTime"));
                     res.add(record);
                 }
             }
-            DBConnection.closeDB(conn, stat, resultSet);
 
+            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -189,9 +267,12 @@ public class RecordDBUtil {
             ResultSet resultSet = stat.executeQuery();
 
             while (resultSet.next()){
-                Record record = new Record();
-                record.setName(resultSet.getString("name"));
-                record.setLink(resultSet.getString("link"));
+                String recordID = resultSet.getString("recordID");
+                String name = resultSet.getString("name");
+                String link = resultSet.getString("link");
+                Record record = new Record(recordID, name, link);
+                record.setCreateTime(resultSet.getLong("createTime"));
+                record.setUpdateTime(resultSet.getLong("updateTime"));
                 res.add(record);
             }
 

@@ -15,73 +15,133 @@ import java.util.List;
  * @description : Database utilities for Course class
  * @createTime : [2021/4/25 0:04]
  */
+
+/**
+ * wait to complete
+ */
 public class CourseDBUtil {
 
-    public static void add(Course course) {
+    public static boolean add(Course course) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Course (`name`, `courseID`, `studentDirectory`, `fileDirectory`) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Course (`courseID`, `name`, `instructorID`, `studentDirectory`, " +
+                " `zoomMeetingDirectory`, `recordDirectory`, `assignmentDirectory`, `fileDirectory`, " +
+                " `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, course.getName());
-            stat.setString(2, course.getCourseID());
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, course.getCourseID());
+            stat.setString(2, course.getName());
+            stat.setString(3, course.getInstructorID());
 
             if (course.getStudentDirectory() != null) {
-                stat.setString(3, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getStudentList()));
-            } else {
-                stat.setString(3, null);
-            }
-
-            if (course.getFileDirectory() != null) {
-                stat.setString(4, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getFileList()));
+                stat.setString(4, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getList()));
             } else {
                 stat.setString(4, null);
             }
 
+            if (course.getZoomMeetingDirectory() != null) {
+                stat.setString(5, DBUtil.changeZoomMeetingDirectoryToString(course.getZoomMeetingDirectory().getList()));
+            } else {
+                stat.setString(5, null);
+            }
+
+            if (course.getRecordDirectory() != null) {
+                stat.setString(6, DBUtil.changeRecordDirectoryToString(course.getRecordDirectory().getList()));
+            } else {
+                stat.setString(6, null);
+            }
+
+            if (course.getAssignmentDirectory() != null) {
+                stat.setString(7, DBUtil.changeAssignmentDirectoryToString(course.getAssignmentDirectory().getList()));
+            } else {
+                stat.setString(7, null);
+            }
+
+            if (course.getFileDirectory() != null) {
+                stat.setString(8, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getList()));
+            } else {
+                stat.setString(8, null);
+            }
+
+            stat.setLong(9, System.currentTimeMillis());
+            stat.setLong(10, -1L);
+
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void add(List<Course> courses) {
+    public static boolean add(List<Course> courses) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Course (`name`, `courseID`, `studentDirectory`, `fileDirectory`) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Course (`courseID`, `name`, `instructorID`, `studentDirectory`, " +
+                " `zoomMeetingDirectory`, `recordDirectory`, `assignmentDirectory`, `fileDirectory`, " +
+                " `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             for (Course course : courses) {
-                stat.setString(1, course.getName());
-                stat.setString(2, course.getCourseID());
+                stat.setString(1, course.getCourseID());
+                stat.setString(2, course.getName());
+                stat.setString(3, course.getInstructorID());
 
                 if (course.getStudentDirectory() != null) {
-                    stat.setString(3, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getStudentList()));
-                } else {
-                    stat.setString(3, null);
-                }
-
-                if (course.getFileDirectory() != null) {
-                    stat.setString(4, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getFileList()));
+                    stat.setString(4, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getList()));
                 } else {
                     stat.setString(4, null);
                 }
 
+                if (course.getZoomMeetingDirectory() != null) {
+                    stat.setString(5, DBUtil.changeZoomMeetingDirectoryToString(course.getZoomMeetingDirectory().getList()));
+                } else {
+                    stat.setString(5, null);
+                }
+
+                if (course.getRecordDirectory() != null) {
+                    stat.setString(6, DBUtil.changeRecordDirectoryToString(course.getRecordDirectory().getList()));
+                } else {
+                    stat.setString(6, null);
+                }
+
+                if (course.getAssignmentDirectory() != null) {
+                    stat.setString(7, DBUtil.changeAssignmentDirectoryToString(course.getAssignmentDirectory().getList()));
+                } else {
+                    stat.setString(7, null);
+                }
+
+                if (course.getFileDirectory() != null) {
+                    stat.setString(8, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getList()));
+                } else {
+                    stat.setString(8, null);
+                }
+
+                stat.setLong(9, System.currentTimeMillis());
+                stat.setLong(10, -1L);
+
                 stat.executeUpdate();
             }
-
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void delete(String courseID) {
+    public static boolean delete(String courseID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "delete from Course where courseID = ?";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, courseID);
             stat.executeUpdate();
 
@@ -90,7 +150,7 @@ public class CourseDBUtil {
             List<Instructor> instructors = InstructorDBUtil.selectAll();
             for (Instructor instructor : instructors) {
                 if (instructor.getCoursedirectory() != null) {
-                    List<Course> courses = instructor.getCoursedirectory().getCourseList();
+                    List<Course> courses = instructor.getCoursedirectory().getList();
                     courses.remove(underDeletionCourse);
                     InstructorDBUtil.update(instructor);
                 }
@@ -100,24 +160,28 @@ public class CourseDBUtil {
             List<Student> students = StudentDBUtil.selectAll();
             for (Student student : students) {
                 if (student.getCoursedirectory() != null) {
-                    List<Course> courses = student.getCoursedirectory().getCourseList();
+                    List<Course> courses = student.getCoursedirectory().getList();
                     courses.remove(underDeletionCourse);
                     StudentDBUtil.update(student);
                 }
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void delete(List<String> courseIDs) {
+    public static boolean delete(List<String> courseIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from Course where name = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+        String sql = "delete from Course where courseID = ?";
+        PreparedStatement stat = null;
 
+        try {
+            stat = conn.prepareStatement(sql);
             for (String courseID : courseIDs) {
                 stat.setString(1, courseID);
                 stat.executeUpdate();
@@ -127,7 +191,7 @@ public class CourseDBUtil {
                 List<Instructor> instructors = InstructorDBUtil.selectAll();
                 for (Instructor instructor : instructors) {
                     if (instructor.getCoursedirectory() != null) {
-                        List<Course> courses = instructor.getCoursedirectory().getCourseList();
+                        List<Course> courses = instructor.getCoursedirectory().getList();
                         courses.remove(underDeletionCourse);
                         InstructorDBUtil.update(instructor);
                     }
@@ -137,26 +201,30 @@ public class CourseDBUtil {
                 List<Student> students = StudentDBUtil.selectAll();
                 for (Student student : students) {
                     if (student.getCoursedirectory() != null) {
-                        List<Course> courses = student.getCoursedirectory().getCourseList();
+                        List<Course> courses = student.getCoursedirectory().getList();
                         courses.remove(underDeletionCourse);
                         StudentDBUtil.update(student);
                     }
                 }
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void deleteAll() {
+    public static boolean deleteAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "delete from Course";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
 
             // update instructors
             List<Instructor> instructors = InstructorDBUtil.selectAll();
@@ -171,66 +239,125 @@ public class CourseDBUtil {
                 student.setCoursedirectory(null);
             }
             StudentDBUtil.update(students);
+
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void update(Course course) {
+    public static boolean update(Course course) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Course set name = ?, studentDirectory = ?, fileDirectory = ? where courseID = ?";
+        String sql = "update Course set name = ?, instructorID = ?, studentDirectory = ?, zoomMeetingDirectory = ?, " +
+                " recordDirectory = ?, assignmentDirectory = ?, fileDirectory = ?, updateTime = ? where courseID = ?";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, course.getName());
+            stat.setString(2, course.getInstructorID());
 
             if (course.getStudentDirectory() != null) {
-                stat.setString(2, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getStudentList()));
-            } else {
-                stat.setString(2, null);
-            }
-
-            if (course.getFileDirectory() != null) {
-                stat.setString(3, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getFileList()));
+                stat.setString(3, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getList()));
             } else {
                 stat.setString(3, null);
             }
 
-            stat.setString(4, course.getCourseID());
+            if (course.getZoomMeetingDirectory() != null) {
+                stat.setString(4, DBUtil.changeZoomMeetingDirectoryToString(course.getZoomMeetingDirectory().getList()));
+            } else {
+                stat.setString(4, null);
+            }
+
+            if (course.getRecordDirectory() != null) {
+                stat.setString(5, DBUtil.changeRecordDirectoryToString(course.getRecordDirectory().getList()));
+            } else {
+                stat.setString(5, null);
+            }
+
+            if (course.getAssignmentDirectory() != null) {
+                stat.setString(6, DBUtil.changeAssignmentDirectoryToString(course.getAssignmentDirectory().getList()));
+            } else {
+                stat.setString(6, null);
+            }
+
+            if (course.getFileDirectory() != null) {
+                stat.setString(7, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getList()));
+            } else {
+                stat.setString(7, null);
+            }
+
+            stat.setLong(8, System.currentTimeMillis());
+            stat.setString(9, course.getCourseID());
+
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void update(List<Course> courses) {
+    public static boolean update(List<Course> courses) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Course set name = ?, studentDirectory = ?, fileDirectory = ? where courseID = ?";
+        String sql = "update Course set name = ?, instructorID = ?, studentDirectory = ?, zoomMeetingDirectory = ?, " +
+                " recordDirectory = ?, assignmentDirectory = ?, fileDirectory = ?, updateTime = ? where courseID = ?";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
 
             for (Course course : courses) {
                 stat.setString(1, course.getName());
+                stat.setString(2, course.getInstructorID());
 
                 if (course.getStudentDirectory() != null) {
-                    stat.setString(2, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getStudentList()));
-                } else {
-                    stat.setString(2, null);
-                }
-
-                if (course.getFileDirectory() != null) {
-                    stat.setString(3, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getFileList()));
+                    stat.setString(3, DBUtil.changeStudentDirectoryToString(course.getStudentDirectory().getList()));
                 } else {
                     stat.setString(3, null);
                 }
 
-                stat.setString(4, course.getCourseID());
+                if (course.getZoomMeetingDirectory() != null) {
+                    stat.setString(4, DBUtil.changeZoomMeetingDirectoryToString(course.getZoomMeetingDirectory().getList()));
+                } else {
+                    stat.setString(4, null);
+                }
+
+                if (course.getRecordDirectory() != null) {
+                    stat.setString(5, DBUtil.changeRecordDirectoryToString(course.getRecordDirectory().getList()));
+                } else {
+                    stat.setString(5, null);
+                }
+
+                if (course.getAssignmentDirectory() != null) {
+                    stat.setString(6, DBUtil.changeAssignmentDirectoryToString(course.getAssignmentDirectory().getList()));
+                } else {
+                    stat.setString(6, null);
+                }
+
+                if (course.getFileDirectory() != null) {
+                    stat.setString(7, DBUtil.changeFileDirectoryToString(course.getFileDirectory().getList()));
+                } else {
+                    stat.setString(7, null);
+                }
+
+                stat.setLong(8, System.currentTimeMillis());
+                stat.setString(9, course.getCourseID());
+
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
@@ -244,22 +371,42 @@ public class CourseDBUtil {
             ResultSet resultSet = stat.executeQuery();
 
             if (resultSet.next()){
-                Course course = new Course(resultSet.getString("name") ,resultSet.getString("courseID"));
+                String name = resultSet.getString("name");
+                String instructorID = resultSet.getString("instructorID");
+                Course course = new Course(courseID, name, instructorID);
 
                 if (resultSet.getString("studentDirectory") != null) {
                     StudentDirectory studentDirectory = new StudentDirectory(StudentDBUtil.select(Arrays.asList(resultSet.getString("studentDirectory").split("\\|"))));
                     course.setStudentDirectory(studentDirectory);
                 }
 
+                if (resultSet.getString("zoomMeetingDirectory") != null) {
+                    ZoomMeetingDirectory zoomMeetingDirectory = new ZoomMeetingDirectory(ZoomMeetingDBUtil.select(Arrays.asList(resultSet.getString("zoomMeetingDirectory").split("\\|"))));
+                    course.setZoomMeetingDirectory(zoomMeetingDirectory);
+                }
+
+                if (resultSet.getString("recordDirectory") != null) {
+                    RecordDirectory recordDirectory = new RecordDirectory(RecordDBUtil.select(Arrays.asList(resultSet.getString("recordDirectory").split("\\|"))));
+                    course.setRecordDirectory(recordDirectory);
+                }
+
+                if (resultSet.getString("assignmentDirectory") != null) {
+                    AssignmentDirectory assignmentDirectory = new AssignmentDirectory(AssignmentDBUtil.select(Arrays.asList(resultSet.getString("assignmentDirectory").split("\\|"))));
+                    course.setAssignmentDirectory(assignmentDirectory);
+                }
 
                 if (resultSet.getString("fileDirectory") != null) {
                     FileDirectory fileDirectory = new FileDirectory(FileDBUtil.select(Arrays.asList(resultSet.getString("fileDirectory").split("\\|"))));
                     course.setFileDirectory(fileDirectory);
                 }
 
+                course.setCreateTime(resultSet.getLong("createTime"));
+                course.setUpdateTime(resultSet.getLong("updateTime"));
                 DBConnection.closeDB(conn, stat, resultSet);
                 return course;
             }
+
+            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -269,7 +416,7 @@ public class CourseDBUtil {
 
     public static List<Course> select(List<String> courseIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from Course where name = ?";
+        String sql = "SELECT * from Course where courseID = ?";
         List<Course> res = new ArrayList<>();
 
         try {
@@ -279,19 +426,38 @@ public class CourseDBUtil {
                 stat.setString(1, courseID);
                 resultSet = stat.executeQuery();
 
-                while (resultSet.next()){
-                    Course course = new Course(resultSet.getString("name") ,resultSet.getString("courseID"));
+                if (resultSet.next()){
+                    String name = resultSet.getString("name");
+                    String instructorID = resultSet.getString("instructorID");
+                    Course course = new Course(courseID, name, instructorID);
 
                     if (resultSet.getString("studentDirectory") != null) {
                         StudentDirectory studentDirectory = new StudentDirectory(StudentDBUtil.select(Arrays.asList(resultSet.getString("studentDirectory").split("\\|"))));
                         course.setStudentDirectory(studentDirectory);
                     }
 
+                    if (resultSet.getString("zoomMeetingDirectory") != null) {
+                        ZoomMeetingDirectory zoomMeetingDirectory = new ZoomMeetingDirectory(ZoomMeetingDBUtil.select(Arrays.asList(resultSet.getString("zoomMeetingDirectory").split("\\|"))));
+                        course.setZoomMeetingDirectory(zoomMeetingDirectory);
+                    }
+
+                    if (resultSet.getString("recordDirectory") != null) {
+                        RecordDirectory recordDirectory = new RecordDirectory(RecordDBUtil.select(Arrays.asList(resultSet.getString("recordDirectory").split("\\|"))));
+                        course.setRecordDirectory(recordDirectory);
+                    }
+
+                    if (resultSet.getString("assignmentDirectory") != null) {
+                        AssignmentDirectory assignmentDirectory = new AssignmentDirectory(AssignmentDBUtil.select(Arrays.asList(resultSet.getString("assignmentDirectory").split("\\|"))));
+                        course.setAssignmentDirectory(assignmentDirectory);
+                    }
 
                     if (resultSet.getString("fileDirectory") != null) {
                         FileDirectory fileDirectory = new FileDirectory(FileDBUtil.select(Arrays.asList(resultSet.getString("fileDirectory").split("\\|"))));
                         course.setFileDirectory(fileDirectory);
                     }
+
+                    course.setCreateTime(resultSet.getLong("createTime"));
+                    course.setUpdateTime(resultSet.getLong("updateTime"));
 
                     res.add(course);
                 }
@@ -316,17 +482,38 @@ public class CourseDBUtil {
             ResultSet resultSet = stat.executeQuery();
 
             while (resultSet.next()){
-                Course course = new Course(resultSet.getString("name") ,resultSet.getString("courseID"));
+                String courseID = resultSet.getString("courseID");
+                String name = resultSet.getString("name");
+                String instructorID = resultSet.getString("instructorID");
+                Course course = new Course(courseID, name, instructorID);
 
                 if (resultSet.getString("studentDirectory") != null) {
                     StudentDirectory studentDirectory = new StudentDirectory(StudentDBUtil.select(Arrays.asList(resultSet.getString("studentDirectory").split("\\|"))));
                     course.setStudentDirectory(studentDirectory);
                 }
 
+                if (resultSet.getString("zoomMeetingDirectory") != null) {
+                    ZoomMeetingDirectory zoomMeetingDirectory = new ZoomMeetingDirectory(ZoomMeetingDBUtil.select(Arrays.asList(resultSet.getString("zoomMeetingDirectory").split("\\|"))));
+                    course.setZoomMeetingDirectory(zoomMeetingDirectory);
+                }
+
+                if (resultSet.getString("recordDirectory") != null) {
+                    RecordDirectory recordDirectory = new RecordDirectory(RecordDBUtil.select(Arrays.asList(resultSet.getString("recordDirectory").split("\\|"))));
+                    course.setRecordDirectory(recordDirectory);
+                }
+
+                if (resultSet.getString("assignmentDirectory") != null) {
+                    AssignmentDirectory assignmentDirectory = new AssignmentDirectory(AssignmentDBUtil.select(Arrays.asList(resultSet.getString("assignmentDirectory").split("\\|"))));
+                    course.setAssignmentDirectory(assignmentDirectory);
+                }
+
                 if (resultSet.getString("fileDirectory") != null) {
                     FileDirectory fileDirectory = new FileDirectory(FileDBUtil.select(Arrays.asList(resultSet.getString("fileDirectory").split("\\|"))));
                     course.setFileDirectory(fileDirectory);
                 }
+
+                course.setCreateTime(resultSet.getLong("createTime"));
+                course.setUpdateTime(resultSet.getLong("updateTime"));
 
                 res.add(course);
             }

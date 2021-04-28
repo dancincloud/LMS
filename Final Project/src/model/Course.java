@@ -5,18 +5,21 @@ package model;
  * @author Ke
  */
 public class Course {
-    private String name;
     private String courseID;
-    private UserDirectory userDirectory;
+    private String name;
+    private String instructorID;
     private StudentDirectory studentDirectory;
-    /*private ZoomMeetingDirectory zoomMeetingDirectory;
-    private RecordDirectory recordDirectory;*/
+    private ZoomMeetingDirectory zoomMeetingDirectory;
+    private RecordDirectory recordDirectory;
     private AssignmentDirectory assignmentDirectory;
     private FileDirectory fileDirectory;
+    private long createTime;
+    private long updateTime;
 
-    public Course(String name, String courseID) {
-        this.name = name;
+    public Course(String courseID, String name, String instructorID) {
         this.courseID = courseID;
+        this.name = name;
+        this.instructorID = instructorID;
     }
     
     public String getName() {
@@ -39,9 +42,8 @@ public class Course {
     public String toString(){
         return String.format("id = %10s, name = %10s", courseID, name);
     }
-    
 
-    /*public ZoomMeetingDirectory getZoomMeetingDirectory() {
+    public ZoomMeetingDirectory getZoomMeetingDirectory() {
         return zoomMeetingDirectory;
     }
 
@@ -55,7 +57,7 @@ public class Course {
 
     public void setRecordDirectory(RecordDirectory recordDirectory) {
         this.recordDirectory = recordDirectory;
-    }*/
+    }
 
     public AssignmentDirectory getAssignmentDirectory() {
         return assignmentDirectory;
@@ -73,14 +75,6 @@ public class Course {
         this.fileDirectory = fileDirectory;
     }
 
-    public UserDirectory getUserDirectory() {
-        return userDirectory;
-    }
-
-    public void setUserDirectory(UserDirectory userDirectory) {
-        this.userDirectory = userDirectory;
-    }
-
     public StudentDirectory getStudentDirectory() {
         return studentDirectory;
     }
@@ -89,4 +83,27 @@ public class Course {
         this.studentDirectory = studentDirectory;
     }
 
+    public String getInstructorID() {
+        return instructorID;
+    }
+
+    public void setInstructorID(String instructorID) {
+        this.instructorID = instructorID;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
+    }
 }

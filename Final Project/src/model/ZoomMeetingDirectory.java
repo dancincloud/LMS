@@ -2,14 +2,12 @@ package model;
 
 import java.util.List;
 
-public class ZoomMeetingDirectory {
-    private List<ZoomMeeting> zoomMeetingList;
+public class ZoomMeetingDirectory extends Directory<ZoomMeeting>{
 
-    public List<ZoomMeeting> getZoomMeetingList() {
-        return zoomMeetingList;
+    public ZoomMeetingDirectory() {
     }
 
-    public void setZoomMeetingList(List<ZoomMeeting> zoomMeetingList) {
-        this.zoomMeetingList = zoomMeetingList;
+    public ZoomMeetingDirectory(List<ZoomMeeting> list){
+        super(list);
     }
 }

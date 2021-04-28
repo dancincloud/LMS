@@ -6,59 +6,85 @@ import java.sql.*;
  * @author : Ethan Zhang
  * @description :
  * @createTime : [2021/4/25 0:04]
- * @updateTime : [2021/4/25 0:04]
+ * @updateTime : [2021/4/29 0:04]
  */
 public class DBIntializer {
 
     // table creation sql
     static final String ASSIGNMENT_CREATION = "CREATE TABLE `Assignment` (" +
+            "  `assignmentID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
-            "  `aveGrade` double(255, 1) NULL," +
-            "  PRIMARY KEY (`name`))";
+            "  `content` varchar(255) NOT NULL," +
+            "  `type` varchar(255) NOT NULL," +
+            "  `grade` double(255, 1) NULL," +
+            "  `createTime` bigint NOT NULL," +
+            "  `updateTime` bigint NULL," +
+            "  PRIMARY KEY (`assignmentID`))";
 
     static final String COURSE_CREATION = "CREATE TABLE `Course` (" +
-            "  `name` varchar(255) NOT NULL," +
             "  `courseID` varchar(255) NOT NULL," +
+            "  `name` varchar(255) NOT NULL," +
+            "  `instructorID` varchar(255) NOT NULL," +
             "  `studentDirectory` varchar(1000) NULL," +
+            "  `zoomMeetingDirectory` varchar(1000) NULL," +
+            "  `recordDirectory` varchar(1000) NULL," +
+            "  `assignmentDirectory` varchar(1000) NULL," +
             "  `fileDirectory` varchar(1000) NULL," +
+            "  `createTime` bigint NOT NULL," +
+            "  `updateTime` bigint NULL," +
             "  PRIMARY KEY (`courseID`)" +
             ");";
 
     static final String FILE_CREATION = "CREATE TABLE `File` (" +
+            "  `fileID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
             "  `link` varchar(255) NOT NULL," +
-            "  PRIMARY KEY (`name`)" +
+            "  `createTime` bigint NOT NULL," +
+            "  `updateTime` bigint NULL," +
+            "  PRIMARY KEY (`fileID`)" +
             ")";
 
     static final String INSTRUCTOR_CREATION = "CREATE TABLE `Instructor`  (" +
-            "  `name` varchar(255) NOT NULL," +
             "  `instructorID` varchar(255) NOT NULL," +
+            "  `name` varchar(255) NOT NULL," +
             "  `email` varchar(255) NULL," +
+            "  `username` varchar(255) NOT NULL," +
+            "  `password` varchar(255) NOT NULL," +
             "  `courseDirectory` varchar(1000) NULL," +
+            "  `createTime` bigint NOT NULL," +
+            "  `updateTime` bigint NULL," +
             "  PRIMARY KEY (`instructorID`)" +
             ");";
 
     static final String RECORD_CREATION = "CREATE TABLE `Record` (" +
+            "  `recordID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
             "  `link` varchar(255) NOT NULL," +
-            "  PRIMARY KEY (`name`)" +
+            "  `createTime` bigint NOT NULL," +
+            "  `updateTime` bigint NULL," +
+            "  PRIMARY KEY (`recordID`)" +
             ")";
 
     static final String STUDENT_CREATION = "CREATE TABLE `Student`  (" +
             "  `studentID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
-            "  `gpa` double(255, 1) NULL," +
             "  `email` varchar(255) NULL," +
+            "  `username` varchar(255) NOT NULL," +
+            "  `password` varchar(255) NOT NULL," +
+            "  `gpa` double(255, 1) NULL," +
             "  `courseDirectory` varchar(1000) NULL," +
-            "  `username` varchar(255) NULL," +
-            "  `password` varchar(255) NULL," +
+            "  `createTime` bigint NOT NULL," +
+            "  `updateTime` bigint NULL," +
             "  PRIMARY KEY (`studentID`)" +
             ");";
 
     static final String ZOOM_MEETING_CREATION = "CREATE TABLE `ZoomMeeting` (" +
+            "  `zoomMeetingID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
             "  `link` varchar(255) NOT NULL," +
-            "  PRIMARY KEY (`name`)" +
+            "  `createTime` bigint NOT NULL," +
+            "  `updateTime` bigint NULL," +
+            "  PRIMARY KEY (`zoomMeetingID`)" +
             ")";
 
     /**

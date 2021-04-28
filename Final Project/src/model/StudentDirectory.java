@@ -13,15 +13,12 @@ import java.util.List;
  * @author Ke
  */
 public class StudentDirectory extends Directory<Student> {
+
+    public StudentDirectory() {
+        super();
+    }
+
     public StudentDirectory(List<Student> list){
         super(list);
-    }
-
-    public List<Student> getStudentList() {
-        return this.getList();
-    }
-
-    public void setStudentList(List<Student> studentList) {
-        this.setList(studentList);
     }
 }
