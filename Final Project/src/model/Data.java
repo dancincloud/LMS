@@ -40,7 +40,6 @@ public class Data {
     Course c1 = new Course("OOD","CSYE6200");
     Course c2 = new Course("Application Engineer","INFO5100");
     Course c3 = new Course("Career Management","ENCP6000");
-   
 
     public Data() {
         userList = new ArrayList<User>();

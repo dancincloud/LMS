@@ -230,7 +230,6 @@ public class StudentDBUtil {
                 } else {
                     stat.setString(6, null);
                 }
-
                 stat.setLong(7, System.currentTimeMillis());
                 stat.setString(8, student.getId());
                 stat.executeUpdate();
