@@ -10,6 +10,8 @@ public class User {
     private String email;
     private String username;
     private String password;
+    private long createTime;
+    private long updateTime;
 
     private int type = 0; // 0 - Student 1 - Instructor
 
@@ -74,5 +76,21 @@ public class User {
     @Override
     public String toString(){
         return String.format("id = %10s, name = %10s, email = %20s, username = %10s, password = %20s", id, name, email, username, password);
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
     }
 }

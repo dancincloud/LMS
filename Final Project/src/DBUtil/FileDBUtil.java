@@ -17,96 +17,124 @@ import java.util.List;
  */
 public class FileDBUtil {
 
-    public static void add(File file) {
+    public static boolean add(File file) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO File (`name`, `link`) VALUES (?, ?)";
+        String sql = "INSERT INTO File (`fileID`, `name`, `link`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, file.getName());
-            stat.setString(2, file.getLink());
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, file.getFileID());
+            stat.setString(2, file.getName());
+            stat.setString(3, file.getLink());
+            stat.setLong(4, System.currentTimeMillis());
+            stat.setLong(5, -1L);
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void add(List<File> files) {
+    public static boolean add(List<File> files) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO File (`name`, `link`) VALUES (?, ?)";
+        String sql = "INSERT INTO File (`fileID`, `name`, `link`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             for (File file : files) {
-                stat.setString(1, file.getName());
-                stat.setString(2, file.getLink());
+                stat.setString(1, file.getFileID());
+                stat.setString(2, file.getName());
+                stat.setString(3, file.getLink());
+                stat.setLong(4, System.currentTimeMillis());
+                stat.setLong(5, -1L);
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void delete(String name) {
+    public static boolean delete(String fileID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from File where name = ?";
+        String sql = "delete from File where fileID = ?";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, name);
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, fileID);
             stat.executeUpdate();
 
             // update courses
-            File underDeletionFile = select(name);
+            File underDeletionFile = select(fileID);
             List<Course> courses = CourseDBUtil.selectAll();
             for (Course course : courses) {
-                List<File> files = course.getFileDirectory().getFileList();
-                files.remove(underDeletionFile);
-                CourseDBUtil.update(course);
-            }
-
-            DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void delete(List<String> names) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from File where name = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-
-            for (String name : names) {
-                stat.setString(1, name);
-                stat.executeUpdate();
-
-                // update courses
-                File underDeletionFile = select(name);
-                List<Course> courses = CourseDBUtil.selectAll();
-                for (Course course : courses) {
-                    List<File> files = course.getFileDirectory().getFileList();
+                if (course.getFileDirectory() != null) {
+                    List<File> files = course.getFileDirectory().getList();
                     files.remove(underDeletionFile);
                     CourseDBUtil.update(course);
                 }
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void deleteAll() {
+    public static boolean delete(List<String> fileIDs) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "delete from File where fileID = ?";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+
+            for (String fileID : fileIDs) {
+                stat.setString(1, fileID);
+                stat.executeUpdate();
+
+                // update courses
+                File underDeletionFile = select(fileID);
+                List<Course> courses = CourseDBUtil.selectAll();
+                for (Course course : courses) {
+                    if (course.getFileDirectory() != null) {
+                        List<File> files = course.getFileDirectory().getList();
+                        files.remove(underDeletionFile);
+                        CourseDBUtil.update(course);
+                    }
+                }
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean deleteAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "delete from File";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
 
             // update courses
             List<Course> courses = CourseDBUtil.selectAll();
@@ -114,90 +142,113 @@ public class FileDBUtil {
                 course.setFileDirectory(null);
             }
             CourseDBUtil.update(courses);
-
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void update(File file) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update File set link = ? where name = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, file.getLink());
-            stat.setString(2, file.getName());
-            stat.executeUpdate();
+            return false;
+        } finally {
             DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    public static void update(List<File> files) {
+    public static boolean update(File file) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update File set link = ? where name = ?";
+        String sql = "update File set name = ?, link = ?, updateTime = ? where fileID = ?";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, file.getName());
+            stat.setString(2, file.getLink());
+            stat.setLong(3, System.currentTimeMillis());
+            stat.setString(4, file.getFileID());
+            stat.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
+    public static boolean update(List<File> files) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "update File set name = ?, link = ?, updateTime = ? where fileID = ?";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
 
             for (File file : files) {
-                stat.setString(1, file.getLink());
-                stat.setString(2, file.getName());
+                stat.setString(1, file.getName());
+                stat.setString(2, file.getLink());
+                stat.setLong(3, System.currentTimeMillis());
+                stat.setString(4, file.getFileID());
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static File select(String name) {
+    public static File select(String fileID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from File where name = ?";
-        File file = new File(null);
+        String sql = "SELECT * from File where fileID = ?";
 
         try {
 
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, name);
+            stat.setString(1, fileID);
             ResultSet resultSet = stat.executeQuery();
 
-            while (resultSet.next()){
-                file.setName(resultSet.getString("name"));
-                file.setLink(resultSet.getString("link"));
+            if (resultSet.next()){
+                String name = resultSet.getString("name");
+                String link = resultSet.getString("link");
+                File file = new File(fileID, name, link);
+                file.setCreateTime(resultSet.getLong("createTime"));
+                file.setUpdateTime(resultSet.getLong("updateTime"));
+                DBConnection.closeDB(conn, stat, resultSet);
+                return file;
             }
 
             DBConnection.closeDB(conn, stat, resultSet);
-            return file;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return file;
+        return null;
     }
 
-    public static List<File> select(List<String> names) {
+    public static List<File> select(List<String> fileIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "SELECT * from File where name = ?";
+        String sql = "SELECT * from File where fileID = ?";
         List<File> res = new ArrayList<>();
 
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet resultSet = null;
-            for (String name : names) {
-
-                stat.setString(1, name);
+            for (String fileID : fileIDs) {
+                stat.setString(1, fileID);
                 resultSet = stat.executeQuery();
 
-                while (resultSet.next()){
-                    File file = new File(name);
-                    file.setLink(resultSet.getString("link"));
+                if (resultSet.next()){
+                    String name = resultSet.getString("name");
+                    String link = resultSet.getString("link");
+                    File file = new File(fileID, name, link);
+                    file.setCreateTime(resultSet.getLong("createTime"));
+                    file.setUpdateTime(resultSet.getLong("updateTime"));
+
                     res.add(file);
                 }
             }
-            DBConnection.closeDB(conn, stat, resultSet);
 
+            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -215,8 +266,12 @@ public class FileDBUtil {
             ResultSet resultSet = stat.executeQuery();
 
             while (resultSet.next()){
-                File file = new File(resultSet.getString("name"));
-                file.setLink(resultSet.getString("link"));
+                String fileID = resultSet.getString("fileID");
+                String name = resultSet.getString("name");
+                String link = resultSet.getString("link");
+                File file = new File(fileID, name, link);
+                file.setCreateTime(resultSet.getLong("createTime"));
+                file.setUpdateTime(resultSet.getLong("updateTime"));
                 res.add(file);
             }
 

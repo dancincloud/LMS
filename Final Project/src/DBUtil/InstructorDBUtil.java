@@ -18,165 +18,220 @@ import java.util.List;
  */
 public class InstructorDBUtil {
 
-    public static void add(Instructor instructor) {
+    public static boolean add(Instructor instructor) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Instructor (`name`, `instructorID`, `email`, `courseDirectory`) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Instructor (`instructorID`, `name`, `email`, `username`, `password`, " +
+                " `courseDirectory`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, instructor.getName());
-            stat.setString(2, instructor.getId());
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, instructor.getId());
+            stat.setString(2, instructor.getName());
             stat.setString(3, instructor.getEmail());
+            stat.setString(4, instructor.getUsername());
+            stat.setString(5, instructor.getPassword());
 
             if (instructor.getCoursedirectory() != null) {
-                stat.setString(4, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+                stat.setString(6, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
             } else {
-                stat.setString(4, null);
+                stat.setString(6, null);
             }
 
+            stat.setLong(7, System.currentTimeMillis());
+            stat.setLong(8, -1L);
+
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void add(List<Instructor> instructors) {
+    public static boolean add(List<Instructor> instructors) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "INSERT INTO Instructor (`name`, `instructorID`, `email`, `courseDirectory`) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Instructor (`instructorID`, `name`, `email`, `username`, `password`, " +
+                " `courseDirectory`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stat = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             for (Instructor instructor : instructors) {
-                stat.setString(1, instructor.getName());
-                stat.setString(2, instructor.getId());
+                stat.setString(1, instructor.getId());
+                stat.setString(2, instructor.getName());
                 stat.setString(3, instructor.getEmail());
+                stat.setString(4, instructor.getUsername());
+                stat.setString(5, instructor.getPassword());
 
                 if (instructor.getCoursedirectory() != null) {
-                    stat.setString(4, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+                    stat.setString(6, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
                 } else {
-                    stat.setString(4, null);
+                    stat.setString(6, null);
                 }
+
+                stat.setLong(7, System.currentTimeMillis());
+                stat.setLong(8, -1L);
 
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void delete(String instructorID) {
+    public static boolean delete(String instructorID) {
+        Instructor instructor = select(instructorID);
+        if (instructor == null) {
+            return false;
+        }
+        if (instructor.getCoursedirectory() != null) {
+            return false;
+        }
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "delete from Instructor where instructorID = ?";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, instructorID);
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void delete(List<String> instructorIDs) {
+    public static boolean delete(List<String> instructorIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "delete from Instructor where instructorID = ?";
+        PreparedStatement stat = null;
+
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
 
             for (String instructorID : instructorIDs) {
+                Instructor instructor = select(instructorID);
+                if (instructor == null) {
+                    continue;
+                }
+                if (instructor.getCoursedirectory() != null) {
+                    continue;
+                }
+
                 stat.setString(1, instructorID);
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void deleteAll() {
+    public static boolean update(Instructor instructor) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "delete from Instructor";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        String sql = "update Instructor set name = ?, email = ?, username = ?, password = ?, courseDirectory = ?, " +
+                " updateTime = ? where instructorID = ?";
+        PreparedStatement stat = null;
 
-    public static void update(Instructor instructor) {
-        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Instructor set name = ?, email = ?, courseDirectory = ? where instructorID = ?";
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, instructor.getName());
             stat.setString(2, instructor.getEmail());
+            stat.setString(3, instructor.getUsername());
+            stat.setString(4, instructor.getPassword());
 
             if (instructor.getCoursedirectory() != null) {
-                stat.setString(3, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+                stat.setString(5, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
             } else {
-                stat.setString(3, null);
+                stat.setString(5, null);
             }
 
-            stat.setString(4, instructor.getId());
+            stat.setLong(6, System.currentTimeMillis());
+            stat.setString(7, instructor.getId());
             stat.executeUpdate();
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
-    public static void update(List<Instructor> instructors) {
+    public static boolean update(List<Instructor> instructors) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Instructor set name = ?, email = ?, courseDirectory = ? where instructorID = ?";
-        try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+        String sql = "update Instructor set name = ?, email = ?, username = ?, password = ?, courseDirectory = ?, " +
+                " updateTime = ? where instructorID = ?";
+        PreparedStatement stat = null;
 
+        try {
+            stat = conn.prepareStatement(sql);
             for (Instructor instructor : instructors) {
                 stat.setString(1, instructor.getName());
                 stat.setString(2, instructor.getEmail());
+                stat.setString(3, instructor.getUsername());
+                stat.setString(4, instructor.getPassword());
 
                 if (instructor.getCoursedirectory() != null) {
-                    stat.setString(3, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getCourseList()));
+                    stat.setString(5, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
                 } else {
-                    stat.setString(3, null);
+                    stat.setString(5, null);
                 }
 
-                stat.setString(4, instructor.getId());
+                stat.setLong(6, System.currentTimeMillis());
+                stat.setString(7, instructor.getId());
                 stat.executeUpdate();
             }
 
-            DBConnection.closeDB(conn, stat, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
         }
     }
 
     public static Instructor select(String instructorID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor where instructorID = ?";
+        PreparedStatement stat = null;
 
         try {
-
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, instructorID);
             ResultSet resultSet = stat.executeQuery();
 
             if (resultSet.next()){
-                Instructor instructor = new Instructor();
-                instructor.setName(resultSet.getString("name"));
-                instructor.setId(resultSet.getString("instructorID"));
-                instructor.setEmail(resultSet.getString("email"));
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                Instructor instructor = new Instructor(instructorID, name, email, username, password);
 
                 if (resultSet.getString("courseDirectory") != null) {
                     CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
                     instructor.setCoursedirectory(courseDirectory);
                 }
+
+                instructor.setCreateTime(resultSet.getLong("createTime"));
+                instructor.setUpdateTime(resultSet.getLong("updateTime"));
 
                 DBConnection.closeDB(conn, stat, resultSet);
                 return instructor;
@@ -199,21 +254,23 @@ public class InstructorDBUtil {
             PreparedStatement stat = conn.prepareStatement(sql);
             ResultSet resultSet = null;
             for (String instructorID : instructorIDs) {
-
-
                 stat.setString(1, instructorID);
                 resultSet = stat.executeQuery();
 
                 while (resultSet.next()){
-                    Instructor instructor = new Instructor();
-                    instructor.setName(resultSet.getString("name"));
-                    instructor.setId(instructorID);
-                    instructor.setEmail(resultSet.getString("email"));
+                    String name = resultSet.getString("name");
+                    String email = resultSet.getString("email");
+                    String username = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    Instructor instructor = new Instructor(instructorID, name, email, username, password);
 
                     if (resultSet.getString("courseDirectory") != null) {
                         CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
                         instructor.setCoursedirectory(courseDirectory);
                     }
+
+                    instructor.setCreateTime(resultSet.getLong("createTime"));
+                    instructor.setUpdateTime(resultSet.getLong("updateTime"));
 
                     res.add(instructor);
                 }
@@ -237,15 +294,20 @@ public class InstructorDBUtil {
             ResultSet resultSet = stat.executeQuery();
 
             while (resultSet.next()){
-                Instructor instructor = new Instructor();
-                instructor.setName(resultSet.getString("name"));
-                instructor.setId(resultSet.getString("instructorID"));
-                instructor.setEmail(resultSet.getString("email"));
+                String instructorID = resultSet.getString("instructorID");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                Instructor instructor = new Instructor(instructorID, name, email, username, password);
 
                 if (resultSet.getString("courseDirectory") != null) {
                     CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
                     instructor.setCoursedirectory(courseDirectory);
                 }
+
+                instructor.setCreateTime(resultSet.getLong("createTime"));
+                instructor.setUpdateTime(resultSet.getLong("updateTime"));
 
                 res.add(instructor);
             }

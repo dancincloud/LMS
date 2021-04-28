@@ -25,7 +25,6 @@ public class Student extends User {
         this.coursedirectory = coursedirectory;
     }
 
-
     public double getGpa() {
         return gpa;
     }

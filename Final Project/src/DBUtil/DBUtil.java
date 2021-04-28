@@ -18,12 +18,12 @@ public class DBUtil {
             return null;
         }
 
-        List<String> names = new ArrayList<>();
+        List<String> assignmentIDs = new ArrayList<>();
         for (Assignment assignment : assignments) {
-            names.add(assignment.getName());
+            assignmentIDs.add(assignment.getAssignmentID());
         }
 
-        return mergeFields(names);
+        return mergeFields(assignmentIDs);
     }
 
     public static String changeCourseDirectoryToString(List<Course> courses) {
@@ -46,26 +46,26 @@ public class DBUtil {
             return null;
         }
 
-        List<String> names = new ArrayList<>();
+        List<String> fileIDs = new ArrayList<>();
         for (File file : files) {
-            names.add(file.getName());
+            fileIDs.add(file.getFileID());
         }
 
-        return mergeFields(names);
+        return mergeFields(fileIDs);
     }
 
-    public static String changeRecordDirectoryToString(List<model.Record> records) {
+    public static String changeRecordDirectoryToString(List<Record> records) {
 
         if (records == null) {
             return null;
         }
 
-        List<String> names = new ArrayList<>();
-        for (model.Record record : records) {
-            names.add(record.getName());
+        List<String> recordIDs = new ArrayList<>();
+        for (Record record : records) {
+            recordIDs.add(record.getRecordID());
         }
 
-        return mergeFields(names);
+        return mergeFields(recordIDs);
     }
 
     public static String changeZoomMeetingDirectoryToString(List<ZoomMeeting> zoomMeetings) {
@@ -74,12 +74,12 @@ public class DBUtil {
             return null;
         }
 
-        List<String> names = new ArrayList<>();
+        List<String> zoomMeetingIDs = new ArrayList<>();
         for (ZoomMeeting zoomMeeting : zoomMeetings) {
-            names.add(zoomMeeting.getName());
+            zoomMeetingIDs.add(zoomMeeting.getZoomMeetingID());
         }
 
-        return mergeFields(names);
+        return mergeFields(zoomMeetingIDs);
     }
 
     public static String changeStudentDirectoryToString(List<Student> students) {
