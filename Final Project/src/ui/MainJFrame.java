@@ -20,12 +20,15 @@ public class MainJFrame extends javax.swing.JFrame {
     //private StudentDirectory studentDirectory = new StudentDirectory();
     private Data data = new Data();
 
+    private Router router = null;
+
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
         initComponents();
         this.setSize(1024, 768);
+        router = Router.getInstance(this);
     }
 
     /**
@@ -169,17 +172,16 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         }
 
-        loginJButton.setEnabled(false);
-        logoutJButton.setEnabled(true);
-        userNameJTextField.setEnabled(false);
-        passwordField.setEnabled(false);
+//        loginJButton.setEnabled(false);
+//        logoutJButton.setEnabled(true);
+//        userNameJTextField.setEnabled(false);
+//        passwordField.setEnabled(false);
     }//GEN-LAST:event_loginJButtonActionPerformed
 
 
     // change content
     public void changeContentPane(Container contentPane) {
-        this.setContentPane(contentPane);
-        this.revalidate();
+        router.go(contentPane);
     }
 
     private boolean isInstructor = false;
