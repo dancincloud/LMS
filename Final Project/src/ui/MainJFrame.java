@@ -6,17 +6,17 @@
 package ui;
 
 
-import java.awt.CardLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import model.Data;
 import model.Student;
 import model.StudentDirectory;
 import model.User;
 
 /**
- *
  * @author Ke
  */
 public class MainJFrame extends javax.swing.JFrame {
@@ -28,7 +28,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
-        this.setSize(1000,700);
+        this.setSize(1000, 700);
     }
 
     /**
@@ -52,8 +52,10 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         loginJLabel = new javax.swing.JLabel();
         logoutJButton = new javax.swing.JButton();
+        accountTypeCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jSplitPane1.setDividerLocation(150);
 
@@ -112,6 +114,16 @@ public class MainJFrame extends javax.swing.JFrame {
         LoginJPanel.add(logoutJButton);
         logoutJButton.setBounds(50, 360, 92, 38);
 
+        accountTypeCheckBox.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        accountTypeCheckBox.setText("I'm an instructor");
+        accountTypeCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accountTypeCheckBoxActionPerformed(evt);
+            }
+        });
+        LoginJPanel.add(accountTypeCheckBox);
+        accountTypeCheckBox.setBounds(10, 270, 130, 23);
+
         jSplitPane1.setLeftComponent(LoginJPanel);
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
@@ -136,23 +148,24 @@ public class MainJFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_logoutJButtonActionPerformed
 
+
     private void loginJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButtonActionPerformed
 
         String userName = userNameJTextField.getText();
         char[] passwordCharArray = passwordField.getPassword();
         String password = String.valueOf(passwordCharArray);
 
-        User user = data.authenticateUser(userName, password, 0);
+        User user = data.authenticateUser(userName, password, isInstructor ? 1 : 0);
 
-        if(user==null){
+        if (user == null) {
             JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
-        }
-        else{
-            MainJPanel mainJPanel = new MainJPanel(userProcessContainer,user);
-            userProcessContainer.add("mainJPanel", mainJPanel);
-            CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-            layout.next(userProcessContainer);
+        } else {
+            MainJPanel mainJPanel = new MainJPanel(userProcessContainer, user);
+            changeContentPane(mainJPanel);
+//            userProcessContainer.add("mainJPanel", mainJPanel);
+//            CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+//            layout.next(userProcessContainer);
         }
 
         loginJButton.setEnabled(false);
@@ -161,6 +174,20 @@ public class MainJFrame extends javax.swing.JFrame {
         passwordField.setEnabled(false);
     }//GEN-LAST:event_loginJButtonActionPerformed
 
+
+    // change content
+    public void changeContentPane(Container contentPane) {
+        this.setContentPane(contentPane);
+        this.revalidate();
+    }
+
+    private boolean isInstructor = false;
+
+    private void accountTypeCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountTypeCheckBoxActionPerformed
+        // TODO add your handling code here:
+        isInstructor = accountTypeCheckBox.isSelected();
+    }//GEN-LAST:event_accountTypeCheckBoxActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -168,7 +195,7 @@ public class MainJFrame extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -198,6 +225,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LoginJPanel;
+    private javax.swing.JCheckBox accountTypeCheckBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

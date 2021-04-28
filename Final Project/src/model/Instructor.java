@@ -9,12 +9,10 @@ public class Instructor extends User {
     
     public Instructor(){}
 
-    public Instructor(String id, String name, String email, CourseDirectory coursedirectory, String username, String password) {
+    public Instructor(String id, String name, String email, String username, String password) {
         super(id, name, email, username, password);
 
         this.setType(1);
-
-        this.coursedirectory = coursedirectory;
     }
 
     public CourseDirectory getCoursedirectory() {

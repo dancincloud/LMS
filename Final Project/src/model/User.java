@@ -70,4 +70,9 @@ public class User {
     public void setType(int type) {
         this.type = type;
     }
+
+    @Override
+    public String toString(){
+        return String.format("id = %10s, name = %10s, email = %20s, username = %10s, password = %20s", id, name, email, username, password);
+    }
 }

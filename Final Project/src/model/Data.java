@@ -68,8 +68,6 @@ public class Data {
         FileDirectory c2fd = new FileDirectory(c2fileList);
         FileDirectory c3fd = new FileDirectory(c3fileList);
 
-
-        
         Student s1 = new Student("0001","Alaric",4.5,"ke.zh@northeastern.edu",cd1,"s1","s1");
         Student s2 = new Student("0002","Joan",4.8,"joan@northeastern.edu",cd2,"s2","s2");
         
@@ -92,25 +90,37 @@ public class Data {
         c1.setFileDirectory(c1fd);
         c2.setFileDirectory(c2fd);
         c3.setFileDirectory(c3fd);
+
+
+        instructors = new ArrayList<>();
+
+        for(int i = 0; i < 5; i++){
+            String id = MockDataGenerator.generateID();
+            String name = MockDataGenerator.generateName(4,6);
+            String email = MockDataGenerator.generateEmailByName(name);
+            Instructor instructor = new Instructor(id, name, email, name, name);
+            instructors.add(instructor);
+
+            System.out.println(instructor);
+        }
+
     }
     
     public User authenticateUser(String username, String password, int type){
         if(type == 1){
-            for (Student student : studentList){
-                 if (student.getUsername().equals(username) && student.getPassword().equals(password)){
-                    return student;
+            for (Instructor instructor : instructors){
+                if (instructor.getUsername().equals(username) && instructor.getPassword().equals(password)){
+                    return instructor;
                 }
             }
+            return null;
         }else{
             for (Student student : studentList){
-                 if (student.getUsername().equals(username) && student.getPassword().equals(password)){
+                if (student.getUsername().equals(username) && student.getPassword().equals(password)){
                     return student;
                 }
             }
+            return null;
         }
-        
-        
-
-        return null;
     }
 }
