@@ -38,7 +38,7 @@ public class MainJPanel extends javax.swing.JPanel {
     
     private void populateLabel() {
         int i = 0;
-        for (Course course : ((Student) user).getCoursedirectory().getCourseList()) {
+        for (Course course : ((Student) user).getCoursedirectory().getList()) {
             name[i] = course.getName();
             id[i] = course.getCourseID();
             c[i] = course;

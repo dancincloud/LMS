@@ -41,7 +41,6 @@ public class InstructorCourse extends javax.swing.JPanel {
         container = new javax.swing.JPanel();
         courseLabel = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        tableFrame = new javax.swing.JInternalFrame();
         SideBar = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
@@ -55,34 +54,16 @@ public class InstructorCourse extends javax.swing.JPanel {
 
         courseLabel.setText("Course Name");
 
-        tableFrame.setVisible(true);
-
-        javax.swing.GroupLayout tableFrameLayout = new javax.swing.GroupLayout(tableFrame.getContentPane());
-        tableFrame.getContentPane().setLayout(tableFrameLayout);
-        tableFrameLayout.setHorizontalGroup(
-            tableFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 786, Short.MAX_VALUE)
-        );
-        tableFrameLayout.setVerticalGroup(
-            tableFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 572, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout containerLayout = new javax.swing.GroupLayout(container);
         container.setLayout(containerLayout);
         containerLayout.setHorizontalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(containerLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(containerLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(courseLabel)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(containerLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(tableFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(courseLabel)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,9 +72,7 @@ public class InstructorCourse extends javax.swing.JPanel {
                 .addComponent(courseLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(tableFrame)
-                .addContainerGap())
+                .addContainerGap(636, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(container);
@@ -247,7 +226,6 @@ public class InstructorCourse extends javax.swing.JPanel {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton studentButton;
-    private javax.swing.JInternalFrame tableFrame;
     private javax.swing.JButton zoomButton;
     // End of variables declaration//GEN-END:variables
 }

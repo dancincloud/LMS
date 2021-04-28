@@ -17,6 +17,18 @@ public class File {
         this.link = link;
     }
 
+    public File(String name, String link) {
+        this.fileID = MockDataGenerator.generateID();
+        this.name = name;
+        this.link = link;
+    }
+
+    public File(String link) {
+        this.fileID = MockDataGenerator.generateID();
+        this.name = link;
+        this.link = link;
+    }
+
     public String getLink() {
         return link;
     }

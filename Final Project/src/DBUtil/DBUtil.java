@@ -54,14 +54,14 @@ public class DBUtil {
         return mergeFields(fileIDs);
     }
 
-    public static String changeRecordDirectoryToString(List<Record> records) {
+    public static String changeRecordDirectoryToString(List<model.Record> records) {
 
         if (records == null) {
             return null;
         }
 
         List<String> recordIDs = new ArrayList<>();
-        for (Record record : records) {
+        for (model.Record record : records) {
             recordIDs.add(record.getRecordID());
         }
 

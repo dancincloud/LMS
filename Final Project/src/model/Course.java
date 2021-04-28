@@ -21,6 +21,13 @@ public class Course {
         this.name = name;
         this.instructorID = instructorID;
     }
+
+    public Course(String name, String instructorID) {
+        this.courseID = MockDataGenerator.generateID();
+        this.name = name;
+        this.instructorID = instructorID;
+    }
+
     
     public String getName() {
         return name;

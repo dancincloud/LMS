@@ -33,7 +33,7 @@ public class UserJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) studentJTable.getModel();
 
         model.setRowCount(0);
-        for (User user : course.getUserDirectory().getUserList()) {
+        for (User user : course.getStudentDirectory().getList()) {
             Object[] row = new Object[3];
             row[0] = user.getId();
             row[1] = user.getName();

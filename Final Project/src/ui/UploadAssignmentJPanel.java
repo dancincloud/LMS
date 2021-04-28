@@ -168,7 +168,7 @@ public class UploadAssignmentJPanel extends javax.swing.JPanel {
         name = jTextField1.getText();
         type = (AssignmentType)jComboBox1.getSelectedItem();
         Assignment a = new Assignment(name, content, type);
-        course.getAssignmentDirectory().createAssignment(name, content, type);
+        course.getAssignmentDirectory().add(a);
         JOptionPane.showMessageDialog(this,"Uploaded");
     }//GEN-LAST:event_jButton1ActionPerformed
 

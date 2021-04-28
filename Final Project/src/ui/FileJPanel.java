@@ -34,7 +34,7 @@ public class FileJPanel extends javax.swing.JPanel {
     
     private void populateLabel() {
         int i = 0;
-        for (model.File file : course.getFileDirectory().getFileList()) {
+        for (model.File file : course.getFileDirectory().getList()) {
             f[i] = file.getName();
             i++;
         }

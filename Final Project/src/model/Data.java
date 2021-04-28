@@ -91,9 +91,9 @@ public class Data {
         UserDirectory c2sd = new UserDirectory(c2userList);
         UserDirectory c3sd = new UserDirectory(c3userList);
         
-        c1.setUserDirectory(c1sd); 
-        c2.setUserDirectory(c2sd);
-        c3.setUserDirectory(c3sd);
+//        c1.setUserDirectory(c1sd);
+//        c2.setUserDirectory(c2sd);
+//        c3.setUserDirectory(c3sd);
         
         c1.setFileDirectory(c1fd);
         c2.setFileDirectory(c2fd);
