@@ -5,16 +5,32 @@ package model;
  * @author Ke
  */
 public class Assignment {
-    enum AssignmentType {
-        PROJECT,
-        QUIZ,
-        EXAM
+     public enum AssignmentType{
+        PROJECT("Project"),QUIZ("Quiz"),EXAM("Exam");
+        
+        private String value;
+        
+        private AssignmentType(String value){
+            this.value=value;
+        }
+        public String getValue() {
+            return value;
+        }
+        @Override
+        public String toString(){
+        return value;
     }
-    
-    
+    }
     private String name;
+    private String content;
     private double aveGrade;
     private AssignmentType type;
+
+    public Assignment(String name, String content, AssignmentType type) {
+        this.name = name;
+        this.content = content;
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -39,4 +55,13 @@ public class Assignment {
     public AssignmentType getType(){
         return type;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+    
 }

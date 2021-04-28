@@ -10,8 +10,8 @@ public class Course {
     private UserDirectory userDirectory;
     private StudentDirectory studentDirectory;
     /*private ZoomMeetingDirectory zoomMeetingDirectory;
-    private RecordDirectory recordDirectory;
-    private AssignmentDirectory assignmentDirectory;*/
+    private RecordDirectory recordDirectory;*/
+    private AssignmentDirectory assignmentDirectory;
     private FileDirectory fileDirectory;
 
     public Course(String name, String courseID) {
@@ -55,7 +55,7 @@ public class Course {
 
     public void setRecordDirectory(RecordDirectory recordDirectory) {
         this.recordDirectory = recordDirectory;
-    }
+    }*/
 
     public AssignmentDirectory getAssignmentDirectory() {
         return assignmentDirectory;
@@ -63,7 +63,7 @@ public class Course {
 
     public void setAssignmentDirectory(AssignmentDirectory assignmentDirectory) {
         this.assignmentDirectory = assignmentDirectory;
-    }*/
+    }
 
     public FileDirectory getFileDirectory() {
         return fileDirectory;

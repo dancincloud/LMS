@@ -28,6 +28,10 @@ public class Data {
     private List<Instructor> instructors;
     private List<Student> students;
     
+    private List<Assignment> c1assignment;
+    private List<Assignment> c2assignment;
+    private List<Assignment> c3assignment;
+    
     File f1 = new File("JavaDataTypes.ppt");
     File f2 = new File("JavaClassSyntax.ppt");
     File f3 = new File("University-Example.ppt");
@@ -68,6 +72,10 @@ public class Data {
         FileDirectory c1fd = new FileDirectory(c1fileList);
         FileDirectory c2fd = new FileDirectory(c2fileList);
         FileDirectory c3fd = new FileDirectory(c3fileList);
+        
+        AssignmentDirectory ad1 = new AssignmentDirectory(c1assignment);
+        AssignmentDirectory ad2 = new AssignmentDirectory(c2assignment);
+        AssignmentDirectory ad3 = new AssignmentDirectory(c3assignment);
 
         Student s1 = new Student("0001","Alaric",4.5,"ke.zh@northeastern.edu",cd1,"s1","s1");
         Student s2 = new Student("0002","Joan",4.8,"joan@northeastern.edu",cd2,"s2","s2");
@@ -91,6 +99,10 @@ public class Data {
         c1.setFileDirectory(c1fd);
         c2.setFileDirectory(c2fd);
         c3.setFileDirectory(c3fd);
+        
+        c1.setAssignmentDirectory(ad1);
+        c2.setAssignmentDirectory(ad2);
+        c3.setAssignmentDirectory(ad3);
         
         students = new ArrayList<>();
         students.add(s1);
