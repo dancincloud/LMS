@@ -84,7 +84,7 @@ public class CourseJPanel extends javax.swing.JPanel {
         });
 
         jButton2.setBackground(new java.awt.Color(51, 153, 255));
-        jButton2.setText("Student");
+        jButton2.setText("User");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

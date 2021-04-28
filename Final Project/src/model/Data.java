@@ -13,10 +13,10 @@ import java.util.List;
  * @author Ke
  */
 public class Data {
-    private List<Student> studentList;
-    private List<Student> c1studentList;
-    private List<Student> c2studentList;
-    private List<Student> c3studentList;
+    private List<User> userList;
+    private List<User> c1userList;
+    private List<User> c2userList;
+    private List<User> c3userList;
     
     private List<Course> s1courseList;
     private List<Course> s2courseList;
@@ -26,6 +26,7 @@ public class Data {
     private List<File> c3fileList;
 
     private List<Instructor> instructors;
+    private List<Student> students;
     
     File f1 = new File("JavaDataTypes.ppt");
     File f2 = new File("JavaClassSyntax.ppt");
@@ -38,11 +39,11 @@ public class Data {
    
 
     public Data() {
-        studentList = new ArrayList<Student>();
+        userList = new ArrayList<User>();
         
-        c1studentList = new ArrayList<Student>();
-        c2studentList = new ArrayList<Student>();
-        c3studentList = new ArrayList<Student>();
+        c1userList = new ArrayList<User>();
+        c2userList = new ArrayList<User>();
+        c3userList = new ArrayList<User>();
         
         s1courseList = new ArrayList<Course>();
         s2courseList = new ArrayList<Course>();
@@ -71,25 +72,29 @@ public class Data {
         Student s1 = new Student("0001","Alaric",4.5,"ke.zh@northeastern.edu",cd1,"s1","s1");
         Student s2 = new Student("0002","Joan",4.8,"joan@northeastern.edu",cd2,"s2","s2");
         
-        studentList.add(s1);
-        studentList.add(s2);
+        userList.add(s1);
+        userList.add(s2);
         
-        c1studentList.add(s1);
-        c1studentList.add(s2);
-        c2studentList.add(s1);
-        c3studentList.add(s2);
+        c1userList.add(s1);
+        c1userList.add(s2);
+        c2userList.add(s1);
+        c3userList.add(s2);
         
-        StudentDirectory c1sd = new StudentDirectory(c1studentList);
-        StudentDirectory c2sd = new StudentDirectory(c2studentList);
-        StudentDirectory c3sd = new StudentDirectory(c3studentList);
+        UserDirectory c1sd = new UserDirectory(c1userList);
+        UserDirectory c2sd = new UserDirectory(c2userList);
+        UserDirectory c3sd = new UserDirectory(c3userList);
         
-        c1.setStudentDirectory(c1sd); 
-        c2.setStudentDirectory(c2sd);
-        c3.setStudentDirectory(c3sd);
+        c1.setUserDirectory(c1sd); 
+        c2.setUserDirectory(c2sd);
+        c3.setUserDirectory(c3sd);
         
         c1.setFileDirectory(c1fd);
         c2.setFileDirectory(c2fd);
         c3.setFileDirectory(c3fd);
+        
+        students = new ArrayList<>();
+        students.add(s1);
+        students.add(s2);
 
 
         instructors = new ArrayList<>();
@@ -122,7 +127,7 @@ public class Data {
             }
             return null;
         }else{
-            for (Student student : studentList){
+            for (Student student : students){
                 if (student.getUsername().equals(username) && student.getPassword().equals(password)){
                     return student;
                 }

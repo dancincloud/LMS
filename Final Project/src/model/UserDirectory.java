@@ -13,6 +13,11 @@ import java.util.List;
  * @author Ke
  */
 public class UserDirectory extends Directory<User> {
+    
+    public UserDirectory(List<User> list){
+        super(list);
+    }
+    
     public List<User> getUserList() {
         return this.getList();
     }
