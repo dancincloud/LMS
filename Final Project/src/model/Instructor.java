@@ -4,34 +4,17 @@ package model;
  *
  * @author Ke
  */
-public class Instructor {
-    private String name;
-    private String instructorID;
-    private String email;
+public class Instructor extends User {
     private CourseDirectory coursedirectory;
+    
+    public Instructor(){}
 
-    public String getName() {
-        return name;
-    }
+    public Instructor(String id, String name, String email, CourseDirectory coursedirectory, String username, String password) {
+        super(id, name, email, username, password);
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        this.setType(1);
 
-    public String getInstructorID() {
-        return instructorID;
-    }
-
-    public void setInstructorID(String instructorID) {
-        this.instructorID = instructorID;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        this.coursedirectory = coursedirectory;
     }
 
     public CourseDirectory getCoursedirectory() {

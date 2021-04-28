@@ -24,7 +24,7 @@ public class StudentDBUtil {
 
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, student.getStudentID());
+            stat.setString(1, student.getId());
             stat.setString(2, student.getName());
             stat.setDouble(3, student.getGpa());
             stat.setString(4, student.getEmail());
@@ -52,7 +52,7 @@ public class StudentDBUtil {
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             for (Student student : students) {
-                stat.setString(1, student.getStudentID());
+                stat.setString(1, student.getId());
                 stat.setString(2, student.getName());
                 stat.setDouble(3, student.getGpa());
                 stat.setString(4, student.getEmail());
@@ -165,7 +165,7 @@ public class StudentDBUtil {
 
             stat.setString(5, student.getUsername());
             stat.setString(6, student.getPassword());
-            stat.setString(7, student.getStudentID());
+            stat.setString(7, student.getId());
             stat.executeUpdate();
             DBConnection.closeDB(conn, stat, null);
         } catch (Exception e) {
@@ -190,9 +190,9 @@ public class StudentDBUtil {
                     stat.setString(4, null);
                 }
 
-                stat.setString(5, student.getStudentID());
+                stat.setString(5, student.getId());
                 stat.setString(6, student.getPassword());
-                stat.setString(7, student.getStudentID());
+                stat.setString(7, student.getId());
                 stat.executeUpdate();
             }
 

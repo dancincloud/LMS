@@ -25,7 +25,7 @@ public class InstructorDBUtil {
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, instructor.getName());
-            stat.setString(2, instructor.getInstructorID());
+            stat.setString(2, instructor.getId());
             stat.setString(3, instructor.getEmail());
 
             if (instructor.getCoursedirectory() != null) {
@@ -49,7 +49,7 @@ public class InstructorDBUtil {
             PreparedStatement stat = conn.prepareStatement(sql);
             for (Instructor instructor : instructors) {
                 stat.setString(1, instructor.getName());
-                stat.setString(2, instructor.getInstructorID());
+                stat.setString(2, instructor.getId());
                 stat.setString(3, instructor.getEmail());
 
                 if (instructor.getCoursedirectory() != null) {
@@ -123,7 +123,7 @@ public class InstructorDBUtil {
                 stat.setString(3, null);
             }
 
-            stat.setString(4, instructor.getInstructorID());
+            stat.setString(4, instructor.getId());
             stat.executeUpdate();
             DBConnection.closeDB(conn, stat, null);
         } catch (Exception e) {
@@ -147,7 +147,7 @@ public class InstructorDBUtil {
                     stat.setString(3, null);
                 }
 
-                stat.setString(4, instructor.getInstructorID());
+                stat.setString(4, instructor.getId());
                 stat.executeUpdate();
             }
 
@@ -170,7 +170,7 @@ public class InstructorDBUtil {
             if (resultSet.next()){
                 Instructor instructor = new Instructor();
                 instructor.setName(resultSet.getString("name"));
-                instructor.setInstructorID(resultSet.getString("instructorID"));
+                instructor.setId(resultSet.getString("instructorID"));
                 instructor.setEmail(resultSet.getString("email"));
 
                 if (resultSet.getString("courseDirectory") != null) {
@@ -207,7 +207,7 @@ public class InstructorDBUtil {
                 while (resultSet.next()){
                     Instructor instructor = new Instructor();
                     instructor.setName(resultSet.getString("name"));
-                    instructor.setInstructorID(instructorID);
+                    instructor.setId(instructorID);
                     instructor.setEmail(resultSet.getString("email"));
 
                     if (resultSet.getString("courseDirectory") != null) {
@@ -239,7 +239,7 @@ public class InstructorDBUtil {
             while (resultSet.next()){
                 Instructor instructor = new Instructor();
                 instructor.setName(resultSet.getString("name"));
-                instructor.setInstructorID(resultSet.getString("instructorID"));
+                instructor.setId(resultSet.getString("instructorID"));
                 instructor.setEmail(resultSet.getString("email"));
 
                 if (resultSet.getString("courseDirectory") != null) {

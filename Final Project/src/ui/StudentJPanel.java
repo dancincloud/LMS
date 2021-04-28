@@ -5,7 +5,6 @@
  */
 package ui;
 
-import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import model.Course;
@@ -35,7 +34,7 @@ public class StudentJPanel extends javax.swing.JPanel {
         model.setRowCount(0);
         for (Student student : course.getStudentDirectory().getStudentList()) {
             Object[] row = new Object[3];
-            row[0] = student.getStudentID();
+            row[0] = student.getId();
             row[1] = student.getName();
             row[2] = student.getGpa();
 

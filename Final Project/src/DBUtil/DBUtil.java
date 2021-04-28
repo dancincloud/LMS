@@ -54,14 +54,14 @@ public class DBUtil {
         return mergeFields(names);
     }
 
-    public static String changeRecordDirectoryToString(List<Record> records) {
+    public static String changeRecordDirectoryToString(List<model.Record> records) {
 
         if (records == null) {
             return null;
         }
 
         List<String> names = new ArrayList<>();
-        for (Record record : records) {
+        for (model.Record record : records) {
             names.add(record.getName());
         }
 
@@ -90,7 +90,7 @@ public class DBUtil {
 
         List<String> studentIDs = new ArrayList<>();
         for (Student student : students) {
-            studentIDs.add(student.getStudentID());
+            studentIDs.add(student.getId());
         }
 
         return mergeFields(studentIDs);

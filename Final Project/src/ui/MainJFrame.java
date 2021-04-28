@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import model.Data;
 import model.Student;
 import model.StudentDirectory;
+import model.User;
 
 /**
  *
@@ -141,14 +142,14 @@ public class MainJFrame extends javax.swing.JFrame {
         char[] passwordCharArray = passwordField.getPassword();
         String password = String.valueOf(passwordCharArray);
 
-        Student student=data.authenticateUser(userName, password);
+        User user = data.authenticateUser(userName, password, 0);
 
-        if(student==null){
+        if(user==null){
             JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
         }
         else{
-            MainJPanel mainJPanel = new MainJPanel(userProcessContainer,student);
+            MainJPanel mainJPanel = new MainJPanel(userProcessContainer,user);
             userProcessContainer.add("mainJPanel", mainJPanel);
             CardLayout layout = (CardLayout) userProcessContainer.getLayout();
             layout.next(userProcessContainer);

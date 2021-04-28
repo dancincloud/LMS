@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import model.Course;
 import model.Student;
+import model.User;
 
 /**
  *
@@ -19,7 +20,7 @@ import model.Student;
  */
 public class MainJPanel extends javax.swing.JPanel {
     JPanel userProcessContainer;
-    Student student;
+    User user;
     String[] name = new String[3];
     String[] id = new String[3];
     Course[] c = new Course[3];
@@ -28,16 +29,16 @@ public class MainJPanel extends javax.swing.JPanel {
     /**
      * Creates new form MainJPanel
      */
-    public MainJPanel(JPanel userProcessContainer,Student student) {
+    public MainJPanel(JPanel userProcessContainer,User user) {
         initComponents();
-        this.student = student;
+        this.user = user;
         this.userProcessContainer=userProcessContainer;
         populateLabel();
     }
     
     private void populateLabel() {
         int i = 0;
-        for (Course course : student.getCoursedirectory().getCourseList()) {
+        for (Course course : ((Student) user).getCoursedirectory().getCourseList()) {
             name[i] = course.getName();
             id[i] = course.getCourseID();
             c[i] = course;
