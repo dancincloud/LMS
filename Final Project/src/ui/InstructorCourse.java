@@ -52,6 +52,7 @@ public class InstructorCourse extends javax.swing.JPanel {
 
         container.setBackground(new java.awt.Color(255, 255, 255));
 
+        courseLabel.setFont(new java.awt.Font("Skia", 1, 24)); // NOI18N
         courseLabel.setText("Course Name");
 
         javax.swing.GroupLayout containerLayout = new javax.swing.GroupLayout(container);
@@ -72,7 +73,7 @@ public class InstructorCourse extends javax.swing.JPanel {
                 .addComponent(courseLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(636, Short.MAX_VALUE))
+                .addContainerGap(627, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(container);
@@ -108,7 +109,7 @@ public class InstructorCourse extends javax.swing.JPanel {
         });
 
         zoomButton.setBackground(new java.awt.Color(51, 153, 255));
-        zoomButton.setText("Zoom");
+        zoomButton.setLabel("Zoom meeting");
         zoomButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zoomButtonActionPerformed(evt);
@@ -159,13 +160,13 @@ public class InstructorCourse extends javax.swing.JPanel {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(fileButton)
-                .addGap(45, 45, 45)
+                .addGap(30, 30, 30)
                 .addComponent(studentButton)
-                .addGap(46, 46, 46)
+                .addGap(33, 33, 33)
                 .addComponent(zoomButton)
-                .addGap(52, 52, 52)
+                .addGap(32, 32, 32)
                 .addComponent(assignmentButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
                 .addComponent(backButton)
                 .addGap(47, 47, 47))
         );

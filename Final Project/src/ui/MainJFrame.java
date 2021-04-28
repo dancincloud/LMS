@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import model.*;
 
 /**
- * @author Ke
+ * @author adinanibijiang
  */
 public class MainJFrame extends javax.swing.JFrame {
     //private StudentDirectory studentDirectory = new StudentDirectory();

@@ -13,7 +13,7 @@ import model.User;
 
 /**
  *
- * @author Ke
+ * @author adinanibijiang
  */
 public class UserJPanel extends javax.swing.JPanel {
     JPanel userProcessContainer;
