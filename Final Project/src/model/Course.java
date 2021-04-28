@@ -7,6 +7,7 @@ package model;
 public class Course {
     private String name;
     private String courseID;
+    private UserDirectory userDirectory;
     private StudentDirectory studentDirectory;
     /*private ZoomMeetingDirectory zoomMeetingDirectory;
     private RecordDirectory recordDirectory;
@@ -67,6 +68,14 @@ public class Course {
         this.fileDirectory = fileDirectory;
     }
 
+    public UserDirectory getUserDirectory() {
+        return userDirectory;
+    }
+
+    public void setUserDirectory(UserDirectory userDirectory) {
+        this.userDirectory = userDirectory;
+    }
+
     public StudentDirectory getStudentDirectory() {
         return studentDirectory;
     }
@@ -74,4 +83,5 @@ public class Course {
     public void setStudentDirectory(StudentDirectory studentDirectory) {
         this.studentDirectory = studentDirectory;
     }
+
 }
