@@ -11,10 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import model.Data;
-import model.Student;
-import model.StudentDirectory;
-import model.User;
+import model.*;
 
 /**
  * @author Ke
@@ -28,7 +25,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
-        this.setSize(1000, 700);
+        this.setSize(1024, 768);
     }
 
     /**
@@ -161,11 +158,15 @@ public class MainJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
         } else {
-            MainJPanel mainJPanel = new MainJPanel(userProcessContainer, user);
-            changeContentPane(mainJPanel);
-//            userProcessContainer.add("mainJPanel", mainJPanel);
-//            CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-//            layout.next(userProcessContainer);
+
+            if(user.getType() == 1){
+                // Instructor
+                InstructorHome home = new InstructorHome((Instructor) user);
+                changeContentPane(home);
+            }else{
+                MainJPanel mainJPanel = new MainJPanel(userProcessContainer, user);
+                changeContentPane(mainJPanel);
+            }
         }
 
         loginJButton.setEnabled(false);

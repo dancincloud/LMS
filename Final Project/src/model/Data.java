@@ -93,18 +93,19 @@ public class Data {
 
 
         instructors = new ArrayList<>();
-
-        Instructor t = new Instructor("T1", "t",  MockDataGenerator.generateEmailByName("t"), "t", "t");
-        t.getCoursedirectory().add(c1);
-        t.getCoursedirectory().add(c2);
-        t.getCoursedirectory().add(c3);
-        instructors.add(t);
-        
         for(int i = 0; i < 2; i++){
             String id = MockDataGenerator.generateID();
             String name = MockDataGenerator.generateName(4,6);
             String email = MockDataGenerator.generateEmailByName(name);
+            if(i == 0){
+                name = "t";
+            }
+            
             Instructor instructor = new Instructor(id, name, email, name, name);
+            instructor.addCourse(c1);
+            instructor.addCourse(c2);
+            instructor.addCourse(c3);
+
             instructors.add(instructor);
 
             System.out.println(instructor);

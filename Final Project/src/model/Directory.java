@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Joseph Yuanhao Li
  * @date 4/28/21 00:55
  */
-public class Directory<T>{
+public class Directory<T> implements Iterable<T>{
     private List<T> list;
 
     public Directory(){
@@ -51,4 +52,9 @@ public class Directory<T>{
         this.list = list;
     }
 
+
+    @Override
+    public Iterator<T> iterator() {
+        return list.iterator();
+    }
 }

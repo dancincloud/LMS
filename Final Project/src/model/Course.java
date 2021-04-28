@@ -34,6 +34,11 @@ public class Course {
     public void setCourseID(String courseID) {
         this.courseID = courseID;
     }
+
+    @Override
+    public String toString(){
+        return String.format("id = %10s, name = %10s", courseID, name);
+    }
     
 
     /*public ZoomMeetingDirectory getZoomMeetingDirectory() {

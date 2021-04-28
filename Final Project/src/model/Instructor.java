@@ -17,6 +17,10 @@ public class Instructor extends User {
         this.coursedirectory = new CourseDirectory();
     }
 
+    public void addCourse(Course course){
+        coursedirectory.add(course);
+    }
+
     public CourseDirectory getCoursedirectory() {
         return coursedirectory;
     }
