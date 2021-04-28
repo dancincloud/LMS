@@ -30,7 +30,7 @@ public class CourseJPanel extends javax.swing.JPanel {
         initComponents();
         this.course = course;
         this.userProcessContainer=userProcessContainer;
-        jLabel1.setText(course.getName());
+        jLabel1.setText(course.getCourseID());
     }
 
     /**
