@@ -5,6 +5,7 @@
  */
 package ui;
 
+import ui.components.CourseCell;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;

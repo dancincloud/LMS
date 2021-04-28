@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui;
+package ui.components;
 
 import model.Course;
+import ui.InstructorCourse;
+import ui.Router;
 
 /**
  *
@@ -117,10 +119,12 @@ public class CourseCell extends javax.swing.JPanel {
 
     private void click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_click
         // TODO add your handling code here:
+        Router.getInstance(null).go(new InstructorCourse(course));
     }//GEN-LAST:event_click
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        Router.getInstance(null).go(new InstructorCourse(course));
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
