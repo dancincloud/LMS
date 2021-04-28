@@ -12,29 +12,16 @@ import java.util.List;
  *
  * @author Ke
  */
-public class StudentDirectory {
-    
-    private List<Student> studentList;
-
-    public StudentDirectory(List<Student> studentList) {
-        this.studentList = studentList;
+public class StudentDirectory extends Directory<Student> {
+    public StudentDirectory(List<Student> list){
+        super(list);
     }
 
-
     public List<Student> getStudentList() {
-        return studentList;
+        return this.getList();
     }
 
     public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
+        this.setList(studentList);
     }
-    
-    /*public Student authenticateUser(String username, String password){
-        for (Student student : studentList)
-            if (student.getUsername().equals(username) && student.getPassword().equals(password)){
-                return student;
-            }
-        return null;
-    }*/
-   
 }

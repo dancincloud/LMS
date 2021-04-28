@@ -13,6 +13,8 @@ public class Instructor extends User {
         super(id, name, email, username, password);
 
         this.setType(1);
+
+        this.coursedirectory = new CourseDirectory();
     }
 
     public CourseDirectory getCoursedirectory() {

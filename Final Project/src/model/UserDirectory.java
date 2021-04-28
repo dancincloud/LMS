@@ -12,22 +12,12 @@ import java.util.List;
  *
  * @author Ke
  */
-public class UserDirectory {
-    
-    private List<User> userList;
-
-    public UserDirectory(List<User> userList) {
-        this.userList = userList;
-    }
-
+public class UserDirectory extends Directory<User> {
     public List<User> getUserList() {
-        return userList;
+        return this.getList();
     }
 
     public void setUserList(List<User> userList) {
-        this.userList = userList;
+        this.setUserList(userList);
     }
-
-
-   
 }

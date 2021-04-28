@@ -3,18 +3,12 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileDirectory {
-    private List<File> fileList;
-
-    public FileDirectory(List<File> fileList) {
-        this.fileList = fileList;
+public class FileDirectory extends Directory<File> {
+    public FileDirectory(List<File> list){
+        super(list);
     }
     
     public List<File> getFileList() {
-        return fileList;
-    }
-
-    public void setFileList(List<File> fileList) {
-        this.fileList = fileList;
+        return this.getList();
     }
 }
