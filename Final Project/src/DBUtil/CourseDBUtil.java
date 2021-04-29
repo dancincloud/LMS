@@ -406,7 +406,9 @@ public class CourseDBUtil {
                     String instructorID = resultSet.getString("instructorID");
                     Course course = new Course(courseID, name, instructorID);
 
-                    course.setStudentIDs(Arrays.asList(resultSet.getString("studentIDs").split("\\|")));
+                    if(resultSet.getString("studentIDs") != null){
+                        course.setStudentIDs(Arrays.asList(resultSet.getString("studentIDs").split("\\|")));
+                    }
 
                     if (resultSet.getString("zoomMeetingDirectory") != null) {
                         ZoomMeetingDirectory zoomMeetingDirectory = new ZoomMeetingDirectory(ZoomMeetingDBUtil.select(Arrays.asList(resultSet.getString("zoomMeetingDirectory").split("\\|"))));

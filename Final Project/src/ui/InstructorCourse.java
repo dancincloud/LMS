@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,13 +64,25 @@ public class InstructorCourse extends javax.swing.JPanel {
 
                     switch (type) {
                         case student:
+                            mode = TableMode.edit;
+                            table.setEnabled(true);
+
+                            Student student = course.getStudentDirectory().get(row);
+
+                            addData = new Object[][]{{student.getName(), student.getEmail(), student.getGpa()}};
+                            table.setModel(new javax.swing.table.DefaultTableModel(
+                                    addData,
+                                    new String[]{
+                                            "name", "email", "GPA"
+                                    }
+                            ));
                             break;
                         case file:
                             break;
                         case zoom:
                             java.net.URI uri = java.net.URI.create(course.getZoomMeetingDirectory().get(row).getLink());
                             java.awt.Desktop dp = java.awt.Desktop.getDesktop();
-                            if(dp.isSupported(java.awt.Desktop.Action.BROWSE)){
+                            if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
                                 try {
                                     dp.browse(uri);
                                 } catch (IOException ex) {
@@ -87,7 +100,8 @@ public class InstructorCourse extends javax.swing.JPanel {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -128,6 +142,9 @@ public class InstructorCourse extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable() {
             public boolean isCellEditable(int row, int column) {
+                if (mode == TableMode.edit) {
+                    return true;
+                }
                 return false;
             }
         };
@@ -324,6 +341,10 @@ public class InstructorCourse extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void zoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomButtonActionPerformed
+//        AddButton.setText("Add");
+        AddButton.setEnabled(true);
+
+
         type = TableType.zoom;
         mode = TableMode.normal;
 //        table.setEnabled(false);
@@ -336,7 +357,7 @@ public class InstructorCourse extends javax.swing.JPanel {
             students[i][0] = s.getZoomMeetingID();
             students[i][1] = s.getName();
             students[i][2] = s.getLink();
-            students[i][3] = s.getUpdateTime();
+            students[i][3] = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(s.getCreateTime());
         }
 
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -359,6 +380,9 @@ public class InstructorCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_zoomButtonActionPerformed
 
     private void studentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentButtonActionPerformed
+//        AddButton.setText("Upload");
+        AddButton.setEnabled(false);
+
         type = TableType.student;
         mode = TableMode.normal;
 //        table.setEnabled(false);
@@ -383,6 +407,9 @@ public class InstructorCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_studentButtonActionPerformed
 
     private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
+        AddButton.setEnabled(true);
+
+//        AddButton.setText("Add");
         type = TableType.file;
         mode = TableMode.normal;
 //        table.setEnabled(false);
@@ -412,9 +439,10 @@ public class InstructorCourse extends javax.swing.JPanel {
 
     private void assignmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignmentButtonActionPerformed
         // TODO add your handling code here:
+        AddButton.setEnabled(true);
+
         type = TableType.assignment;
         mode = TableMode.normal;
-//        table.setEnabled(false);
 
         List<Assignment> list = this.course.getAssignmentDirectory().getList();
         Object[][] assignments = new Object[list.size()][4];
@@ -446,38 +474,38 @@ public class InstructorCourse extends javax.swing.JPanel {
 
         switch (type) {
             case student:
-                addData = new Object[1][4];
+                addData = new Object[1][3];
                 table.setModel(new javax.swing.table.DefaultTableModel(
                         addData,
                         new String[]{
-                                "id", "name", "email", "GPA"
+                                "name", "email", "GPA"
                         }
                 ));
                 break;
             case file:
-                addData = new Object[1][3];
+                addData = new Object[1][2];
                 table.setModel(new javax.swing.table.DefaultTableModel(
                         addData,
                         new String[]{
-                                "id", "name", "link"
+                                "name", "link"
                         }
                 ));
                 break;
             case zoom:
-                addData = new Object[1][3];
+                addData = new Object[1][2];
                 table.setModel(new javax.swing.table.DefaultTableModel(
                         addData,
                         new String[]{
-                                "id", "name", "link"
+                                "name", "link"
                         }
                 ));
                 break;
             case assignment:
-                addData = new Object[1][4];
+                addData = new Object[1][3];
                 table.setModel(new javax.swing.table.DefaultTableModel(
                         addData,
                         new String[]{
-                                "id", "name", "content", "type"
+                                "name", "content", "type"
                         }
                 ));
                 break;
@@ -512,26 +540,33 @@ public class InstructorCourse extends javax.swing.JPanel {
         // TODO add your handling code here:
         switch (type) {
             case student: {
-                String id = table.getValueAt(0, 0).toString();
-                String name = table.getValueAt(0, 1).toString();
-                String email = table.getValueAt(0, 2).toString();
-                double gpa = Double.parseDouble(table.getValueAt(0, 3).toString());
+                String name = table.getValueAt(0, 0).toString();
+                String email = table.getValueAt(0, 1).toString();
+                double gpa = Double.parseDouble(table.getValueAt(0, 2).toString());
 
-                if (email == null) email = DataGenerator.generateEmailByName(name);
-                Student student = new Student(id, name, email, name, name, gpa);
+                for (Student student : course.getStudentDirectory()) {
+                    if (student.getName().equals(name)) {
+                        student.setGpa(gpa);
+                        if (email != null) student.setEmail(email);
 
-                course.getStudentDirectory().add(student);
+                        StudentDBUtil.update(student);
 
-                CourseDBUtil.update(course);
+                        cancelButtonActionPerformed(null);
+
+                        return;
+                    }
+                }
+
+
+                JOptionPane.showMessageDialog(null, "Can't find this student");
             }
             break;
             case file: {
-                String id = table.getValueAt(0, 0).toString();
-                String name = table.getValueAt(0, 1).toString();
-                String link = table.getValueAt(0, 2).toString();
+                String name = table.getValueAt(0, 0).toString();
+                String link = table.getValueAt(0, 1).toString();
 
                 if (link == null) link = DataGenerator.generateFilePath(name);
-                File file = new File(id, name, link);
+                File file = new File(DataGenerator.generateID(), name, link);
 
                 course.getFileDirectory().add(file);
 
@@ -541,12 +576,11 @@ public class InstructorCourse extends javax.swing.JPanel {
 
             break;
             case zoom: {
-                String id = table.getValueAt(0, 0).toString();
-                String name = table.getValueAt(0, 1).toString();
-                String link = table.getValueAt(0, 2).toString();
+                String name = table.getValueAt(0, 0).toString();
+                String link = table.getValueAt(0, 1).toString();
 
                 if (link == null) link = DataGenerator.generateZoom();
-                ZoomMeeting zoomMeeting = new ZoomMeeting(id, name, link);
+                ZoomMeeting zoomMeeting = new ZoomMeeting(DataGenerator.generateID(), name, link);
 
                 course.getZoomMeetingDirectory().add(zoomMeeting);
 
@@ -554,14 +588,11 @@ public class InstructorCourse extends javax.swing.JPanel {
             }
             break;
             case assignment: {
-                String id = table.getValueAt(0, 0).toString();
-                String name = table.getValueAt(0, 1).toString();
-                String content = table.getValueAt(0, 2).toString();
-                String type = table.getValueAt(0, 3).toString();
+                String name = table.getValueAt(0, 0).toString();
+                String content = table.getValueAt(0, 1).toString();
+                String type = table.getValueAt(0, 2).toString();
 
-                if (id == null) id = DataGenerator.generateID();
-
-                Assignment assignment = new Assignment(id, name, content, Assignment.AssignmentType.valueOf(type));
+                Assignment assignment = new Assignment(DataGenerator.generateID(), name, content, Assignment.AssignmentType.valueOf(type));
 
                 course.getAssignmentDirectory().add(assignment);
 

@@ -160,6 +160,8 @@ public class StudentDBUtil {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "update Student set name = ?, email = ?, username = ?, password = ?, gpa = ?, " +
                 " courseIDs = ?, updateTime = ? where studentID = ?";
+
+        System.out.println(sql);
         PreparedStatement stat = null;
 
         try {
@@ -282,6 +284,8 @@ public class StudentDBUtil {
     }
 
     public static List<Student> select(List<String> studentIDs) {
+        if(studentIDs == null) return new ArrayList<>();
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Student where studentID = ?";
         PreparedStatement stat = null;
