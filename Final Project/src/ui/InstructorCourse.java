@@ -13,7 +13,6 @@ package ui;
 import DBUtil.CourseDBUtil;
 import DBUtil.StudentDBUtil;
 import model.*;
-import ui.components.FormPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/ui/FileJPanel.java</file>
-            <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/ui/components/CourseCell.java</file>
-            <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/model/Data.java</file>
+            <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/ui/AssignmentJPanel.java</file>
+            <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/ui/UserJPanel.java</file>
+            <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/ui/components/AssignmentCell.java</file>
+            <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/ui/InstructorCourse.java</file>
             <file>file:/F:/Git/repo/Zhengyu%20Ke/LMS/Final%20Project/src/ui/StudentCourse.java</file>
         </group>
     </open-files>
