@@ -97,7 +97,11 @@ public class DBUtil {
     }
 
     public static String mergeFields(List<String> fields) {
-        if (fields == null || fields.size() == 0) {
+        if (fields == null) {
+            return null;
+        }
+
+        if (fields.isEmpty()) {
             return null;
         }
 

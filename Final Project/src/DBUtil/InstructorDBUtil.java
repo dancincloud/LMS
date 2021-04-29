@@ -21,7 +21,7 @@ public class InstructorDBUtil {
     public static boolean add(Instructor instructor) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "INSERT INTO Instructor (`instructorID`, `name`, `email`, `username`, `password`, " +
-                " `courseDirectory`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                " `courseIDs`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stat = null;
 
         try {
@@ -31,13 +31,7 @@ public class InstructorDBUtil {
             stat.setString(3, instructor.getEmail());
             stat.setString(4, instructor.getUsername());
             stat.setString(5, instructor.getPassword());
-
-            if (instructor.getCoursedirectory() != null) {
-                stat.setString(6, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
-            } else {
-                stat.setString(6, null);
-            }
-
+            stat.setString(6, DBUtil.mergeFields(instructor.getCourseIDs()));
             stat.setLong(7, System.currentTimeMillis());
             stat.setLong(8, -1L);
 
@@ -54,7 +48,7 @@ public class InstructorDBUtil {
     public static boolean add(List<Instructor> instructors) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "INSERT INTO Instructor (`instructorID`, `name`, `email`, `username`, `password`, " +
-                " `courseDirectory`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                " `courseIDs`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stat = null;
 
         try {
@@ -65,13 +59,7 @@ public class InstructorDBUtil {
                 stat.setString(3, instructor.getEmail());
                 stat.setString(4, instructor.getUsername());
                 stat.setString(5, instructor.getPassword());
-
-                if (instructor.getCoursedirectory() != null) {
-                    stat.setString(6, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
-                } else {
-                    stat.setString(6, null);
-                }
-
+                stat.setString(6, DBUtil.mergeFields(instructor.getCourseIDs()));
                 stat.setLong(7, System.currentTimeMillis());
                 stat.setLong(8, -1L);
 
@@ -124,9 +112,12 @@ public class InstructorDBUtil {
             for (String instructorID : instructorIDs) {
                 Instructor instructor = select(instructorID);
                 if (instructor == null) {
+                    System.out.println("Failed to delete null instructors!");
                     continue;
                 }
                 if (instructor.getCoursedirectory() != null) {
+                    System.out.println("Instructor: " + instructorID
+                            + ", fail to delete this instructor because he/she still has courses.");
                     continue;
                 }
 
@@ -145,7 +136,7 @@ public class InstructorDBUtil {
 
     public static boolean update(Instructor instructor) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Instructor set name = ?, email = ?, username = ?, password = ?, courseDirectory = ?, " +
+        String sql = "update Instructor set name = ?, email = ?, username = ?, password = ?, courseIDs = ?, " +
                 " updateTime = ? where instructorID = ?";
         PreparedStatement stat = null;
 
@@ -155,13 +146,7 @@ public class InstructorDBUtil {
             stat.setString(2, instructor.getEmail());
             stat.setString(3, instructor.getUsername());
             stat.setString(4, instructor.getPassword());
-
-            if (instructor.getCoursedirectory() != null) {
-                stat.setString(5, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
-            } else {
-                stat.setString(5, null);
-            }
-
+            stat.setString(5, DBUtil.mergeFields(instructor.getCourseIDs()));
             stat.setLong(6, System.currentTimeMillis());
             stat.setString(7, instructor.getId());
             stat.executeUpdate();
@@ -176,7 +161,7 @@ public class InstructorDBUtil {
 
     public static boolean update(List<Instructor> instructors) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
-        String sql = "update Instructor set name = ?, email = ?, username = ?, password = ?, courseDirectory = ?, " +
+        String sql = "update Instructor set name = ?, email = ?, username = ?, password = ?, courseIDs = ?, " +
                 " updateTime = ? where instructorID = ?";
         PreparedStatement stat = null;
 
@@ -187,13 +172,7 @@ public class InstructorDBUtil {
                 stat.setString(2, instructor.getEmail());
                 stat.setString(3, instructor.getUsername());
                 stat.setString(4, instructor.getPassword());
-
-                if (instructor.getCoursedirectory() != null) {
-                    stat.setString(5, DBUtil.changeCourseDirectoryToString(instructor.getCoursedirectory().getList()));
-                } else {
-                    stat.setString(5, null);
-                }
-
+                stat.setString(5, DBUtil.mergeFields(instructor.getCourseIDs()));
                 stat.setLong(6, System.currentTimeMillis());
                 stat.setString(7, instructor.getId());
                 stat.executeUpdate();
@@ -226,10 +205,7 @@ public class InstructorDBUtil {
                 String password = resultSet.getString("password");
                 Instructor instructor = new Instructor(instructorID, name, email, username, password);
 
-                if (resultSet.getString("courseDirectory") != null) {
-                    CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                    instructor.setCoursedirectory(courseDirectory);
-                }
+                instructor.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                 instructor.setCreateTime(resultSet.getLong("createTime"));
                 instructor.setUpdateTime(resultSet.getLong("updateTime"));
@@ -263,10 +239,7 @@ public class InstructorDBUtil {
                 String password = resultSet.getString("password");
                 Instructor instructor = new Instructor(instructorID, name, email, username, password);
 
-                if (resultSet.getString("courseDirectory") != null) {
-                    CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                    instructor.setCoursedirectory(courseDirectory);
-                }
+                instructor.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                 instructor.setCreateTime(resultSet.getLong("createTime"));
                 instructor.setUpdateTime(resultSet.getLong("updateTime"));
@@ -303,10 +276,7 @@ public class InstructorDBUtil {
                     String password = resultSet.getString("password");
                     Instructor instructor = new Instructor(instructorID, name, email, username, password);
 
-                    if (resultSet.getString("courseDirectory") != null) {
-                        CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                        instructor.setCoursedirectory(courseDirectory);
-                    }
+                    instructor.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                     instructor.setCreateTime(resultSet.getLong("createTime"));
                     instructor.setUpdateTime(resultSet.getLong("updateTime"));
@@ -342,10 +312,7 @@ public class InstructorDBUtil {
                 String password = resultSet.getString("password");
                 Instructor instructor = new Instructor(instructorID, name, email, username, password);
 
-                if (resultSet.getString("courseDirectory") != null) {
-                    CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                    instructor.setCoursedirectory(courseDirectory);
-                }
+                instructor.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                 instructor.setCreateTime(resultSet.getLong("createTime"));
                 instructor.setUpdateTime(resultSet.getLong("updateTime"));

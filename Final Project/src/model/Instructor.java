@@ -1,10 +1,13 @@
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author Ke
  */
 public class Instructor extends User {
+    private List<String> courseIDs;
     private CourseDirectory coursedirectory;
     
     public Instructor(){}
@@ -27,5 +30,13 @@ public class Instructor extends User {
 
     public void setCoursedirectory(CourseDirectory coursedirectory) {
         this.coursedirectory = coursedirectory;
+    }
+
+    public List<String> getCourseIDs() {
+        return courseIDs;
+    }
+
+    public void setCourseIDs(List<String> courseIDs) {
+        this.courseIDs = courseIDs;
     }
 }

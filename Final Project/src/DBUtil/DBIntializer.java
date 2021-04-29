@@ -50,7 +50,7 @@ public class DBIntializer {
             "  `email` varchar(255) NULL," +
             "  `username` varchar(255) NOT NULL," +
             "  `password` varchar(255) NOT NULL," +
-            "  `courseDirectory` varchar(2000) NULL," +
+            "  `courseIDs` varchar(2000) NULL," +
             "  `createTime` bigint NOT NULL," +
             "  `updateTime` bigint NULL," +
             "  PRIMARY KEY (`instructorID`)" +
