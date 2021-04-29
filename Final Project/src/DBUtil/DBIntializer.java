@@ -25,11 +25,11 @@ public class DBIntializer {
             "  `courseID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
             "  `instructorID` varchar(255) NOT NULL," +
-            "  `studentDirectory` varchar(1000) NULL," +
-            "  `zoomMeetingDirectory` varchar(1000) NULL," +
-            "  `recordDirectory` varchar(1000) NULL," +
-            "  `assignmentDirectory` varchar(1000) NULL," +
-            "  `fileDirectory` varchar(1000) NULL," +
+            "  `studentIDs` varchar(2000) NULL," +
+            "  `zoomMeetingDirectory` varchar(2000) NULL," +
+            "  `recordDirectory` varchar(2000) NULL," +
+            "  `assignmentDirectory` varchar(2000) NULL," +
+            "  `fileDirectory` varchar(2000) NULL," +
             "  `createTime` bigint NOT NULL," +
             "  `updateTime` bigint NULL," +
             "  PRIMARY KEY (`courseID`)" +
@@ -50,7 +50,7 @@ public class DBIntializer {
             "  `email` varchar(255) NULL," +
             "  `username` varchar(255) NOT NULL," +
             "  `password` varchar(255) NOT NULL," +
-            "  `courseDirectory` varchar(1000) NULL," +
+            "  `courseDirectory` varchar(2000) NULL," +
             "  `createTime` bigint NOT NULL," +
             "  `updateTime` bigint NULL," +
             "  PRIMARY KEY (`instructorID`)" +
@@ -72,7 +72,7 @@ public class DBIntializer {
             "  `username` varchar(255) NOT NULL," +
             "  `password` varchar(255) NOT NULL," +
             "  `gpa` double(255, 3) NULL," +
-            "  `courseDirectory` varchar(1000) NULL," +
+            "  `courseIDs` varchar(2000) NULL," +
             "  `createTime` bigint NOT NULL," +
             "  `updateTime` bigint NULL," +
             "  PRIMARY KEY (`studentID`)" +
@@ -195,7 +195,7 @@ public class DBIntializer {
     }
 
     public static void main(String[] args) {
-        initializeDBIfNotExist();
-        initializeTablesIfNotExist();
+//        initializeDBIfNotExist();
+//        initializeTablesIfNotExist();
     }
 }

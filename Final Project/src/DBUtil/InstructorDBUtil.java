@@ -212,11 +212,12 @@ public class InstructorDBUtil {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor where instructorID = ?";
         PreparedStatement stat = null;
+        ResultSet resultSet = null;
 
         try {
             stat = conn.prepareStatement(sql);
             stat.setString(1, instructorID);
-            ResultSet resultSet = stat.executeQuery();
+            resultSet = stat.executeQuery();
 
             if (resultSet.next()){
                 String name = resultSet.getString("name");
@@ -233,13 +234,12 @@ public class InstructorDBUtil {
                 instructor.setCreateTime(resultSet.getLong("createTime"));
                 instructor.setUpdateTime(resultSet.getLong("updateTime"));
 
-                DBConnection.closeDB(conn, stat, resultSet);
                 return instructor;
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return null;
@@ -249,11 +249,12 @@ public class InstructorDBUtil {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor where username = ?";
         PreparedStatement stat = null;
+        ResultSet resultSet = null;
 
         try {
             stat = conn.prepareStatement(sql);
             stat.setString(1, username);
-            ResultSet resultSet = stat.executeQuery();
+            resultSet = stat.executeQuery();
 
             if (resultSet.next()){
                 String instructorID = resultSet.getString("instructorID");
@@ -270,13 +271,12 @@ public class InstructorDBUtil {
                 instructor.setCreateTime(resultSet.getLong("createTime"));
                 instructor.setUpdateTime(resultSet.getLong("updateTime"));
 
-                DBConnection.closeDB(conn, stat, resultSet);
                 return instructor;
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return null;
@@ -285,11 +285,13 @@ public class InstructorDBUtil {
     public static List<Instructor> select(List<String> instructorIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor where instructorID = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Instructor> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = null;
+            stat = conn.prepareStatement(sql);
+            resultSet = null;
             for (String instructorID : instructorIDs) {
                 stat.setString(1, instructorID);
                 resultSet = stat.executeQuery();
@@ -312,10 +314,10 @@ public class InstructorDBUtil {
                     res.add(instructor);
                 }
             }
-            DBConnection.closeDB(conn, stat, resultSet);
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;
@@ -324,11 +326,13 @@ public class InstructorDBUtil {
     public static List<Instructor> selectAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Instructor> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = stat.executeQuery();
+            stat = conn.prepareStatement(sql);
+            resultSet = stat.executeQuery();
 
             while (resultSet.next()){
                 String instructorID = resultSet.getString("instructorID");
@@ -348,10 +352,10 @@ public class InstructorDBUtil {
 
                 res.add(instructor);
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;

@@ -1,11 +1,14 @@
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author Ke
  */
 public class Student extends User {
     private double gpa;
+    private List<String> courseIDs;
     private CourseDirectory coursedirectory;
 
     public Student(String id, String name, String email, String username, String password, CourseDirectory coursedirectory,  double gpa) {
@@ -48,5 +51,13 @@ public class Student extends User {
 
     public void setCoursedirectory(CourseDirectory coursedirectory) {
         this.coursedirectory = coursedirectory;
+    }
+
+    public List<String> getCourseIDs() {
+        return courseIDs;
+    }
+
+    public void setCourseIDs(List<String> courseIDs) {
+        this.courseIDs = courseIDs;
     }
 }

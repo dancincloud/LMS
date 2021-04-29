@@ -203,11 +203,13 @@ public class ZoomMeetingDBUtil {
     public static ZoomMeeting select(String zoomMeetingID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from ZoomMeeting where zoomMeetingID = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, zoomMeetingID);
-            ResultSet resultSet = stat.executeQuery();
+            resultSet = stat.executeQuery();
 
             if (resultSet.next()){
                 String name = resultSet.getString("name");
@@ -218,10 +220,10 @@ public class ZoomMeetingDBUtil {
                 DBConnection.closeDB(conn, stat, resultSet);
                 return zoomMeeting;
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return null;
@@ -230,11 +232,12 @@ public class ZoomMeetingDBUtil {
     public static List<ZoomMeeting> select(List<String> zoomMeetingIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from ZoomMeeting where zoomMeetingID = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<ZoomMeeting> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = null;
+            stat = conn.prepareStatement(sql);
             for (String zoomMeetingID : zoomMeetingIDs) {
                 stat.setString(1, zoomMeetingID);
                 resultSet = stat.executeQuery();
@@ -248,10 +251,10 @@ public class ZoomMeetingDBUtil {
                     res.add(zoomMeeting);
                 }
             }
-            DBConnection.closeDB(conn, stat, resultSet);
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;
@@ -260,11 +263,13 @@ public class ZoomMeetingDBUtil {
     public static List<ZoomMeeting> selectAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from ZoomMeeting";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<ZoomMeeting> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = stat.executeQuery();
+            stat = conn.prepareStatement(sql);
+            resultSet = stat.executeQuery();
 
             while (resultSet.next()){
                 String zoomMeetingID = resultSet.getString("zoomMeetingID");
@@ -275,10 +280,10 @@ public class ZoomMeetingDBUtil {
                 zoomMeeting.setUpdateTime(resultSet.getLong("updateTime"));
                 res.add(zoomMeeting);
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;

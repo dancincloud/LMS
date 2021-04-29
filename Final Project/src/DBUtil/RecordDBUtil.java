@@ -202,11 +202,12 @@ public class RecordDBUtil {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Record where recordID = ?";
         PreparedStatement stat = null;
+        ResultSet resultSet = null;
 
         try {
             stat = conn.prepareStatement(sql);
             stat.setString(1, recordID);
-            ResultSet resultSet = stat.executeQuery();
+            resultSet = stat.executeQuery();
 
             if (resultSet.next()){
                 String name = resultSet.getString("name");
@@ -218,10 +219,10 @@ public class RecordDBUtil {
                 DBConnection.closeDB(conn, stat, resultSet);
                 return record;
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return null;
@@ -230,11 +231,12 @@ public class RecordDBUtil {
     public static List<Record> select(List<String> recordIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Record where name = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Record> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = null;
+            stat = conn.prepareStatement(sql);
             for (String recordID : recordIDs) {
                 stat.setString(1, recordID);
                 resultSet = stat.executeQuery();
@@ -248,10 +250,10 @@ public class RecordDBUtil {
                     res.add(record);
                 }
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;
@@ -260,11 +262,13 @@ public class RecordDBUtil {
     public static List<Record> selectAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Record";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Record> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = stat.executeQuery();
+            stat = conn.prepareStatement(sql);
+            resultSet = stat.executeQuery();
 
             while (resultSet.next()){
                 String recordID = resultSet.getString("recordID");
@@ -275,10 +279,10 @@ public class RecordDBUtil {
                 record.setUpdateTime(resultSet.getLong("updateTime"));
                 res.add(record);
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;

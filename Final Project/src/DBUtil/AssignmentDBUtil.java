@@ -208,11 +208,13 @@ public class AssignmentDBUtil {
     public static Assignment select(String assignmentID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Assignment where assignmentID = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, assignmentID);
-            ResultSet resultSet = stat.executeQuery();
+            resultSet = stat.executeQuery();
 
             if (resultSet.next()){
                 String name = resultSet.getString("name");
@@ -227,10 +229,10 @@ public class AssignmentDBUtil {
                 DBConnection.closeDB(conn, stat, resultSet);
                 return assignment;
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return null;
@@ -239,11 +241,12 @@ public class AssignmentDBUtil {
     public static List<Assignment> select(List<String> assignmentIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Assignment where assignmentID = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Assignment> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = null;
+            stat = conn.prepareStatement(sql);
             for (String assignmentID : assignmentIDs) {
                 stat.setString(1, assignmentID);
                 resultSet = stat.executeQuery();
@@ -261,10 +264,10 @@ public class AssignmentDBUtil {
                     res.add(assignment);
                 }
             }
-            DBConnection.closeDB(conn, stat, resultSet);
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;
@@ -273,11 +276,13 @@ public class AssignmentDBUtil {
     public static List<Assignment> selectAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Assignment";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Assignment> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = stat.executeQuery();
+            stat = conn.prepareStatement(sql);
+            resultSet = stat.executeQuery();
 
             while (resultSet.next()){
                 String assignmentID = resultSet.getString("assignmentID");
@@ -292,10 +297,10 @@ public class AssignmentDBUtil {
                 assignment.setUpdateTime(resultSet.getLong("updateTime"));
                 res.add(assignment);
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;

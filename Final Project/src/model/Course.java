@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author Ke
@@ -8,6 +10,7 @@ public class Course {
     private String courseID;
     private String name;
     private String instructorID;
+    private List<String> studentIDs;
     private StudentDirectory studentDirectory;
     private ZoomMeetingDirectory zoomMeetingDirectory;
     private RecordDirectory recordDirectory;
@@ -28,7 +31,6 @@ public class Course {
         this.instructorID = instructorID;
     }
 
-    
     public String getName() {
         return name;
     }
@@ -118,5 +120,13 @@ public class Course {
 
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<String> getStudentIDs() {
+        return studentIDs;
+    }
+
+    public void setStudentIDs(List<String> studentIDs) {
+        this.studentIDs = studentIDs;
     }
 }

@@ -21,7 +21,7 @@ public class StudentDBUtil {
     public static boolean add(Student student) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "INSERT INTO Student (`studentID`, `name`, `email`, `username`, `password`, `gpa`, " +
-                " `courseDirectory`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " `courseIDs`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stat = null;
 
         try {
@@ -32,15 +32,9 @@ public class StudentDBUtil {
             stat.setString(4, student.getUsername());
             stat.setString(5, student.getPassword());
             stat.setDouble(6, student.getGpa());
-
-            if (student.getCoursedirectory() != null) {
-                stat.setString(7, DBUtil.changeCourseDirectoryToString(student.getCoursedirectory().getList()));
-            } else {
-                stat.setString(7, null);
-            }
-
-            stat.setString(8, student.getUsername());
-            stat.setString(9, student.getPassword());
+            stat.setString(7, DBUtil.mergeFields(student.getCourseIDs()));
+            stat.setLong(8, System.currentTimeMillis());
+            stat.setLong(9, -1L);
 
             stat.executeUpdate();
             return true;
@@ -55,7 +49,7 @@ public class StudentDBUtil {
     public static boolean add(List<Student> students) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "INSERT INTO Student (`studentID`, `name`, `email`, `username`, `password`, `gpa`, " +
-                " `courseDirectory`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " `courseIDs`, `createTime`, `updateTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement stat = null;
 
         try {
@@ -67,15 +61,9 @@ public class StudentDBUtil {
                 stat.setString(4, student.getUsername());
                 stat.setString(5, student.getPassword());
                 stat.setDouble(6, student.getGpa());
-
-                if (student.getCoursedirectory() != null) {
-                    stat.setString(7, DBUtil.changeCourseDirectoryToString(student.getCoursedirectory().getList()));
-                } else {
-                    stat.setString(7, null);
-                }
-
-                stat.setString(8, student.getUsername());
-                stat.setString(9, student.getPassword());
+                stat.setString(7, DBUtil.mergeFields(student.getCourseIDs()));
+                stat.setLong(8, System.currentTimeMillis());
+                stat.setLong(9, -1L);
 
                 stat.executeUpdate();
             }
@@ -100,15 +88,11 @@ public class StudentDBUtil {
             stat.executeUpdate();
 
             // update courses
-            Student underDeletionStudent = select(studentID);
             List<Course> courses = CourseDBUtil.selectAll();
             for (Course course : courses) {
-                if (course.getStudentDirectory() != null) {
-                    List<Student> students = course.getStudentDirectory().getList();
-                    students.remove(underDeletionStudent);
-                    CourseDBUtil.update(course);
-                }
+                course.getStudentIDs().remove(studentID);
             }
+            CourseDBUtil.update(courses);
 
             return true;
         } catch (Exception e) {
@@ -131,15 +115,11 @@ public class StudentDBUtil {
                 stat.executeUpdate();
 
                 // update courses
-                Student underDeletionStudent = select(studentID);
                 List<Course> courses = CourseDBUtil.selectAll();
                 for (Course course : courses) {
-                    if (course.getStudentDirectory() != null) {
-                        List<Student> students = course.getStudentDirectory().getList();
-                        students.remove(underDeletionStudent);
-                        CourseDBUtil.update(course);
-                    }
+                    course.getStudentIDs().remove(studentID);
                 }
+                CourseDBUtil.update(courses);
             }
 
             return true;
@@ -163,7 +143,7 @@ public class StudentDBUtil {
             // update courses
             List<Course> courses = CourseDBUtil.selectAll();
             for (Course course : courses) {
-                course.setStudentDirectory(null);
+                course.setStudentIDs(null);
             }
             CourseDBUtil.update(courses);
 
@@ -179,7 +159,7 @@ public class StudentDBUtil {
     public static boolean update(Student student) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "update Student set name = ?, email = ?, username = ?, password = ?, gpa = ?, " +
-                " courseDirectory = ?, updateTime = ? where studentID = ?";
+                " courseIDs = ?, updateTime = ? where studentID = ?";
         PreparedStatement stat = null;
 
         try {
@@ -189,14 +169,7 @@ public class StudentDBUtil {
             stat.setString(3, student.getUsername());
             stat.setString(4, student.getPassword());
             stat.setDouble(5, student.getGpa());
-
-
-            if (student.getCoursedirectory() != null) {
-                stat.setString(6, DBUtil.changeCourseDirectoryToString(student.getCoursedirectory().getList()));
-            } else {
-                stat.setString(6, null);
-            }
-
+            stat.setString(6, DBUtil.mergeFields(student.getCourseIDs()));
             stat.setLong(7, System.currentTimeMillis());
             stat.setString(8, student.getId());
             stat.executeUpdate();
@@ -212,7 +185,7 @@ public class StudentDBUtil {
     public static boolean update(List<Student> students) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "update Student set name = ?, email = ?, username = ?, password = ?, gpa = ?, " +
-                " courseDirectory = ?, updateTime = ? where studentID = ?";
+                " courseIDs = ?, updateTime = ? where studentID = ?";
         PreparedStatement stat = null;
 
         try {
@@ -223,13 +196,7 @@ public class StudentDBUtil {
                 stat.setString(3, student.getUsername());
                 stat.setString(4, student.getPassword());
                 stat.setDouble(5, student.getGpa());
-
-
-                if (student.getCoursedirectory() != null) {
-                    stat.setString(6, DBUtil.changeCourseDirectoryToString(student.getCoursedirectory().getList()));
-                } else {
-                    stat.setString(6, null);
-                }
+                stat.setString(6, DBUtil.mergeFields(student.getCourseIDs()));
                 stat.setLong(7, System.currentTimeMillis());
                 stat.setString(8, student.getId());
                 stat.executeUpdate();
@@ -247,36 +214,33 @@ public class StudentDBUtil {
     public static Student select(String studentID) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Student where studentID = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
 
         try {
-
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, studentID);
-            ResultSet resultSet = stat.executeQuery();
+            resultSet = stat.executeQuery();
 
             if (resultSet.next()){
                 String name = resultSet.getString("name");
                 String email = resultSet.getString("email");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-
-                CourseDirectory courseDirectory = null;
-                if (resultSet.getString("courseDirectory") != null) {
-                    courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                }
-
                 double gpa = resultSet.getDouble("gpa");
+                Student student = new Student(studentID, name, email, username, password, gpa);
 
-                Student student = new Student(studentID, name, email, username, password, courseDirectory, gpa);
+                student.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                 student.setCreateTime(resultSet.getLong("createTime"));
                 student.setUpdateTime(resultSet.getLong("updateTime"));
 
-                DBConnection.closeDB(conn, stat, resultSet);
                 return student;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return null;
@@ -285,36 +249,33 @@ public class StudentDBUtil {
     public static Student selectByUsername(String username) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Student where username = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
 
         try {
-
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, username);
-            ResultSet resultSet = stat.executeQuery();
+            resultSet = stat.executeQuery();
 
             if (resultSet.next()){
                 String studentID = resultSet.getString("studentID");
                 String name = resultSet.getString("name");
                 String email = resultSet.getString("email");
                 String password = resultSet.getString("password");
-
-                CourseDirectory courseDirectory = null;
-                if (resultSet.getString("courseDirectory") != null) {
-                    courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                }
-
                 double gpa = resultSet.getDouble("gpa");
+                Student student = new Student(studentID, name, email, username, password, gpa);
 
-                Student student = new Student(studentID, name, email, username, password, courseDirectory, gpa);
+                student.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                 student.setCreateTime(resultSet.getLong("createTime"));
                 student.setUpdateTime(resultSet.getLong("updateTime"));
 
-                DBConnection.closeDB(conn, stat, resultSet);
                 return student;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return null;
@@ -323,11 +284,13 @@ public class StudentDBUtil {
     public static List<Student> select(List<String> studentIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Student where studentID = ?";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Student> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = null;
+            stat = conn.prepareStatement(sql);
+            resultSet = null;
             for (String studentID : studentIDs) {
                 stat.setString(1, studentID);
                 resultSet = stat.executeQuery();
@@ -337,25 +300,20 @@ public class StudentDBUtil {
                     String email = resultSet.getString("email");
                     String username = resultSet.getString("username");
                     String password = resultSet.getString("password");
-
-                    CourseDirectory courseDirectory = null;
-                    if (resultSet.getString("courseDirectory") != null) {
-                        courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                    }
-
                     double gpa = resultSet.getDouble("gpa");
+                    Student student = new Student(studentID, name, email, username, password, gpa);
 
-                    Student student = new Student(studentID, name, email, username, password, courseDirectory, gpa);
+                    student.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                     student.setCreateTime(resultSet.getLong("createTime"));
                     student.setUpdateTime(resultSet.getLong("updateTime"));
                     res.add(student);
                 }
             }
-            DBConnection.closeDB(conn, stat, resultSet);
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;
@@ -364,11 +322,13 @@ public class StudentDBUtil {
     public static List<Student> selectAll() {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Student";
+        PreparedStatement stat = null;
+        ResultSet resultSet = null;
         List<Student> res = new ArrayList<>();
 
         try {
-            PreparedStatement stat = conn.prepareStatement(sql);
-            ResultSet resultSet = stat.executeQuery();
+            stat = conn.prepareStatement(sql);
+            resultSet = stat.executeQuery();
 
             while (resultSet.next()){
                 String studentID = resultSet.getString("studentID");
@@ -376,24 +336,19 @@ public class StudentDBUtil {
                 String email = resultSet.getString("email");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-
-                CourseDirectory courseDirectory = null;
-                if (resultSet.getString("courseDirectory") != null) {
-                    courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
-                }
-
                 double gpa = resultSet.getDouble("gpa");
+                Student student = new Student(studentID, name, email, username, password, gpa);
 
-                Student student = new Student(studentID, name, email, username, password, courseDirectory, gpa);
+                student.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
 
                 student.setCreateTime(resultSet.getLong("createTime"));
                 student.setUpdateTime(resultSet.getLong("updateTime"));
                 res.add(student);
             }
-
-            DBConnection.closeDB(conn, stat, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            DBConnection.closeDB(conn, stat, resultSet);
         }
 
         return res;
