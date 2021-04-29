@@ -24,6 +24,7 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
     public MainJFrame() {
+        data.run();
         initComponents();
         this.setSize(1024, 768);
         Router.getInstance(this);

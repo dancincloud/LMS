@@ -18,7 +18,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Ke
@@ -46,6 +51,59 @@ public class InstructorCourse extends javax.swing.JPanel {
         initComponents();
 
         table.setRowHeight(40);
+        table.setRowSelectionAllowed(true);
+        table.setAutoCreateRowSorter(true);
+
+        table.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // click twice
+                if (e.getClickCount() == 2) {
+                    int row = table.getSelectedRow();
+
+                    switch (type) {
+                        case student:
+                            break;
+                        case file:
+                            break;
+                        case zoom:
+                            java.net.URI uri = java.net.URI.create(course.getZoomMeetingDirectory().get(row).getLink());
+                            java.awt.Desktop dp = java.awt.Desktop.getDesktop();
+                            if(dp.isSupported(java.awt.Desktop.Action.BROWSE)){
+                                try {
+                                    dp.browse(uri);
+                                } catch (IOException ex) {
+
+                                }
+                            }
+                            break;
+                        case assignment:
+                            Router.getInstance(null).go(new UploadAssignment(course.getAssignmentDirectory().get(row)));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         this.course = course;
 
@@ -68,7 +126,11 @@ public class InstructorCourse extends javax.swing.JPanel {
         courseLabel = new javax.swing.JLabel();
         line = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        table = new javax.swing.JTable() {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         AddButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         confirmButton = new javax.swing.JButton();
@@ -264,7 +326,7 @@ public class InstructorCourse extends javax.swing.JPanel {
     private void zoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomButtonActionPerformed
         type = TableType.zoom;
         mode = TableMode.normal;
-        table.setEnabled(false);
+//        table.setEnabled(false);
 
         List<ZoomMeeting> list = this.course.getZoomMeetingDirectory().getList();
         Object[][] students = new Object[list.size()][4];
@@ -299,7 +361,7 @@ public class InstructorCourse extends javax.swing.JPanel {
     private void studentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentButtonActionPerformed
         type = TableType.student;
         mode = TableMode.normal;
-        table.setEnabled(false);
+//        table.setEnabled(false);
 
         List<Student> list = this.course.getStudentDirectory().getList();
         Object[][] students = new Object[list.size()][4];
@@ -318,22 +380,12 @@ public class InstructorCourse extends javax.swing.JPanel {
                         "id", "name", "email", "GPA"
                 }
         ));
-
-//        DefaultTableModel studentModel = new DefaultTableModel();
-//
-//        table = new DefaultTableModel(students, new String [] {
-//                "name", "email", "GPA"
-//        }){
-//
-//        }
-
-
     }//GEN-LAST:event_studentButtonActionPerformed
 
     private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
         type = TableType.file;
         mode = TableMode.normal;
-        table.setEnabled(false);
+//        table.setEnabled(false);
 
         List<File> list = this.course.getFileDirectory().getList();
         Object[][] files = new Object[list.size()][3];
@@ -362,7 +414,7 @@ public class InstructorCourse extends javax.swing.JPanel {
         // TODO add your handling code here:
         type = TableType.assignment;
         mode = TableMode.normal;
-        table.setEnabled(false);
+//        table.setEnabled(false);
 
         List<Assignment> list = this.course.getAssignmentDirectory().getList();
         Object[][] assignments = new Object[list.size()][4];
@@ -501,7 +553,7 @@ public class InstructorCourse extends javax.swing.JPanel {
                 CourseDBUtil.update(course);
             }
             break;
-            case assignment:{
+            case assignment: {
                 String id = table.getValueAt(0, 0).toString();
                 String name = table.getValueAt(0, 1).toString();
                 String content = table.getValueAt(0, 2).toString();
@@ -516,7 +568,7 @@ public class InstructorCourse extends javax.swing.JPanel {
                 CourseDBUtil.update(course);
             }
 
-                break;
+            break;
             default:
                 break;
         }

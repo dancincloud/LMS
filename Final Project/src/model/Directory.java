@@ -36,12 +36,12 @@ public class Directory<T> implements Iterable<T>{
     }
 
     public T get(int index){
-        if(index >= list.size() - 1) throw  new IllegalArgumentException("CourseDirectory - getCourse: index beyond bound");
+        if(index >= list.size() ) throw  new IllegalArgumentException("CourseDirectory - getCourse: index beyond bound");
         return list.get(index);
     }
 
     public boolean remove(int index){
-        if(index >= list.size() - 1) throw  new IllegalArgumentException("CourseDirectory - getCourse: index beyond bound");
+        if(index >= list.size() ) throw  new IllegalArgumentException("CourseDirectory - getCourse: index beyond bound");
         return remove(list.get(index));
     }
 

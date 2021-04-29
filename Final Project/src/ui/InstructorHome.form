@@ -32,9 +32,9 @@
                       <Component id="titleLabel" min="-2" pref="627" max="-2" attributes="0"/>
                       <Component id="line" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="scrollPanel" min="-2" pref="753" max="-2" attributes="0"/>
+                  <Component id="scrollPanel" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="99" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -46,10 +46,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="line" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="scrollPanel" min="-2" pref="785" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <Component id="scrollPanel" pref="2000" max="32767" attributes="0"/>
+              <EmptySpace pref="39" max="32767" attributes="0"/>
           </Group>
-          <Component id="sidePanel" alignment="0" pref="879" max="32767" attributes="0"/>
+          <Component id="sidePanel" alignment="0" pref="2133" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -58,17 +58,22 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Container class="java.awt.Panel" name="panel1">
+        <Container class="javax.swing.JPanel" name="contentPanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
 
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="734" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="825" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="1382" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="1996" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -83,7 +88,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="f9" green="94" red="63" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Welcome, professor"/>
+        <Property name="text" type="java.lang.String" value="DashBoard"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="sidePanel">
@@ -110,7 +115,7 @@
                           <Component id="emailLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="nameLabel" pref="124" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       </Group>
@@ -127,7 +132,7 @@
                   <Component id="emailLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="logoutButton" min="-2" pref="38" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="218" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

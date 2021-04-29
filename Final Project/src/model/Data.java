@@ -13,8 +13,45 @@ import java.util.List;
 /**
  * @author Ke
  */
-public class Data {
-    public Data() {
+public class Data implements Runnable {
+    public Data() {}
+
+    public User authenticateUser(String username, String password, int type) {
+        if (type == 1) {
+            // search in db
+            Instructor instructor = InstructorDBUtil.selectByUsername(username);
+
+            return instructor;
+        } else {
+            // search in db
+            Student student = StudentDBUtil.selectByUsername(username);
+
+            return student;
+
+//            try {
+//                List<Student> list = StudentDBUtil.selectAll();
+//                for (Student student : list) {
+//                    if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
+//                        return student;
+//                    }
+//                }
+//            } catch (Exception e) {
+//                System.out.println(e);
+//            }
+
+
+//            // test
+//            for (Student student : students) {
+//                if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
+//                    return student;
+//                }
+//            }
+//            return null;
+        }
+    }
+
+    @Override
+    public void run() {
         DBIntializer.main();
 
         List<String> studentIDs = new ArrayList<>();
@@ -122,46 +159,12 @@ public class Data {
 
 
         for(Instructor instructor : instructors){
-           for(Course course : courses){
-               if (instructor.getId().equals(course.getInstructorID())){
-                   instructor.getCourseIDs().add(course.getCourseID());
-               }
-           }
+            for(Course course : courses){
+                if (instructor.getId().equals(course.getInstructorID())){
+                    instructor.getCourseIDs().add(course.getCourseID());
+                }
+            }
             InstructorDBUtil.add(instructor);
-        }
-    }
-
-    public User authenticateUser(String username, String password, int type) {
-        if (type == 1) {
-            // search in db
-            Instructor instructor = InstructorDBUtil.selectByUsername(username);
-
-            return instructor;
-        } else {
-            // search in db
-            Student student = StudentDBUtil.selectByUsername(username);
-
-            return student;
-
-//            try {
-//                List<Student> list = StudentDBUtil.selectAll();
-//                for (Student student : list) {
-//                    if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
-//                        return student;
-//                    }
-//                }
-//            } catch (Exception e) {
-//                System.out.println(e);
-//            }
-
-
-//            // test
-//            for (Student student : students) {
-//                if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
-//                    return student;
-//                }
-//            }
-//            return null;
         }
     }
 }
