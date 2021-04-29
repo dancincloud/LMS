@@ -44,8 +44,21 @@ public class Data {
     Course c2 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
     Course c3 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
 
-    Assignment a1 = new Assignment("Final Project", "a", Assignment.AssignmentType.PROJECT);
-    Assignment a2 = new Assignment("Midterm", "a", Assignment.AssignmentType.EXAM);
+    Assignment a1 = new Assignment("Final Project", "CSYE6200 Factory Assignment\n" +
+"\n" +
+" Take the explosion work (of your own): ExplosionAPI super class API specifying a single void explode() method, Derived classes of GunShot and Grenade implementing ExplosionAPI\n" +
+"Create and use Simple Factory class to create all derived objects;\n" +
+"Create and use GoF Factor Pattern classes (two) to create derived objects (two): this requires an ExplosionFactoryAPI super class so each GoF Factory Pattern class can be derived from it.\n" +
+"20 POINTS DEDUCTION IF iNCORRECT Submission: Submit ON TIME your entire eclipse workspace (single .zip file) ", Assignment.AssignmentType.PROJECT);
+    Assignment a2 = new Assignment("Midterm", "Design a Person class with the following attributes:\n" +
+"1. Person ID\n" +
+"2. Age\n" +
+"3. First Name\n" +
+"4. Last Name\n" +
+"5. Description\n" +
+"AND with AT LEAST the following methods:\n" +
+"6. A non-static toString() object instance method to return a String describing the object state (i.e. the values of all the data members associated with this object)\n" +
+"7. A static Demo() method which used for demonstrating the use of this class.", Assignment.AssignmentType.EXAM);
 
     public Data() {
         userList = new ArrayList<User>();
