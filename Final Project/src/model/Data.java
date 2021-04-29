@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class Data {
     private List<User> userList;
-    private List<User> c1userList;
-    private List<User> c2userList;
-    private List<User> c3userList;
+    private List<Student> c1userList;
+    private List<Student> c2userList;
+    private List<Student> c3userList;
     
     private List<Course> s1courseList;
     private List<Course> s2courseList;
@@ -40,13 +40,19 @@ public class Data {
     Course c1 = new Course("OOD","CSYE6200");
     Course c2 = new Course("Application Engineer","INFO5100");
     Course c3 = new Course("Career Management","ENCP6000");
+    
+    Assignment a1 = new Assignment("Final Project","a",Assignment.AssignmentType.PROJECT);
 
     public Data() {
         userList = new ArrayList<User>();
         
-        c1userList = new ArrayList<User>();
-        c2userList = new ArrayList<User>();
-        c3userList = new ArrayList<User>();
+        c1userList = new ArrayList<Student>();
+        c2userList = new ArrayList<Student>();
+        c3userList = new ArrayList<Student>();
+        
+        c1assignment = new ArrayList<Assignment>();
+        c2assignment = new ArrayList<Assignment>();
+        c3assignment = new ArrayList<Assignment>();
         
         s1courseList = new ArrayList<Course>();
         s2courseList = new ArrayList<Course>();
@@ -55,6 +61,10 @@ public class Data {
         s1courseList.add(c2);
         s2courseList.add(c1);
         s2courseList.add(c3);
+        
+        c1assignment.add(a1);
+        c2assignment.add(a1);
+        c3assignment.add(a1);
         
         CourseDirectory cd1 = new CourseDirectory(s1courseList);
         CourseDirectory cd2 = new CourseDirectory(s2courseList);
@@ -87,13 +97,13 @@ public class Data {
         c2userList.add(s1);
         c3userList.add(s2);
         
-        UserDirectory c1sd = new UserDirectory(c1userList);
-        UserDirectory c2sd = new UserDirectory(c2userList);
-        UserDirectory c3sd = new UserDirectory(c3userList);
+        StudentDirectory c1sd = new StudentDirectory(c1userList);
+        StudentDirectory c2sd = new StudentDirectory(c2userList);
+        StudentDirectory c3sd = new StudentDirectory(c3userList);
         
-//        c1.setUserDirectory(c1sd);
-//        c2.setUserDirectory(c2sd);
-//        c3.setUserDirectory(c3sd);
+        c1.setStudentDirectory(c1sd);
+        c2.setStudentDirectory(c2sd);
+        c3.setStudentDirectory(c3sd);
         
         c1.setFileDirectory(c1fd);
         c2.setFileDirectory(c2fd);

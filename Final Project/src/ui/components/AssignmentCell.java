@@ -5,30 +5,31 @@
  */
 package ui.components;
 
+import model.Assignment;
 import model.Instructor;
 import model.Course;
 import model.Student;
 import model.User;
 import ui.StudentCourse;
-import ui.Global;
 import ui.InstructorCourse;
 import ui.Router;
 
 /**
  *
- * @author yamato
+ * @author Ke
  */
-public class CourseCell extends javax.swing.JPanel {
+public class AssignmentCell extends javax.swing.JPanel {
 
-    private Course course;
+    private Assignment assignment;
+
     /**
      * Creates new form CourseCell
      */
-    public CourseCell(Course course) {
+    public AssignmentCell(Assignment assignment) {
         initComponents();
-        this.course = course;
+        this.assignment = assignment;
 
-        titleLabel.setText(course.getCourseID() + " - " + course.getName());
+        titleLabel.setText(assignment.getName());
     }
 
     /**
@@ -72,7 +73,7 @@ public class CourseCell extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         titleLabel.getAccessibleContext().setAccessibleName("titleLabel");
@@ -86,7 +87,7 @@ public class CourseCell extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 154, Short.MAX_VALUE)
+                .addGap(0, 147, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -123,22 +124,18 @@ public class CourseCell extends javax.swing.JPanel {
 
     private void click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_click
         // TODO add your handling code here:
-        User user = Global.getInstance().getUser();
-
-        if(user.getType() == 1)
+        /*if(user instanceof Instructor)
             Router.getInstance(null).go(new InstructorCourse(course));
-        else if(user.getType() == 0)
-            Router.getInstance(null).go(new StudentCourse(course));
+        else if(user instanceof Student)
+            Router.getInstance(null).go(new StudentCourse(course));*/
     }//GEN-LAST:event_click
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        User user = Global.getInstance().getUser();
-
-        if(user.getType() == 1)
+        /*if(user instanceof Instructor)
             Router.getInstance(null).go(new InstructorCourse(course));
-        else if(user.getType() == 0)
-            Router.getInstance(null).go(new StudentCourse(course));
+        else if(user instanceof Student)
+            Router.getInstance(null).go(new StudentCourse(course));*/
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

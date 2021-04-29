@@ -8,6 +8,7 @@ package ui;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import model.Course;
+import model.Instructor;
 import model.Student;
 import model.User;
 
@@ -33,14 +34,12 @@ public class UserJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) studentJTable.getModel();
 
         model.setRowCount(0);
-        for (User user : course.getStudentDirectory().getList()) {
+
+        for (Student student : course.getStudentDirectory().getList()) {
             Object[] row = new Object[3];
-            row[0] = user.getId();
-            row[1] = user.getName();
-            if(user.getType()==0)
-                row[2] = "Student";
-            else if(user.getType()==1)
-                row[2] = "Instructor";
+            row[0] = student.getId();
+            row[1] = student.getName();
+            row[2] = student.getEmail();
 
             model.addRow(row);
         }
@@ -71,7 +70,7 @@ public class UserJPanel extends javax.swing.JPanel {
                 {null, null, null}
             },
             new String [] {
-                "User ID", "Name", "Type"
+                "User ID", "Name", "Email"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -86,7 +85,7 @@ public class UserJPanel extends javax.swing.JPanel {
 
         jLabel10.setFont(new java.awt.Font("Skia", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(99, 148, 249));
-        jLabel10.setText("User");
+        jLabel10.setText("Student");
 
         jLabel8.setText("—————————————————————————————————————————————————");
 
@@ -99,14 +98,14 @@ public class UserJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel10)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(147, Short.MAX_VALUE)
+                .addContainerGap(137, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(77, 77, 77))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(14, 14, 14))))
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(77, 77, 77))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
