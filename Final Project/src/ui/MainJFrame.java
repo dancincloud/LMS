@@ -165,8 +165,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 InstructorHome home = new InstructorHome((Instructor) user);
                 Router.getInstance(null).go(home);
             }else{
-                MainJPanel mainJPanel = new MainJPanel(userProcessContainer, user);
-                Router.getInstance(null).go(mainJPanel);
+                StudentHome mainJPanel = new StudentHome(userProcessContainer,(Student)user);
+                changeContentPane(mainJPanel);
             }
         }
 

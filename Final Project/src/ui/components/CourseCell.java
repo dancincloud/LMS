@@ -5,7 +5,11 @@
  */
 package ui.components;
 
+import model.Instructor;
 import model.Course;
+import model.Student;
+import model.User;
+import ui.CourseJPanel;
 import ui.InstructorCourse;
 import ui.Router;
 
@@ -16,13 +20,15 @@ import ui.Router;
 public class CourseCell extends javax.swing.JPanel {
 
     private Course course;
+    User user;
 
     /**
      * Creates new form CourseCell
      */
-    public CourseCell(Course course) {
+    public CourseCell(Course course,User user) {
         initComponents();
         this.course = course;
+        this.user = user;
 
         titleLabel.setText(course.getName());
     }
@@ -119,12 +125,18 @@ public class CourseCell extends javax.swing.JPanel {
 
     private void click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_click
         // TODO add your handling code here:
-        Router.getInstance(null).go(new InstructorCourse(course));
+        if(user instanceof Instructor)
+            Router.getInstance(null).go(new InstructorCourse(course));
+        else if(user instanceof Student)
+            Router.getInstance(null).go(new CourseJPanel(course));
     }//GEN-LAST:event_click
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Router.getInstance(null).go(new InstructorCourse(course));
+        if(user instanceof Instructor)
+            Router.getInstance(null).go(new InstructorCourse(course));
+        else if(user instanceof Student)
+            Router.getInstance(null).go(new CourseJPanel(course));
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

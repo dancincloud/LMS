@@ -26,7 +26,7 @@ public class CourseJPanel extends javax.swing.JPanel {
     /**
      * Creates new form CourseJPanel
      */
-    public CourseJPanel(JPanel userProcessContainer,Course course) {
+    public CourseJPanel(/*JPanel userProcessContainer,*/Course course) {
         initComponents();
         this.course = course;
         this.userProcessContainer=userProcessContainer;
@@ -157,9 +157,9 @@ public class CourseJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backJButtonActionPerformed
-        userProcessContainer.remove(this);
+        /*userProcessContainer.remove(this);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.previous(userProcessContainer);
+        layout.previous(userProcessContainer);*/
     }//GEN-LAST:event_backJButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

@@ -49,7 +49,7 @@
               <Component id="scrollPanel" min="-2" pref="644" max="-2" attributes="0"/>
               <EmptySpace pref="36" max="32767" attributes="0"/>
           </Group>
-          <Component id="sidePanel" alignment="0" max="32767" attributes="0"/>
+          <Component id="sidePanel" alignment="0" pref="774" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
