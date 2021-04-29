@@ -21,7 +21,7 @@ import model.Course;
  *
  * @author adinanibijiang
  */
-public class UploadAssignmentJPanel extends javax.swing.JPanel {
+public class CreateAssignment extends javax.swing.JPanel {
     JPanel container;
     Course course;
     String content;
@@ -31,7 +31,7 @@ public class UploadAssignmentJPanel extends javax.swing.JPanel {
     /**
      * Creates new form FileJPanel
      */
-    public UploadAssignmentJPanel(JPanel container, Course course) {
+    public CreateAssignment(JPanel container, Course course) {
         initComponents();
         this.container=container;
         this.course=course;
@@ -76,7 +76,7 @@ public class UploadAssignmentJPanel extends javax.swing.JPanel {
 
         jLabel10.setFont(new java.awt.Font("Skia", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(99, 148, 249));
-        jLabel10.setText("Upload Assignment");
+        jLabel10.setText("Create Assignment");
 
         jLabel8.setText("—————————————————————————————————————————————————");
 
@@ -92,7 +92,7 @@ public class UploadAssignmentJPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("宋体", 0, 18)); // NOI18N
         jLabel2.setText("Type:");
 
-        jButton1.setText("Upload");
+        jButton1.setText("Create");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);

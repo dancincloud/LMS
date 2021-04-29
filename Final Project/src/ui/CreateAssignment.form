@@ -101,7 +101,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="f9" green="94" red="63" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Upload Assignment"/>
+        <Property name="text" type="java.lang.String" value="Create Assignment"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
@@ -149,7 +149,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Upload"/>
+        <Property name="text" type="java.lang.String" value="Create"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>

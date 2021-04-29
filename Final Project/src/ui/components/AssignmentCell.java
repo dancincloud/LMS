@@ -13,6 +13,7 @@ import model.User;
 import ui.StudentCourse;
 import ui.InstructorCourse;
 import ui.Router;
+import ui.UploadAssignment;
 
 /**
  *
@@ -113,11 +114,7 @@ public class AssignmentCell extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_click
-        // TODO add your handling code here:
-        /*if(user instanceof Instructor)
-            Router.getInstance(null).go(new InstructorCourse(course));
-        else if(user instanceof Student)
-            Router.getInstance(null).go(new StudentCourse(course));*/
+        Router.getInstance(null).go(new UploadAssignment(assignment));
     }//GEN-LAST:event_click
 
 
