@@ -27,6 +27,7 @@ public class MainJFrame extends javax.swing.JFrame {
         initComponents();
         this.setSize(1024, 768);
         Router.getInstance(this);
+        Global.getInstance().setFrame(this);
     }
 
     /**

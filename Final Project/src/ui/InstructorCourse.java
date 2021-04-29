@@ -6,22 +6,39 @@
 package ui;
 
 /**
- *
  * @author Joseph Yuanhao Li
  * @date 4/27/21 23:18
  */
 
+import DBUtil.CourseDBUtil;
+import DBUtil.StudentDBUtil;
 import model.*;
+import ui.components.FormPanel;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
- *
  * @author Ke
  */
 public class InstructorCourse extends javax.swing.JPanel {
+
+    enum TableType {
+        student, file, zoom, assignment
+    }
+
+    enum TableMode {
+        normal, edit
+    }
+
     private Course course;
+
+    private TableType type;
+
+    private TableMode mode;
 
     /**
      * Creates new form CourseJPanel
@@ -30,15 +47,12 @@ public class InstructorCourse extends javax.swing.JPanel {
         initComponents();
 
         table.setRowHeight(40);
-        table.setEnabled(false);
 
         this.course = course;
 
         this.nameLabel.setText(Global.getInstance().getUser().getName());
         this.courseLabel.setText(course.getCourseID() + " - " + course.getName());
-
-        studentButtonActionPerformed(null
-        );
+        studentButtonActionPerformed(null);
     }
 
     /**
@@ -56,6 +70,9 @@ public class InstructorCourse extends javax.swing.JPanel {
         line = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        AddButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        confirmButton = new javax.swing.JButton();
         SideBar = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
@@ -71,40 +88,72 @@ public class InstructorCourse extends javax.swing.JPanel {
         courseLabel.setText("Course Name");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
+                new Object[][]{
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String[]{
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }
         ));
         jScrollPane1.setViewportView(table);
+
+        AddButton.setText("Add");
+        AddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddButtonActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setLabel("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        confirmButton.setText("Confirm");
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout containerLayout = new javax.swing.GroupLayout(container);
         container.setLayout(containerLayout);
         containerLayout.setHorizontalGroup(
-            containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(containerLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(courseLabel)
-                    .addComponent(line, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(589, Short.MAX_VALUE))
+                containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(containerLayout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(containerLayout.createSequentialGroup()
+                                                .addComponent(courseLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(AddButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(confirmButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cancelButton))
+                                        .addComponent(line, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1))
+                                .addContainerGap(589, Short.MAX_VALUE))
         );
         containerLayout.setVerticalGroup(
-            containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(containerLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(courseLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(line, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(containerLayout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(courseLabel)
+                                        .addComponent(AddButton)
+                                        .addComponent(cancelButton)
+                                        .addComponent(confirmButton))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(line, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(container);
@@ -158,45 +207,45 @@ public class InstructorCourse extends javax.swing.JPanel {
         javax.swing.GroupLayout SideBarLayout = new javax.swing.GroupLayout(SideBar);
         SideBar.setLayout(SideBarLayout);
         SideBarLayout.setHorizontalGroup(
-            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addGroup(SideBarLayout.createSequentialGroup()
-                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(SideBarLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(backButton))
-                    .addGroup(SideBarLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(SideBarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(assignmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(SideBarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(studentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jSeparator1)
+                        .addGroup(SideBarLayout.createSequentialGroup()
+                                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(SideBarLayout.createSequentialGroup()
+                                                .addGap(30, 30, 30)
+                                                .addComponent(backButton))
+                                        .addGroup(SideBarLayout.createSequentialGroup()
+                                                .addGap(25, 25, 25)
+                                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(SideBarLayout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(assignmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(SideBarLayout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(studentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         SideBarLayout.setVerticalGroup(
-            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SideBarLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(studentButton)
-                .addGap(32, 32, 32)
-                .addComponent(fileButton)
-                .addGap(36, 36, 36)
-                .addComponent(zoomButton)
-                .addGap(32, 32, 32)
-                .addComponent(assignmentButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
-                .addComponent(backButton)
-                .addGap(47, 47, 47))
+                SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(SideBarLayout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(studentButton)
+                                .addGap(28, 28, 28)
+                                .addComponent(fileButton)
+                                .addGap(38, 38, 38)
+                                .addComponent(zoomButton)
+                                .addGap(32, 32, 32)
+                                .addComponent(assignmentButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                                .addComponent(backButton)
+                                .addGap(47, 47, 47))
         );
 
         jSplitPane1.setLeftComponent(SideBar);
@@ -204,21 +253,24 @@ public class InstructorCourse extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1504, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1504, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jSplitPane1)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void zoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomButtonActionPerformed
+        type = TableType.zoom;
+        mode = TableMode.normal;
+        table.setEnabled(false);
 
         List<ZoomMeeting> list = this.course.getZoomMeetingDirectory().getList();
         Object[][] students = new Object[list.size()][4];
 
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             ZoomMeeting s = list.get(i);
             students[i][0] = s.getZoomMeetingID();
             students[i][1] = s.getName();
@@ -228,7 +280,7 @@ public class InstructorCourse extends javax.swing.JPanel {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
                 students,
-                new String [] {
+                new String[]{
                         "id", "name", "link", "date"
                 }
         ));
@@ -246,10 +298,14 @@ public class InstructorCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_zoomButtonActionPerformed
 
     private void studentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentButtonActionPerformed
+        type = TableType.student;
+        mode = TableMode.normal;
+        table.setEnabled(false);
+
         List<Student> list = this.course.getStudentDirectory().getList();
         Object[][] students = new Object[list.size()][4];
 
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             Student s = list.get(i);
             students[i][0] = s.getId();
             students[i][1] = s.getName();
@@ -259,8 +315,8 @@ public class InstructorCourse extends javax.swing.JPanel {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
                 students,
-                new String [] {
-                       "id", "name", "email", "GPA"
+                new String[]{
+                        "id", "name", "email", "GPA"
                 }
         ));
 
@@ -276,10 +332,14 @@ public class InstructorCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_studentButtonActionPerformed
 
     private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
+        type = TableType.file;
+        mode = TableMode.normal;
+        table.setEnabled(false);
+
         List<File> list = this.course.getFileDirectory().getList();
         Object[][] files = new Object[list.size()][3];
 
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             File s = list.get(i);
             files[i][0] = s.getFileID();
             files[i][1] = s.getName();
@@ -288,8 +348,8 @@ public class InstructorCourse extends javax.swing.JPanel {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
                 files,
-                new String [] {
-                       "id", "name", "link"
+                new String[]{
+                        "id", "name", "link"
                 }
         ));
 
@@ -301,10 +361,14 @@ public class InstructorCourse extends javax.swing.JPanel {
 
     private void assignmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignmentButtonActionPerformed
         // TODO add your handling code here:
+        type = TableType.assignment;
+        mode = TableMode.normal;
+        table.setEnabled(false);
+
         List<Assignment> list = this.course.getAssignmentDirectory().getList();
         Object[][] assignments = new Object[list.size()][4];
 
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             Assignment s = list.get(i);
             assignments[i][0] = s.getAssignmentID();
             assignments[i][1] = s.getName();
@@ -314,17 +378,161 @@ public class InstructorCourse extends javax.swing.JPanel {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
                 assignments,
-                new String [] {
+                new String[]{
                         "id", "name", "content", "type"
                 }
         ));
     }//GEN-LAST:event_assignmentButtonActionPerformed
 
 
+    private Object[][] addData;
+
+    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
+        // TODO add your handling code here:
+        mode = TableMode.edit;
+        table.setEnabled(true);
+
+
+        switch (type) {
+            case student:
+                addData = new Object[1][4];
+                table.setModel(new javax.swing.table.DefaultTableModel(
+                        addData,
+                        new String[]{
+                                "id", "name", "email", "GPA"
+                        }
+                ));
+                break;
+            case file:
+                addData = new Object[1][3];
+                table.setModel(new javax.swing.table.DefaultTableModel(
+                        addData,
+                        new String[]{
+                                "id", "name", "link"
+                        }
+                ));
+                break;
+            case zoom:
+                addData = new Object[1][3];
+                table.setModel(new javax.swing.table.DefaultTableModel(
+                        addData,
+                        new String[]{
+                                "id", "name", "link"
+                        }
+                ));
+                break;
+            case assignment:
+                addData = new Object[1][4];
+                table.setModel(new javax.swing.table.DefaultTableModel(
+                        addData,
+                        new String[]{
+                                "id", "name", "content", "type"
+                        }
+                ));
+                break;
+            default:
+                break;
+        }
+
+
+    }//GEN-LAST:event_AddButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        switch (type) {
+            case student:
+                studentButtonActionPerformed(null);
+                break;
+            case file:
+                fileButtonActionPerformed(null);
+                break;
+            case zoom:
+                zoomButtonActionPerformed(null);
+                break;
+            case assignment:
+                assignmentButtonActionPerformed(null);
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        // TODO add your handling code here:
+        switch (type) {
+            case student: {
+                String id = table.getValueAt(0, 0).toString();
+                String name = table.getValueAt(0, 1).toString();
+                String email = table.getValueAt(0, 2).toString();
+                double gpa = Double.parseDouble(table.getValueAt(0, 3).toString());
+
+                if (email == null) email = DataGenerator.generateEmailByName(name);
+                Student student = new Student(id, name, email, name, name, gpa);
+
+                course.getStudentDirectory().add(student);
+
+                CourseDBUtil.update(course);
+            }
+            break;
+            case file: {
+                String id = table.getValueAt(0, 0).toString();
+                String name = table.getValueAt(0, 1).toString();
+                String link = table.getValueAt(0, 2).toString();
+
+                if (link == null) link = DataGenerator.generateFilePath(name);
+                File file = new File(id, name, link);
+
+                course.getFileDirectory().add(file);
+
+                CourseDBUtil.update(course);
+            }
+
+
+            break;
+            case zoom: {
+                String id = table.getValueAt(0, 0).toString();
+                String name = table.getValueAt(0, 1).toString();
+                String link = table.getValueAt(0, 2).toString();
+
+                if (link == null) link = DataGenerator.generateZoom();
+                ZoomMeeting zoomMeeting = new ZoomMeeting(id, name, link);
+
+                course.getZoomMeetingDirectory().add(zoomMeeting);
+
+                CourseDBUtil.update(course);
+            }
+            break;
+            case assignment:{
+                String id = table.getValueAt(0, 0).toString();
+                String name = table.getValueAt(0, 1).toString();
+                String content = table.getValueAt(0, 2).toString();
+                String type = table.getValueAt(0, 3).toString();
+
+                if (id == null) id = DataGenerator.generateID();
+
+                Assignment assignment = new Assignment(id, name, content, Assignment.AssignmentType.valueOf(type));
+
+                course.getAssignmentDirectory().add(assignment);
+
+                CourseDBUtil.update(course);
+            }
+
+                break;
+            default:
+                break;
+        }
+
+        cancelButtonActionPerformed(null);
+
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddButton;
     private javax.swing.JPanel SideBar;
     private javax.swing.JButton assignmentButton;
     private javax.swing.JButton backButton;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton confirmButton;
     private javax.swing.JPanel container;
     private javax.swing.JLabel courseLabel;
     private javax.swing.JButton fileButton;

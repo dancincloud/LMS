@@ -5,6 +5,9 @@
  */
 package model;
 
+import DBUtil.InstructorDBUtil;
+import DBUtil.StudentDBUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,6 +210,15 @@ public class Data {
     
     public User authenticateUser(String username, String password, int type){
         if(type == 1){
+            // search in db
+            List<Instructor> list = InstructorDBUtil.selectAll();
+            for (Instructor instructor : list){
+                if (instructor.getUsername().equals(username) && instructor.getPassword().equals(password)){
+                    return instructor;
+                }
+            }
+
+            // test
             for (Instructor instructor : instructors){
                 if (instructor.getUsername().equals(username) && instructor.getPassword().equals(password)){
                     return instructor;
@@ -214,6 +226,15 @@ public class Data {
             }
             return null;
         }else{
+            // search in db
+            List<Student> list = StudentDBUtil.selectAll();
+            for (Student student : list){
+                if (student.getUsername().equals(username) && student.getPassword().equals(password)){
+                    return student;
+                }
+            }
+
+            // test
             for (Student student : students){
                 if (student.getUsername().equals(username) && student.getPassword().equals(password)){
                     return student;

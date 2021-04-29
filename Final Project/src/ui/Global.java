@@ -23,6 +23,8 @@ public class Global {
 
     private User user; // current login user
 
+    private JFrame frame;
+
     public User getUser() {
         return user;
     }
@@ -30,6 +32,15 @@ public class Global {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+    }
+
 
     public void login(User user){
         this.user = user;

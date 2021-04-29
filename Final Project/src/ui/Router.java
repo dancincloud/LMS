@@ -30,6 +30,10 @@ public class Router {
         this.frame = frame;
     }
 
+    public Container peak(){
+        return stack.peek();
+    }
+
     public void go(Container container){
         stack.push(frame.getContentPane());
         frame.setContentPane(container);
