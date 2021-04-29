@@ -5,6 +5,7 @@
  */
 package model;
 
+import DBUtil.CourseDBUtil;
 import DBUtil.InstructorDBUtil;
 import DBUtil.StudentDBUtil;
 
@@ -161,6 +162,7 @@ public class Data {
             }
 
             students.add(student);
+            StudentDBUtil.add(student);
         }
 
 
@@ -181,8 +183,7 @@ public class Data {
             }
 
             instructors.add(instructor);
-
-            System.out.println(instructor);
+            InstructorDBUtil.add(instructor);
         }
 
 
@@ -203,6 +204,8 @@ public class Data {
             for (ZoomMeeting zoomMeeting : zoomMeetings) {
                 course.getZoomMeetingDirectory().add(zoomMeeting);
             }
+
+            CourseDBUtil.add(course);
         }
     }
 
