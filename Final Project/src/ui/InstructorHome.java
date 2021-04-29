@@ -35,22 +35,18 @@ public class InstructorHome extends javax.swing.JPanel {
     }
 
     private void initCourses(CourseDirectory courseDir){
-        contentPanel.setLayout(new GridLayout(0,2));
+        panel1.setLayout(new GridLayout(0,2));
 
-        int cell_H = contentPanel.getWidth() * 4 / 3;
+        int cell_H = panel1.getWidth() * 4 / 3;
 
         for (Course course : courseDir){
             CourseCell cell = new CourseCell(course);
-            contentPanel.add(cell);
-            cell.setPreferredSize(new Dimension(contentPanel.getWidth(), cell_H));
+            panel1.add(cell);
+            
         }
 
-        scrollPanel.setSize(contentPanel.getWidth(), cell_H * courseDir.getList().size() / 2 + 1);
 
-        contentPanel.setSize(contentPanel.getWidth(), cell_H * courseDir.getList().size() / 2 + 1);
-//
-        contentPanel.setPreferredSize(new Dimension(contentPanel.getWidth(), cell_H * courseDir.getList().size() / 2 + 1));
-        updateUI();
+        
     }
 
 
@@ -64,7 +60,7 @@ public class InstructorHome extends javax.swing.JPanel {
     private void initComponents() {
 
         scrollPanel = new javax.swing.JScrollPane();
-        contentPanel = new javax.swing.JPanel();
+        panel1 = new java.awt.Panel();
         titleLabel = new javax.swing.JLabel();
         sidePanel = new javax.swing.JPanel();
         logoutButton = new javax.swing.JButton();
@@ -75,20 +71,18 @@ public class InstructorHome extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1024, 768));
 
-        contentPanel.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
-        contentPanel.setLayout(contentPanelLayout);
-        contentPanelLayout.setHorizontalGroup(
-            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 816, Short.MAX_VALUE)
+        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
+        panel1.setLayout(panel1Layout);
+        panel1Layout.setHorizontalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 734, Short.MAX_VALUE)
         );
-        contentPanelLayout.setVerticalGroup(
-            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1996, Short.MAX_VALUE)
+        panel1Layout.setVerticalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1382, Short.MAX_VALUE)
         );
 
-        scrollPanel.setViewportView(contentPanel);
+        scrollPanel.setViewportView(panel1);
 
         titleLabel.setFont(new java.awt.Font("Skia", 1, 36)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(99, 148, 249));
@@ -125,7 +119,7 @@ public class InstructorHome extends javax.swing.JPanel {
                     .addGroup(sidePanelLayout.createSequentialGroup()
                         .addComponent(emailLabel)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(sidePanelLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sidePanelLayout.createSequentialGroup()
                         .addComponent(nameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                         .addGap(19, 19, 19))))
         );
@@ -138,7 +132,7 @@ public class InstructorHome extends javax.swing.JPanel {
                 .addComponent(emailLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addGap(218, 218, 218))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -152,8 +146,8 @@ public class InstructorHome extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(line))
-                    .addComponent(scrollPanel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 753, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,9 +157,9 @@ public class InstructorHome extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(line, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 2000, Short.MAX_VALUE)
-                .addContainerGap(39, Short.MAX_VALUE))
-            .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 2127, Short.MAX_VALUE)
+                .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 785, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -176,11 +170,11 @@ public class InstructorHome extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel contentPanel;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JSeparator line;
     private javax.swing.JButton logoutButton;
     private javax.swing.JLabel nameLabel;
+    private java.awt.Panel panel1;
     private javax.swing.JScrollPane scrollPanel;
     private javax.swing.JPanel sidePanel;
     private javax.swing.JLabel titleLabel;
