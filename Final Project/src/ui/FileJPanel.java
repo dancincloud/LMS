@@ -5,13 +5,16 @@
  */
 package ui;
 
-import java.awt.CardLayout;
-import java.io.IOException;
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JPanel;
-import model.Course;
+import ui.components.CourseCell;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import model.*;
+import ui.components.AssignmentCell;
+import ui.components.FileCell;
 
 /**
  *
@@ -20,27 +23,37 @@ import model.Course;
 public class FileJPanel extends javax.swing.JPanel {
     JPanel container;
     Course course;
-    String[] f = new String[3];
+    String content;
+    String name;
+    Assignment.AssignmentType type;
 
-    /**
-     * Creates new form FileJPanel
-     */
     public FileJPanel(JPanel container, Course course) {
         initComponents();
         this.container=container;
         this.course=course;
-        populateLabel();
+        initFiles(course.getFileDirectory());
     }
-    
-    private void populateLabel() {
-        int i = 0;
-        for (model.File file : course.getFileDirectory().getList()) {
-            f[i] = file.getName();
-            i++;
+
+    private void initFiles(FileDirectory fileDir){
+
+        contentPanel.setLayout(new GridLayout(0,2));
+
+        int cell_H = contentPanel.getWidth() * 4 / 3;
+
+        for (File file : fileDir){
+            FileCell cell = new FileCell(file);
+            contentPanel.add(cell);
+            cell.setPreferredSize(new Dimension(contentPanel.getWidth(),contentPanel.getWidth() * 4 / 3));
         }
-        jLabel1.setText(f[0]);
-        jLabel2.setText(f[1]);
+
+        scrollPanel.setSize(contentPanel.getWidth(), cell_H * fileDir.getList().size() / 2 + 1);
+
+        contentPanel.setSize(contentPanel.getWidth(), cell_H * fileDir.getList().size() / 2 + 1);
+
+        contentPanel.setPreferredSize(new Dimension(contentPanel.getWidth(), cell_H * fileDir.getList().size() / 2 + 1));
+        updateUI();
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,77 +64,48 @@ public class FileJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        scrollPanel = new javax.swing.JScrollPane();
+        contentPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(1024, 768));
 
-        jLabel1.setFont(new java.awt.Font("宋体", 3, 15)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
+        contentPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setFont(new java.awt.Font("宋体", 3, 15)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 255));
+        javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
+        contentPanel.setLayout(contentPanelLayout);
+        contentPanelLayout.setHorizontalGroup(
+            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 994, Short.MAX_VALUE)
+        );
+        contentPanelLayout.setVerticalGroup(
+            contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 2105, Short.MAX_VALUE)
+        );
 
-        jLabel10.setFont(new java.awt.Font("Skia", 1, 24)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(99, 148, 249));
-        jLabel10.setText("File");
-
-        jLabel8.setText("—————————————————————————————————————————————————");
+        scrollPanel.setViewportView(contentPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel8)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(jLabel10)))
-                .addContainerGap(506, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(scrollPanel)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(scrollPanel)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        File file = new File("src\\resource\\"+jLabel1.getText());
-        try {
-            java.awt.Desktop.getDesktop().open(file);
-        } catch (IOException ex) {
-            Logger.getLogger(FileJPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jLabel1MouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel contentPanel;
+    private javax.swing.JScrollPane scrollPanel;
     // End of variables declaration//GEN-END:variables
 }
