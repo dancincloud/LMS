@@ -44,6 +44,7 @@ public class MainJFrame extends javax.swing.JFrame {
         userProcessContainer = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         LoginJPanel = new javax.swing.JPanel();
         loginJButton = new javax.swing.JButton();
         userNameJTextField = new javax.swing.JTextField();
@@ -51,11 +52,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         loginJLabel = new javax.swing.JLabel();
-        logoutJButton = new javax.swing.JButton();
         accountTypeCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jSplitPane1.setDividerLocation(150);
 
@@ -66,9 +65,13 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Skia", 1, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(99, 148, 249));
-        jLabel3.setText("WELCOME");
+        jLabel3.setText("Learning Management System");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(280, 200, 280, 120);
+        jLabel3.setBounds(20, 230, 720, 120);
+
+        jLabel4.setText("@ Team 8");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(590, 400, 100, 16);
 
         userProcessContainer.add(jPanel1, "card2");
 
@@ -84,7 +87,7 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         LoginJPanel.add(loginJButton);
-        loginJButton.setBounds(50, 300, 92, 37);
+        loginJButton.setBounds(10, 320, 130, 37);
         LoginJPanel.add(userNameJTextField);
         userNameJTextField.setBounds(10, 170, 118, 26);
         LoginJPanel.add(passwordField);
@@ -104,16 +107,6 @@ public class MainJFrame extends javax.swing.JFrame {
         LoginJPanel.add(loginJLabel);
         loginJLabel.setBounds(132, 588, 0, 0);
 
-        logoutJButton.setText("Logout");
-        logoutJButton.setEnabled(false);
-        logoutJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutJButtonActionPerformed(evt);
-            }
-        });
-        LoginJPanel.add(logoutJButton);
-        logoutJButton.setBounds(50, 360, 92, 38);
-
         accountTypeCheckBox.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         accountTypeCheckBox.setText("I'm an instructor");
         accountTypeCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -131,23 +124,6 @@ public class MainJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logoutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutJButtonActionPerformed
-        logoutJButton.setEnabled(false);
-        userNameJTextField.setEnabled(true);
-        passwordField.setEnabled(true);
-        loginJButton.setEnabled(true);
-
-        userNameJTextField.setText("");
-        passwordField.setText("");
-
-        userProcessContainer.removeAll();
-        JPanel blankJP = new JPanel();
-        userProcessContainer.add("blank", blankJP);
-        CardLayout crdLyt = (CardLayout) userProcessContainer.getLayout();
-        crdLyt.next(userProcessContainer);
-
-    }//GEN-LAST:event_logoutJButtonActionPerformed
-
 
     private void loginJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButtonActionPerformed
 
@@ -155,11 +131,10 @@ public class MainJFrame extends javax.swing.JFrame {
         char[] passwordCharArray = passwordField.getPassword();
         String password = String.valueOf(passwordCharArray);
 
-        User user = data.authenticateUser(userName, password, isInstructor ? 1 : 0);
+        User user = User.authenticateUser(userName, password, isInstructor ? 1 : 0);
 
         if (user == null) {
-            JOptionPane.showMessageDialog(null, "Invalid credentials");
-            return;
+            JOptionPane.showMessageDialog(null, "Wrong username or wrong password");
         } else {
             Global.getInstance().login(user);
             if(user.getType() == 1){
@@ -171,11 +146,6 @@ public class MainJFrame extends javax.swing.JFrame {
                 changeContentPane(mainJPanel);
             }
         }
-
-//        loginJButton.setEnabled(false);
-//        logoutJButton.setEnabled(true);
-//        userNameJTextField.setEnabled(false);
-//        passwordField.setEnabled(false);
     }//GEN-LAST:event_loginJButtonActionPerformed
 
 
@@ -232,11 +202,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JButton loginJButton;
     private javax.swing.JLabel loginJLabel;
-    private javax.swing.JButton logoutJButton;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField userNameJTextField;
     private javax.swing.JPanel userProcessContainer;

@@ -1,10 +1,27 @@
 package model;
 
+import DBUtil.InstructorDBUtil;
+import DBUtil.StudentDBUtil;
+
 /**
  * @author Joseph Yuanhao Li
  * @date 4/27/21 21:56
  */
 public class User {
+
+    static public User authenticateUser(String username, String password, int type) {
+        if (type == 1) {
+            // search in db
+            Instructor instructor = InstructorDBUtil.selectByUsername(username);
+
+            return instructor;
+        } else {
+            // search in db
+            Student student = StudentDBUtil.selectByUsername(username);
+            return student;
+        }
+    }
+
     private String id;
     private String name;
     private String email;
