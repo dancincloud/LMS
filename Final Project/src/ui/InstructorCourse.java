@@ -207,7 +207,7 @@ public class InstructorCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_fileButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-
+        Router.getInstance(null).back(0);
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void assignmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignmentButtonActionPerformed

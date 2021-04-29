@@ -20,15 +20,13 @@ public class MainJFrame extends javax.swing.JFrame {
     //private StudentDirectory studentDirectory = new StudentDirectory();
     private Data data = new Data();
 
-    private Router router = null;
-
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
         initComponents();
         this.setSize(1024, 768);
-        router = Router.getInstance(this);
+        Router.getInstance(this);
     }
 
     /**
@@ -161,14 +159,14 @@ public class MainJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid credentials");
             return;
         } else {
-
+            Global.getInstance().login(user);
             if(user.getType() == 1){
                 // Instructor
                 InstructorHome home = new InstructorHome((Instructor) user);
-                changeContentPane(home);
+                Router.getInstance(null).go(home);
             }else{
                 MainJPanel mainJPanel = new MainJPanel(userProcessContainer, user);
-                changeContentPane(mainJPanel);
+                Router.getInstance(null).go(mainJPanel);
             }
         }
 
@@ -181,7 +179,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // change content
     public void changeContentPane(Container contentPane) {
-        router.go(contentPane);
+        Router.getInstance(null).go(contentPane);
     }
 
     private boolean isInstructor = false;

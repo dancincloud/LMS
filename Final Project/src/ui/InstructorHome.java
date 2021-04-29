@@ -162,7 +162,7 @@ public class InstructorHome extends javax.swing.JPanel {
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         // TODO add your handling code here:
-        Router.getInstance(null).back(-1);
+        Global.getInstance().logout();
     }//GEN-LAST:event_logoutButtonActionPerformed
 
 
