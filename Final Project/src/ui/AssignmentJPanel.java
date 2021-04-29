@@ -5,23 +5,15 @@
  */
 package ui;
 
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.io.IOException;
-import java.io.File;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import model.Assignment;
-import model.Assignment.AssignmentType;
-import model.AssignmentDirectory;
-import model.Course;
-import model.CourseDirectory;
-import ui.components.AssignmentCell;
 import ui.components.CourseCell;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import model.*;
+import ui.components.AssignmentCell;
 
 /**
  *
@@ -32,30 +24,35 @@ public class AssignmentJPanel extends javax.swing.JPanel {
     Course course;
     String content;
     String name;
-    AssignmentType type;
+    Assignment.AssignmentType type;
 
-    /**
-     * Creates new form FileJPanel
-     */
     public AssignmentJPanel(JPanel container, Course course) {
         initComponents();
         this.container=container;
         this.course=course;
         initAssignments(course.getAssignmentDirectory());
     }
-    
+
     private void initAssignments(AssignmentDirectory assignmentDir){
+
         contentPanel.setLayout(new GridLayout(0,2));
+
+        int cell_H = contentPanel.getWidth() * 4 / 3;
 
         for (Assignment assignment : assignmentDir){
             AssignmentCell cell = new AssignmentCell(assignment);
             contentPanel.add(cell);
-            //cell.setPreferredSize(new Dimension(contentPanel.getWidth(),contentPanel.getWidth() * 4 / 3));
+            cell.setPreferredSize(new Dimension(contentPanel.getWidth(),contentPanel.getWidth() * 4 / 3));
         }
+
+        scrollPanel.setSize(contentPanel.getWidth(), cell_H * assignmentDir.getList().size() / 2 + 1);
+
+        contentPanel.setSize(contentPanel.getWidth(), cell_H * assignmentDir.getList().size() / 2 + 1);
+
+        contentPanel.setPreferredSize(new Dimension(contentPanel.getWidth(), cell_H * assignmentDir.getList().size() / 2 + 1));
+        updateUI();
     }
-    
-    
-   
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,17 +63,11 @@ public class AssignmentJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel10 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        scrollPanel = new javax.swing.JScrollPane();
         contentPanel = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel10.setFont(new java.awt.Font("Skia", 1, 24)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(99, 148, 249));
-        jLabel10.setText("Assignment");
-
-        jLabel8.setText("—————————————————————————————————————————————————");
+        setMinimumSize(new java.awt.Dimension(1024, 768));
 
         contentPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -84,45 +75,36 @@ public class AssignmentJPanel extends javax.swing.JPanel {
         contentPanel.setLayout(contentPanelLayout);
         contentPanelLayout.setHorizontalGroup(
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 994, Short.MAX_VALUE)
         );
         contentPanelLayout.setVerticalGroup(
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 574, Short.MAX_VALUE)
+            .addGap(0, 2105, Short.MAX_VALUE)
         );
+
+        scrollPanel.setViewportView(contentPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(jLabel10))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8))))
-                .addGap(69, 69, 69))
+                .addContainerGap()
+                .addComponent(scrollPanel)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(contentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 2107, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane scrollPanel;
     // End of variables declaration//GEN-END:variables
 }

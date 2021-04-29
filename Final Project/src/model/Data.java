@@ -45,6 +45,7 @@ public class Data {
     Course c3 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
 
     Assignment a1 = new Assignment("Final Project", "a", Assignment.AssignmentType.PROJECT);
+    Assignment a2 = new Assignment("Midterm", "a", Assignment.AssignmentType.EXAM);
 
     public Data() {
         userList = new ArrayList<User>();
@@ -68,6 +69,9 @@ public class Data {
         c1assignment.add(a1);
         c2assignment.add(a1);
         c3assignment.add(a1);
+        c1assignment.add(a2);
+        c2assignment.add(a2);
+        c3assignment.add(a2);
 
         CourseDirectory cd1 = new CourseDirectory(s1courseList);
         CourseDirectory cd2 = new CourseDirectory(s2courseList);
