@@ -46,7 +46,7 @@ public class StudentHome extends javax.swing.JPanel {
         contentPanel.setLayout(new GridLayout(0,2));
 
         for (Course course : courseDir){
-            CourseCell cell = new CourseCell(course,user);
+            CourseCell cell = new CourseCell(course);
             contentPanel.add(cell);
             //cell.setPreferredSize(new Dimension(contentPanel.getWidth(),contentPanel.getWidth() * 4 / 3));
         }

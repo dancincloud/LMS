@@ -109,20 +109,41 @@ public class Data {
 
 
 
+        List<ZoomMeeting> zoomMeetings = new ArrayList<>();
+        for (int i = 0; i < 20; i++){
+            String name = DataGenerator.generateName(4,6);
+            String link = DataGenerator.generateZoom();
+            zoomMeetings.add(new ZoomMeeting("" + i, name, link));
+        }
+
+        List<File> files = new ArrayList<>();
+        for (int i = 0; i < 20; i++){
+            String name = DataGenerator.generateName(4,6);
+            String link = DataGenerator.generateFilePath(name);
+            files.add(new File("" + i, name, link));
+        }
+
+        List<Assignment> assignments = new ArrayList<>();
+        for (int i = 0; i < 20; i++){
+            String name = DataGenerator.generateName(4,6);
+            String content = DataGenerator.generateName(20, 50);
+            String link = DataGenerator.generateFilePath(name);
+            assignments.add(new Assignment("" + i, name, content, Assignment.AssignmentType.PROJECT));
+        }
+
 
         List<Course> courses = new ArrayList<>();
         for (int i = 0; i < 4; i++){
             Course course = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
-
             courses.add(course);
         }
 
         List<Student> students = new ArrayList<>();
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 20; i++){
             String id = DataGenerator.generateID();
             String name = DataGenerator.generateName(4,6);
             String email = DataGenerator.generateEmailByName(name);
-            Student student = new Student(id, name, email, name, name, 3.0);
+            Student student = new Student(id, name, email, name, name, DataGenerator.generateGPA());
 
             for (Course course : courses) {
                 student.getCoursedirectory().add(course);
@@ -131,11 +152,6 @@ public class Data {
             students.add(student);
         }
 
-        for (Course course : courses) {
-            for (Student student : students){
-                course.getStudentDirectory().add(student);
-            }
-        }
 
         instructors = new ArrayList<>();
         for(int i = 0; i < 2; i++){
@@ -146,7 +162,7 @@ public class Data {
                 id = "1";
                 name = "t";
             }
-            
+
             Instructor instructor = new Instructor(id, name, email, name, name);
 
             for (Course course : courses){
@@ -158,6 +174,25 @@ public class Data {
             System.out.println(instructor);
         }
 
+
+        // add all data to course
+        for (Course course : courses) {
+            for (Student student : students){
+                course.getStudentDirectory().add(student);
+            }
+
+            for(File file : files){
+                course.getFileDirectory().add(file);
+            }
+
+            for(Assignment assignment : assignments){
+                course.getAssignmentDirectory().add(assignment);
+            }
+
+            for (ZoomMeeting zoomMeeting : zoomMeetings){
+                course.getZoomMeetingDirectory().add(zoomMeeting);
+            }
+        }
     }
     
     public User authenticateUser(String username, String password, int type){

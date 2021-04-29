@@ -37,13 +37,22 @@ public class InstructorHome extends javax.swing.JPanel {
     private void initCourses(CourseDirectory courseDir){
         contentPanel.setLayout(new GridLayout(0,2));
 
+        int cell_H = contentPanel.getWidth() * 4 / 3;
+
         for (Course course : courseDir){
-            CourseCell cell = new CourseCell(course,user);
+            CourseCell cell = new CourseCell(course);
             contentPanel.add(cell);
-            cell.setPreferredSize(new Dimension(contentPanel.getWidth(),contentPanel.getWidth() * 4 / 3));
+            cell.setPreferredSize(new Dimension(contentPanel.getWidth(), cell_H));
         }
+
+        scrollPanel.setSize(contentPanel.getWidth(), cell_H * courseDir.getList().size() / 2 + 1);
+
+        contentPanel.setSize(contentPanel.getWidth(), cell_H * courseDir.getList().size() / 2 + 1);
+//
+        contentPanel.setPreferredSize(new Dimension(contentPanel.getWidth(), cell_H * courseDir.getList().size() / 2 + 1));
+        updateUI();
     }
-   
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,7 +85,7 @@ public class InstructorHome extends javax.swing.JPanel {
         );
         contentPanelLayout.setVerticalGroup(
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 692, Short.MAX_VALUE)
+            .addGap(0, 1996, Short.MAX_VALUE)
         );
 
         scrollPanel.setViewportView(contentPanel);
@@ -143,7 +152,7 @@ public class InstructorHome extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(line))
-                    .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(scrollPanel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -154,9 +163,9 @@ public class InstructorHome extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(line, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
-            .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 2000, Short.MAX_VALUE)
+                .addContainerGap(39, Short.MAX_VALUE))
+            .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 2127, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

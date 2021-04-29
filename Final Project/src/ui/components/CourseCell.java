@@ -10,6 +10,7 @@ import model.Course;
 import model.Student;
 import model.User;
 import ui.CourseJPanel;
+import ui.Global;
 import ui.InstructorCourse;
 import ui.Router;
 
@@ -20,17 +21,14 @@ import ui.Router;
 public class CourseCell extends javax.swing.JPanel {
 
     private Course course;
-    User user;
-
     /**
      * Creates new form CourseCell
      */
-    public CourseCell(Course course,User user) {
+    public CourseCell(Course course) {
         initComponents();
         this.course = course;
-        this.user = user;
 
-        titleLabel.setText(course.getName());
+        titleLabel.setText(course.getCourseID() + " - " + course.getName());
     }
 
     /**
@@ -125,17 +123,21 @@ public class CourseCell extends javax.swing.JPanel {
 
     private void click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_click
         // TODO add your handling code here:
-        if(user instanceof Instructor)
+        User user = Global.getInstance().getUser();
+
+        if(user.getType() == 1)
             Router.getInstance(null).go(new InstructorCourse(course));
-        else if(user instanceof Student)
+        else if(user.getType() == 0)
             Router.getInstance(null).go(new CourseJPanel(course));
     }//GEN-LAST:event_click
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(user instanceof Instructor)
+        User user = Global.getInstance().getUser();
+
+        if(user.getType() == 1)
             Router.getInstance(null).go(new InstructorCourse(course));
-        else if(user instanceof Student)
+        else if(user.getType() == 0)
             Router.getInstance(null).go(new CourseJPanel(course));
     }//GEN-LAST:event_jButton1ActionPerformed
 

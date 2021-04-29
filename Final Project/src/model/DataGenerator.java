@@ -39,4 +39,17 @@ public class DataGenerator {
     public static String generateCourseID(){
         return coursePrefix[random.nextInt(coursePrefix.length)] + (1000 + random.nextInt(8999));
     }
+
+    public static double generateGPA(){
+        double gpa = 1.0 + random.nextDouble() * 3.0;
+        return (double) Math.round(gpa * 1000) / 1000.0 ;
+    }
+
+    public static String generateFilePath(String fileName){
+        return fileName + ".ppt";
+    }
+
+    public static String generateZoom(){
+        return "https://northeastern.zoom.us/j/96811799191?pwd=UVZ5aWpGb2VwYWkrdTM4RGRoQmhoZz09&uname=Yuanhao+Li#success";
+    }
 }

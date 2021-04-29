@@ -11,9 +11,9 @@ package ui;
  * @date 4/27/21 23:18
  */
 
-import model.Course;
-import model.Student;
+import model.*;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 /**
@@ -28,7 +28,17 @@ public class InstructorCourse extends javax.swing.JPanel {
      */
     public InstructorCourse(Course course) {
         initComponents();
+
+        table.setRowHeight(40);
+        table.setEnabled(false);
+
         this.course = course;
+
+        this.nameLabel.setText(Global.getInstance().getUser().getName());
+        this.courseLabel.setText(course.getCourseID() + " - " + course.getName());
+
+        studentButtonActionPerformed(null
+        );
     }
 
     /**
@@ -156,12 +166,6 @@ public class InstructorCourse extends javax.swing.JPanel {
                         .addGap(30, 30, 30)
                         .addComponent(backButton))
                     .addGroup(SideBarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(studentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(SideBarLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(SideBarLayout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(SideBarLayout.createSequentialGroup()
@@ -169,7 +173,10 @@ public class InstructorCourse extends javax.swing.JPanel {
                         .addComponent(assignmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(SideBarLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(studentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         SideBarLayout.setVerticalGroup(
@@ -179,11 +186,11 @@ public class InstructorCourse extends javax.swing.JPanel {
                 .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(studentButton)
                 .addGap(32, 32, 32)
                 .addComponent(fileButton)
-                .addGap(30, 30, 30)
-                .addComponent(studentButton)
-                .addGap(33, 33, 33)
+                .addGap(36, 36, 36)
                 .addComponent(zoomButton)
                 .addGap(32, 32, 32)
                 .addComponent(assignmentButton)
@@ -208,6 +215,25 @@ public class InstructorCourse extends javax.swing.JPanel {
 
     private void zoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomButtonActionPerformed
 
+        List<ZoomMeeting> list = this.course.getZoomMeetingDirectory().getList();
+        Object[][] students = new Object[list.size()][4];
+
+        for(int i = 0; i < list.size(); i++){
+            ZoomMeeting s = list.get(i);
+            students[i][0] = s.getZoomMeetingID();
+            students[i][1] = s.getName();
+            students[i][2] = s.getLink();
+            students[i][3] = s.getUpdateTime();
+        }
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+                students,
+                new String [] {
+                        "id", "name", "link", "date"
+                }
+        ));
+
+
 //        java.net.URI uri = java.net.URI.create("https://applications.zoom.us/lti/rich");
 //        java.awt.Desktop dp = java.awt.Desktop.getDesktop();
 //        if(dp.isSupported(java.awt.Desktop.Action.BROWSE)){
@@ -221,24 +247,51 @@ public class InstructorCourse extends javax.swing.JPanel {
 
     private void studentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentButtonActionPerformed
         List<Student> list = this.course.getStudentDirectory().getList();
-        Object[][] students = new Object[list.size()][3];
+        Object[][] students = new Object[list.size()][4];
 
         for(int i = 0; i < list.size(); i++){
             Student s = list.get(i);
-            students[i][0] = s.getName();
-            students[i][1] = s.getEmail();
-            students[i][2] = s.getGpa();
+            students[i][0] = s.getId();
+            students[i][1] = s.getName();
+            students[i][2] = s.getEmail();
+            students[i][3] = s.getGpa();
         }
 
         table.setModel(new javax.swing.table.DefaultTableModel(
                 students,
                 new String [] {
-                        "name", "email", "GPA"
+                       "id", "name", "email", "GPA"
                 }
         ));
+
+//        DefaultTableModel studentModel = new DefaultTableModel();
+//
+//        table = new DefaultTableModel(students, new String [] {
+//                "name", "email", "GPA"
+//        }){
+//
+//        }
+
+
     }//GEN-LAST:event_studentButtonActionPerformed
 
     private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
+        List<File> list = this.course.getFileDirectory().getList();
+        Object[][] files = new Object[list.size()][3];
+
+        for(int i = 0; i < list.size(); i++){
+            File s = list.get(i);
+            files[i][0] = s.getFileID();
+            files[i][1] = s.getName();
+            files[i][2] = s.getLink();
+        }
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+                files,
+                new String [] {
+                       "id", "name", "link"
+                }
+        ));
 
     }//GEN-LAST:event_fileButtonActionPerformed
 
@@ -248,6 +301,23 @@ public class InstructorCourse extends javax.swing.JPanel {
 
     private void assignmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignmentButtonActionPerformed
         // TODO add your handling code here:
+        List<Assignment> list = this.course.getAssignmentDirectory().getList();
+        Object[][] assignments = new Object[list.size()][4];
+
+        for(int i = 0; i < list.size(); i++){
+            Assignment s = list.get(i);
+            assignments[i][0] = s.getAssignmentID();
+            assignments[i][1] = s.getName();
+            assignments[i][2] = s.getContent();
+            assignments[i][3] = s.getType();
+        }
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+                assignments,
+                new String [] {
+                        "id", "name", "content", "type"
+                }
+        ));
     }//GEN-LAST:event_assignmentButtonActionPerformed
 
 
