@@ -5,32 +5,38 @@
  */
 package ui;
 
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.io.File;
+/**
+ *
+ * @author Joseph Yuanhao Li
+ * @date 4/27/21 23:18
+ */
+
 import java.io.IOException;
+import model.*;
+
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
-import model.Course;
-import model.Student;
 
 /**
  *
  * @author Ke
  */
 public class StudentCourse extends javax.swing.JPanel {
-    Course course;
-    JPanel userProcessContainer;
+    private Course course;
 
     /**
      * Creates new form CourseJPanel
      */
-    public StudentCourse(/*JPanel userProcessContainer,*/Course course) {
+    public StudentCourse(Course course) {
         initComponents();
+
         this.course = course;
-        this.userProcessContainer=userProcessContainer;
-        jLabel1.setText(course.getCourseID());
+
+        this.nameLabel.setText(Global.getInstance().getUser().getName());
+        this.courseLabel.setText(course.getCourseID() + " - " + course.getName());
+
     }
 
     /**
@@ -44,129 +50,137 @@ public class StudentCourse extends javax.swing.JPanel {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         container = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        backJButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        courseLabel = new javax.swing.JLabel();
+        SideBar = new javax.swing.JPanel();
+        nameLabel = new javax.swing.JLabel();
+        backButton = new javax.swing.JButton();
+        fileButton = new javax.swing.JButton();
+        studentButton = new javax.swing.JButton();
+        zoomButton = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        assignmentButton = new javax.swing.JButton();
 
         container.setBackground(new java.awt.Color(255, 255, 255));
+
+        courseLabel.setFont(new java.awt.Font("Skia", 3, 48)); // NOI18N
+        courseLabel.setText("Course Name");
 
         javax.swing.GroupLayout containerLayout = new javax.swing.GroupLayout(container);
         container.setLayout(containerLayout);
         containerLayout.setHorizontalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 781, Short.MAX_VALUE)
+            .addGroup(containerLayout.createSequentialGroup()
+                .addGap(216, 216, 216)
+                .addComponent(courseLabel)
+                .addContainerGap(799, Short.MAX_VALUE))
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 666, Short.MAX_VALUE)
+            .addGroup(containerLayout.createSequentialGroup()
+                .addGap(297, 297, 297)
+                .addComponent(courseLabel)
+                .addContainerGap(354, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(container);
 
-        jPanel1.setBackground(new java.awt.Color(33, 135, 251));
+        SideBar.setBackground(new java.awt.Color(33, 135, 251));
+        SideBar.setPreferredSize(new java.awt.Dimension(160, 666));
 
-        backJButton.setText("<< Back");
-        backJButton.addActionListener(new java.awt.event.ActionListener() {
+        nameLabel.setFont(new java.awt.Font("Skia", 1, 18)); // NOI18N
+        nameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        nameLabel.setText("name");
+
+        backButton.setText("<< Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backJButtonActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(51, 153, 255));
-        jButton1.setText("File");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        fileButton.setBackground(new java.awt.Color(51, 153, 255));
+        fileButton.setText("File");
+        fileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                fileButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(51, 153, 255));
-        jButton2.setText("Student");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        studentButton.setBackground(new java.awt.Color(51, 153, 255));
+        studentButton.setText("Students");
+        studentButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                studentButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(51, 153, 255));
-        jButton3.setText("Zoom Meeting");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        zoomButton.setBackground(new java.awt.Color(51, 153, 255));
+        zoomButton.setLabel("Zoom meeting");
+        zoomButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                zoomButtonActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Skia", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-
-        jButton4.setBackground(new java.awt.Color(51, 153, 255));
-        jButton4.setText("Assignment");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        assignmentButton.setBackground(new java.awt.Color(51, 153, 255));
+        assignmentButton.setText("Assignment");
+        assignmentButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                assignmentButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(backJButton))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 5, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout SideBarLayout = new javax.swing.GroupLayout(SideBar);
+        SideBar.setLayout(SideBarLayout);
+        SideBarLayout.setHorizontalGroup(
+            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addGroup(SideBarLayout.createSequentialGroup()
+                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SideBarLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(backButton))
+                    .addGroup(SideBarLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(SideBarLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(assignmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(SideBarLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(studentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addComponent(jButton1)
-                .addGap(41, 41, 41)
-                .addComponent(jButton4)
-                .addGap(37, 37, 37)
-                .addComponent(jButton2)
-                .addGap(42, 42, 42)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
-                .addComponent(backJButton)
+        SideBarLayout.setVerticalGroup(
+            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SideBarLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(studentButton)
+                .addGap(32, 32, 32)
+                .addComponent(fileButton)
+                .addGap(36, 36, 36)
+                .addComponent(zoomButton)
+                .addGap(32, 32, 32)
+                .addComponent(assignmentButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                .addComponent(backButton)
                 .addGap(47, 47, 47))
         );
 
-        jSplitPane1.setLeftComponent(jPanel1);
+        jSplitPane1.setLeftComponent(SideBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1504, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,22 +188,7 @@ public class StudentCourse extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void backJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backJButtonActionPerformed
-        Router.getInstance(null).back(0);
-    }//GEN-LAST:event_backJButtonActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        FileJPanel fileJPanel = new FileJPanel(container,course);
-        jSplitPane1.setRightComponent(fileJPanel);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        UserJPanel studentJPanel = new UserJPanel(container,course);
-        jSplitPane1.setRightComponent(studentJPanel);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
+    private void zoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomButtonActionPerformed
         java.net.URI uri = java.net.URI.create("https://applications.zoom.us/lti/rich");
         java.awt.Desktop dp = java.awt.Desktop.getDesktop();
         if(dp.isSupported(java.awt.Desktop.Action.BROWSE)){
@@ -199,23 +198,39 @@ public class StudentCourse extends javax.swing.JPanel {
                 Logger.getLogger(StudentCourse.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_zoomButtonActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void studentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentButtonActionPerformed
+        UserJPanel studentJPanel = new UserJPanel(container,course);
+        jSplitPane1.setRightComponent(studentJPanel);
+    }//GEN-LAST:event_studentButtonActionPerformed
+
+    private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
+        FileJPanel fileJPanel = new FileJPanel(container,course);
+        jSplitPane1.setRightComponent(fileJPanel);
+    }//GEN-LAST:event_fileButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        Router.getInstance(null).back(0);
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    private void assignmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignmentButtonActionPerformed
         AssignmentJPanel assignmentJPanel = new AssignmentJPanel(container,course);
         jSplitPane1.setRightComponent(assignmentJPanel);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_assignmentButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backJButton;
+    private javax.swing.JPanel SideBar;
+    private javax.swing.JButton assignmentButton;
+    private javax.swing.JButton backButton;
     private javax.swing.JPanel container;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel courseLabel;
+    private javax.swing.JButton fileButton;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton studentButton;
+    private javax.swing.JButton zoomButton;
     // End of variables declaration//GEN-END:variables
 }
