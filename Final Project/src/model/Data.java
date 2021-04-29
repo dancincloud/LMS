@@ -143,7 +143,7 @@ public class Data {
 
 
         List<Course> courses = new ArrayList<>();
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 5; i++){
             Course course = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
             courses.add(course);
         }
