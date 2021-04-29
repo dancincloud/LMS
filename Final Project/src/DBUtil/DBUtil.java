@@ -97,6 +97,10 @@ public class DBUtil {
     }
 
     public static String mergeFields(List<String> fields) {
+        if (fields == null || fields.size() == 0) {
+            return null;
+        }
+
         StringJoiner joinFileds = new StringJoiner("|");
         for (String field : fields) {
             joinFileds.add(field);
