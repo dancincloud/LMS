@@ -40,9 +40,9 @@ public class Data {
     File f3 = new File("University-Example.ppt");
     File f4 = new File("Syntax.docx");
 
-    Course c1 = new Course("OOD", "CSYE6200");
-    Course c2 = new Course("Application Engineer", "INFO5100");
-    Course c3 = new Course("Career Management", "ENCP6000");
+    Course c1 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
+    Course c2 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
+    Course c3 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
 
     Assignment a1 = new Assignment("Final Project", "a", Assignment.AssignmentType.PROJECT);
 
