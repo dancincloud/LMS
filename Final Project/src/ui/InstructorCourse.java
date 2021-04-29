@@ -12,6 +12,9 @@ package ui;
  */
 
 import model.Course;
+import model.Student;
+
+import java.util.List;
 
 /**
  *
@@ -40,7 +43,9 @@ public class InstructorCourse extends javax.swing.JPanel {
         jSplitPane1 = new javax.swing.JSplitPane();
         container = new javax.swing.JPanel();
         courseLabel = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
+        line = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
         SideBar = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
@@ -55,16 +60,30 @@ public class InstructorCourse extends javax.swing.JPanel {
         courseLabel.setFont(new java.awt.Font("Skia", 1, 24)); // NOI18N
         courseLabel.setText("Course Name");
 
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(table);
+
         javax.swing.GroupLayout containerLayout = new javax.swing.GroupLayout(container);
         container.setLayout(containerLayout);
         containerLayout.setHorizontalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(containerLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(courseLabel)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(100, Short.MAX_VALUE))
+                    .addComponent(line, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap(589, Short.MAX_VALUE))
         );
         containerLayout.setVerticalGroup(
             containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,8 +91,10 @@ public class InstructorCourse extends javax.swing.JPanel {
                 .addGap(34, 34, 34)
                 .addComponent(courseLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(627, Short.MAX_VALUE))
+                .addComponent(line, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(container);
@@ -199,7 +220,22 @@ public class InstructorCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_zoomButtonActionPerformed
 
     private void studentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentButtonActionPerformed
+        List<Student> list = this.course.getStudentDirectory().getList();
+        Object[][] students = new Object[list.size()][3];
 
+        for(int i = 0; i < list.size(); i++){
+            Student s = list.get(i);
+            students[i][0] = s.getName();
+            students[i][1] = s.getEmail();
+            students[i][2] = s.getGpa();
+        }
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+                students,
+                new String [] {
+                        "name", "email", "GPA"
+                }
+        ));
     }//GEN-LAST:event_studentButtonActionPerformed
 
     private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
@@ -222,11 +258,13 @@ public class InstructorCourse extends javax.swing.JPanel {
     private javax.swing.JPanel container;
     private javax.swing.JLabel courseLabel;
     private javax.swing.JButton fileButton;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSeparator line;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton studentButton;
+    private javax.swing.JTable table;
     private javax.swing.JButton zoomButton;
     // End of variables declaration//GEN-END:variables
 }

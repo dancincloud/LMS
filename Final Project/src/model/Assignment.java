@@ -94,7 +94,7 @@ public class Assignment {
     }
 
     public Assignment(String name, String content, AssignmentType type) {
-        this.assignmentID = MockDataGenerator.generateID();
+        this.assignmentID = DataGenerator.generateID();
         this.name = name;
         this.content = content;
         this.type = type;

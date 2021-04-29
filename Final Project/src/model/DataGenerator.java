@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -8,7 +9,7 @@ import java.util.UUID;
  * @author Joseph Yuanhao Li
  * @date 4/27/21 23:18
  */
-public class MockDataGenerator {
+public class DataGenerator {
     public static String generateName(int min, int max) {
         char[] chars;
         int nameLength = (int) (Math.random() * (max - min + 1)) + min;
@@ -29,5 +30,13 @@ public class MockDataGenerator {
         String str = uuid.toString();
         String uuidStr=str.replace("-", "");
         return uuidStr;
+    }
+
+    private static Random random = new Random();
+
+    private static String[] coursePrefix = new String[]{"INFO", "CSYE", "ENPC"};
+
+    public static String generateCourseID(){
+        return coursePrefix[random.nextInt(coursePrefix.length)] + (1000 + random.nextInt(8999));
     }
 }

@@ -108,19 +108,50 @@ public class Data {
         students.add(s2);
 
 
+
+
+        List<Course> courses = new ArrayList<>();
+        for (int i = 0; i < 4; i++){
+            Course course = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
+
+            courses.add(course);
+        }
+
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < 10; i++){
+            String id = DataGenerator.generateID();
+            String name = DataGenerator.generateName(4,6);
+            String email = DataGenerator.generateEmailByName(name);
+            Student student = new Student(id, name, email, name, name, 3.0);
+
+            for (Course course : courses) {
+                student.getCoursedirectory().add(course);
+            }
+
+            students.add(student);
+        }
+
+        for (Course course : courses) {
+            for (Student student : students){
+                course.getStudentDirectory().add(student);
+            }
+        }
+
         instructors = new ArrayList<>();
         for(int i = 0; i < 2; i++){
-            String id = MockDataGenerator.generateID();
-            String name = MockDataGenerator.generateName(4,6);
-            String email = MockDataGenerator.generateEmailByName(name);
+            String id = DataGenerator.generateID();
+            String name = DataGenerator.generateName(4,6);
+            String email = DataGenerator.generateEmailByName(name);
             if(i == 0){
+                id = "1";
                 name = "t";
             }
             
             Instructor instructor = new Instructor(id, name, email, name, name);
-            instructor.addCourse(c1);
-            instructor.addCourse(c2);
-            instructor.addCourse(c3);
+
+            for (Course course : courses){
+                instructor.addCourse(course);
+            }
 
             instructors.add(instructor);
 

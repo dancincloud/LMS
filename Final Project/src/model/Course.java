@@ -23,7 +23,7 @@ public class Course {
     }
 
     public Course(String name, String instructorID) {
-        this.courseID = MockDataGenerator.generateID();
+        this.courseID = DataGenerator.generateID();
         this.name = name;
         this.instructorID = instructorID;
     }
@@ -51,6 +51,7 @@ public class Course {
     }
 
     public ZoomMeetingDirectory getZoomMeetingDirectory() {
+        if(zoomMeetingDirectory == null) zoomMeetingDirectory = new ZoomMeetingDirectory();
         return zoomMeetingDirectory;
     }
 
@@ -59,6 +60,7 @@ public class Course {
     }
 
     public RecordDirectory getRecordDirectory() {
+        if(recordDirectory == null) recordDirectory = new RecordDirectory();
         return recordDirectory;
     }
 
@@ -67,6 +69,7 @@ public class Course {
     }
 
     public AssignmentDirectory getAssignmentDirectory() {
+        if(assignmentDirectory == null) assignmentDirectory = new AssignmentDirectory();
         return assignmentDirectory;
     }
 
@@ -75,6 +78,8 @@ public class Course {
     }
 
     public FileDirectory getFileDirectory() {
+        if(fileDirectory == null) fileDirectory = new FileDirectory();
+
         return fileDirectory;
     }
 
@@ -83,6 +88,7 @@ public class Course {
     }
 
     public StudentDirectory getStudentDirectory() {
+        if(studentDirectory == null) studentDirectory = new StudentDirectory();
         return studentDirectory;
     }
 

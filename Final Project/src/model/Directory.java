@@ -19,6 +19,7 @@ public class Directory<T> implements Iterable<T>{
     }
 
     public List<T> getList() {
+        if(list == null) list = new ArrayList<>();
         return list;
     }
 
