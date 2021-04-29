@@ -245,6 +245,43 @@ public class InstructorDBUtil {
         return null;
     }
 
+    public static Instructor selectByUsername(String username) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "SELECT * from Instructor where username = ?";
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.setString(1, username);
+            ResultSet resultSet = stat.executeQuery();
+
+            if (resultSet.next()){
+                String instructorID = resultSet.getString("instructorID");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                Instructor instructor = new Instructor(instructorID, name, email, username, password);
+
+                if (resultSet.getString("courseDirectory") != null) {
+                    CourseDirectory courseDirectory = new CourseDirectory(CourseDBUtil.select(Arrays.asList(resultSet.getString("courseDirectory").split("\\|"))));
+                    instructor.setCoursedirectory(courseDirectory);
+                }
+
+                instructor.setCreateTime(resultSet.getLong("createTime"));
+                instructor.setUpdateTime(resultSet.getLong("updateTime"));
+
+                DBConnection.closeDB(conn, stat, resultSet);
+                return instructor;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static List<Instructor> select(List<String> instructorIDs) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor where instructorID = ?";
