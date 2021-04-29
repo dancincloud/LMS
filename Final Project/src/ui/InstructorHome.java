@@ -44,9 +44,6 @@ public class InstructorHome extends javax.swing.JPanel {
             panel1.add(cell);
             
         }
-
-
-        
     }
 
 

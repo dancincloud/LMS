@@ -1,5 +1,8 @@
 package model;
 
+import DBUtil.StudentDBUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,13 +93,14 @@ public class Course {
     }
 
     public StudentDirectory getStudentDirectory() {
-        if(studentDirectory == null) studentDirectory = new StudentDirectory();
-        return studentDirectory;
+        return new StudentDirectory(StudentDBUtil.select(studentIDs));
+//        if(studentDirectory == null) studentDirectory = new StudentDirectory();
+//        return studentDirectory;
     }
 
-    public void setStudentDirectory(StudentDirectory studentDirectory) {
-        this.studentDirectory = studentDirectory;
-    }
+//    public void setStudentDirectory(StudentDirectory studentDirectory) {
+//        this.studentDirectory = studentDirectory;
+//    }
 
     public String getInstructorID() {
         return instructorID;
@@ -123,6 +127,8 @@ public class Course {
     }
 
     public List<String> getStudentIDs() {
+        if(studentIDs == null) studentIDs = new ArrayList<>();
+
         return studentIDs;
     }
 

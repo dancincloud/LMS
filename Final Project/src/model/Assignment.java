@@ -62,7 +62,7 @@ public class Assignment {
     }
 
     public enum AssignmentType{
-        PROJECT("Project"),QUIZ("Quiz"),EXAM("Exam");
+        PROJECT("PROJECT"),QUIZ("QUIZ"),EXAM("EXAM");
         
         private String value;
         

@@ -1,5 +1,8 @@
 package model;
 
+import DBUtil.CourseDBUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,15 +48,17 @@ public class Student extends User {
     }
 
     public CourseDirectory getCoursedirectory() {
-        if(coursedirectory == null) coursedirectory = new CourseDirectory();
-        return coursedirectory;
+        return new CourseDirectory(CourseDBUtil.select(courseIDs));
+//        if(coursedirectory == null) coursedirectory = new CourseDirectory();
+//        return coursedirectory;
     }
 
-    public void setCoursedirectory(CourseDirectory coursedirectory) {
-        this.coursedirectory = coursedirectory;
-    }
+//    public void setCoursedirectory(CourseDirectory coursedirectory) {
+//        this.coursedirectory = coursedirectory;
+//    }
 
     public List<String> getCourseIDs() {
+        if(courseIDs == null) courseIDs = new ArrayList<>();
         return courseIDs;
     }
 

@@ -5,9 +5,7 @@
  */
 package model;
 
-import DBUtil.CourseDBUtil;
-import DBUtil.InstructorDBUtil;
-import DBUtil.StudentDBUtil;
+import DBUtil.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,174 +14,26 @@ import java.util.List;
  * @author Ke
  */
 public class Data {
-    private List<User> userList;
-    private List<Student> c1userList;
-    private List<Student> c2userList;
-    private List<Student> c3userList;
-
-    private List<Course> s1courseList;
-    private List<Course> s2courseList;
-
-    private List<File> c1fileList;
-    private List<File> c2fileList;
-    private List<File> c3fileList;
-
-    private List<Instructor> instructors;
-    private List<Student> students;
-
-    private List<Assignment> c1assignment;
-    private List<Assignment> c2assignment;
-    private List<Assignment> c3assignment;
-
-    File f1 = new File("JavaDataTypes.ppt");
-    File f2 = new File("JavaClassSyntax.ppt");
-    File f3 = new File("University-Example.ppt");
-    File f4 = new File("Syntax.docx");
-
-    Course c1 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
-    Course c2 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
-    Course c3 = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4,8), "1");
-
-    Assignment a1 = new Assignment("Final Project", "CSYE6200 Factory Assignment\n" +
-"\n" +
-" Take the explosion work (of your own): ExplosionAPI super class API specifying a single void explode() method, Derived classes of GunShot and Grenade implementing ExplosionAPI\n" +
-"Create and use Simple Factory class to create all derived objects;\n" +
-"Create and use GoF Factor Pattern classes (two) to create derived objects (two): this requires an ExplosionFactoryAPI super class so each GoF Factory Pattern class can be derived from it.\n" +
-"20 POINTS DEDUCTION IF iNCORRECT Submission: Submit ON TIME your entire eclipse workspace (single .zip file) ", Assignment.AssignmentType.PROJECT);
-    Assignment a2 = new Assignment("Midterm", "Design a Person class with the following attributes:\n" +
-"1. Person ID\n" +
-"2. Age\n" +
-"3. First Name\n" +
-"4. Last Name\n" +
-"5. Description\n" +
-"AND with AT LEAST the following methods:\n" +
-"6. A non-static toString() object instance method to return a String describing the object state (i.e. the values of all the data members associated with this object)\n" +
-"7. A static Demo() method which used for demonstrating the use of this class.", Assignment.AssignmentType.EXAM);
-
     public Data() {
-        userList = new ArrayList<User>();
+        DBIntializer.main();
 
-        c1userList = new ArrayList<Student>();
-        c2userList = new ArrayList<Student>();
-        c3userList = new ArrayList<Student>();
-
-        c1assignment = new ArrayList<Assignment>();
-        c2assignment = new ArrayList<Assignment>();
-        c3assignment = new ArrayList<Assignment>();
-
-        s1courseList = new ArrayList<Course>();
-        s2courseList = new ArrayList<Course>();
-
-        s1courseList.add(c1);
-        s1courseList.add(c2);
-        s2courseList.add(c1);
-        s2courseList.add(c3);
-
-        c1assignment.add(a1);
-        c2assignment.add(a1);
-        c3assignment.add(a1);
-        c1assignment.add(a2);
-        c2assignment.add(a2);
-        c3assignment.add(a2);
-
-        CourseDirectory cd1 = new CourseDirectory(s1courseList);
-        CourseDirectory cd2 = new CourseDirectory(s2courseList);
-
-        c1fileList = new ArrayList<File>();
-        c2fileList = new ArrayList<File>();
-        c3fileList = new ArrayList<File>();
-
-        c1fileList.add(f1);
-        c1fileList.add(f2);
-        c2fileList.add(f3);
-        c3fileList.add(f4);
-
-        FileDirectory c1fd = new FileDirectory(c1fileList);
-        FileDirectory c2fd = new FileDirectory(c2fileList);
-        FileDirectory c3fd = new FileDirectory(c3fileList);
-
-        AssignmentDirectory ad1 = new AssignmentDirectory(c1assignment);
-        AssignmentDirectory ad2 = new AssignmentDirectory(c2assignment);
-        AssignmentDirectory ad3 = new AssignmentDirectory(c3assignment);
-
-        Student s1 = new Student("0001", "Alaric", 4.5, "ke.zh@northeastern.edu", cd1, "s1", "s1");
-        Student s2 = new Student("0002", "Joan", 4.8, "joan@northeastern.edu", cd2, "s2", "s2");
-
-        userList.add(s1);
-        userList.add(s2);
-
-        c1userList.add(s1);
-        c1userList.add(s2);
-        c2userList.add(s1);
-        c3userList.add(s2);
-
-        StudentDirectory c1sd = new StudentDirectory(c1userList);
-        StudentDirectory c2sd = new StudentDirectory(c2userList);
-        StudentDirectory c3sd = new StudentDirectory(c3userList);
-
-        c1.setStudentDirectory(c1sd);
-        c2.setStudentDirectory(c2sd);
-        c3.setStudentDirectory(c3sd);
-
-        c1.setFileDirectory(c1fd);
-        c2.setFileDirectory(c2fd);
-        c3.setFileDirectory(c3fd);
-
-        c1.setAssignmentDirectory(ad1);
-        c2.setAssignmentDirectory(ad2);
-        c3.setAssignmentDirectory(ad3);
-
-        students = new ArrayList<>();
-        students.add(s1);
-        students.add(s2);
-
-
-        List<ZoomMeeting> zoomMeetings = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            String name = DataGenerator.generateName(4, 6);
-            String link = DataGenerator.generateZoom();
-            zoomMeetings.add(new ZoomMeeting("" + i, name, link));
-        }
-
-        List<File> files = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            String name = DataGenerator.generateName(4, 6);
-            String link = DataGenerator.generateFilePath(name);
-            files.add(new File("" + i, name, link));
-        }
-
-        List<Assignment> assignments = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            String name = DataGenerator.generateName(4, 6);
-            String content = DataGenerator.generateName(20, 50);
-            String link = DataGenerator.generateFilePath(name);
-            assignments.add(new Assignment("" + i, name, content, Assignment.AssignmentType.PROJECT));
-        }
-
-
-        List<Course> courses = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Course course = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4, 8), "1");
-            courses.add(course);
-        }
-
+        List<String> studentIDs = new ArrayList<>();
         List<Student> students = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            String id = DataGenerator.generateID();
+            String id = "" + (i + 1);
             String name = DataGenerator.generateName(4, 6);
             String email = DataGenerator.generateEmailByName(name);
+            if (i == 0) {
+                id = "1";
+                name = "s";
+            }
             Student student = new Student(id, name, email, name, name, DataGenerator.generateGPA());
 
-            for (Course course : courses) {
-                student.getCoursedirectory().add(course);
-            }
-
             students.add(student);
-            StudentDBUtil.add(student);
+            studentIDs.add(student.getId());
         }
 
-
-        instructors = new ArrayList<>();
+        List<Instructor> instructors = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             String id = DataGenerator.generateID();
             String name = DataGenerator.generateName(4, 6);
@@ -195,80 +45,123 @@ public class Data {
 
             Instructor instructor = new Instructor(id, name, email, name, name);
 
-            for (Course course : courses) {
-                instructor.addCourse(course);
-            }
-
             instructors.add(instructor);
-            InstructorDBUtil.add(instructor);
         }
 
 
-        // add all data to course
-        for (Course course : courses) {
-            for (Student student : students) {
-                course.getStudentDirectory().add(student);
-            }
+        List<ZoomMeeting> zoomMeetings = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            String name = DataGenerator.generateName(4, 6);
+            String link = DataGenerator.generateZoom();
+            ZoomMeeting zoomMeeting = new ZoomMeeting("" + i, name, link);
+            zoomMeetings.add(zoomMeeting);
+            ZoomMeetingDBUtil.add(zoomMeeting);
+        }
 
-            for (File file : files) {
-                course.getFileDirectory().add(file);
-            }
 
-            for (Assignment assignment : assignments) {
-                course.getAssignmentDirectory().add(assignment);
-            }
 
-            for (ZoomMeeting zoomMeeting : zoomMeetings) {
-                course.getZoomMeetingDirectory().add(zoomMeeting);
-            }
+        List<File> files = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            String name = DataGenerator.generateName(4, 6);
+            String link = DataGenerator.generateFilePath(name);
+            File file = new File("" + i, name, link);
+            files.add(file);
+            FileDBUtil.add(file);
+        }
 
+
+        List<Assignment> assignments = new ArrayList<>();
+//        for (int i = 0; i < 20; i++) {
+//            String name = DataGenerator.generateName(4, 6);
+//            String content = DataGenerator.generateName(20, 50);
+//            String link = DataGenerator.generateFilePath(name);
+//            assignments.add(new Assignment("" + i, name, content, Assignment.AssignmentType.PROJECT));
+//        }
+        assignments.add(new Assignment("Final Project", "CSYE6200 Factory Assignment\n" +
+                "\n" +
+                " Take the explosion work (of your own): ExplosionAPI super class API specifying a single void explode() method, Derived classes of GunShot and Grenade implementing ExplosionAPI\n" +
+                "Create and use Simple Factory class to create all derived objects;\n" +
+                "Create and use GoF Factor Pattern classes (two) to create derived objects (two): this requires an ExplosionFactoryAPI super class so each GoF Factory Pattern class can be derived from it.\n" +
+                "20 POINTS DEDUCTION IF iNCORRECT Submission: Submit ON TIME your entire eclipse workspace (single .zip file) ", Assignment.AssignmentType.PROJECT)
+        );
+        assignments.add(new Assignment("Midterm", "Design a Person class with the following attributes:\n" +
+                "1. Person ID\n" +
+                "2. Age\n" +
+                "3. First Name\n" +
+                "4. Last Name\n" +
+                "5. Description\n" +
+                "AND with AT LEAST the following methods:\n" +
+                "6. A non-static toString() object instance method to return a String describing the object state (i.e. the values of all the data members associated with this object)\n" +
+                "7. A static Demo() method which used for demonstrating the use of this class.", Assignment.AssignmentType.EXAM));
+        AssignmentDBUtil.add(assignments.get(0));
+        AssignmentDBUtil.add(assignments.get(1));
+
+
+        List<String> courseIDs = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Course course = new Course(DataGenerator.generateCourseID(), DataGenerator.generateName(4, 8), "1");
+            course.setAssignmentDirectory(new AssignmentDirectory(assignments));
+            course.setFileDirectory(new FileDirectory(files));
+            course.setZoomMeetingDirectory(new ZoomMeetingDirectory(zoomMeetings));
+            course.setInstructorID("1");
+            courses.add(course);
+            course.setStudentIDs(studentIDs);
             CourseDBUtil.add(course);
+
+            courseIDs.add(course.getCourseID());
+        }
+
+
+
+        for(Student student : students){
+            student.setCourseIDs(courseIDs);
+            StudentDBUtil.add(student);
+        }
+
+
+
+        for(Instructor instructor : instructors){
+           for(Course course : courses){
+               if (instructor.getId().equals(course.getInstructorID())){
+                   instructor.getCourseIDs().add(course.getCourseID());
+               }
+           }
+            InstructorDBUtil.add(instructor);
         }
     }
 
     public User authenticateUser(String username, String password, int type) {
         if (type == 1) {
             // search in db
-            try {
+            Instructor instructor = InstructorDBUtil.selectByUsername(username);
 
-                List<Instructor> list = InstructorDBUtil.selectAll();
-                for (Instructor instructor : list) {
-                    if (instructor.getUsername().equals(username) && instructor.getPassword().equals(password)) {
-                        return instructor;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // test
-            for (Instructor instructor : instructors) {
-                if (instructor.getUsername().equals(username) && instructor.getPassword().equals(password)) {
-                    return instructor;
-                }
-            }
-            return null;
+            return instructor;
         } else {
             // search in db
-            try {
-                List<Student> list = StudentDBUtil.selectAll();
-                for (Student student : list) {
-                    if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
-                        return student;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            Student student = StudentDBUtil.selectByUsername(username);
+
+            return student;
+
+//            try {
+//                List<Student> list = StudentDBUtil.selectAll();
+//                for (Student student : list) {
+//                    if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
+//                        return student;
+//                    }
+//                }
+//            } catch (Exception e) {
+//                System.out.println(e);
+//            }
 
 
-            // test
-            for (Student student : students) {
-                if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
-                    return student;
-                }
-            }
-            return null;
+//            // test
+//            for (Student student : students) {
+//                if (student.getUsername().equals(username) && student.getPassword().equals(password)) {
+//                    return student;
+//                }
+//            }
+//            return null;
         }
     }
 }
