@@ -48,7 +48,6 @@ public class StudentRegister extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        backButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -75,13 +74,6 @@ public class StudentRegister extends javax.swing.JPanel {
             }
         });
 
-        backButton.setText("<< Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("Name:");
 
         jLabel2.setText("Email:");
@@ -90,11 +82,14 @@ public class StudentRegister extends javax.swing.JPanel {
 
         jLabel4.setText("RePassword:");
 
+        txtPassword.setToolTipText("*");
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);
             }
         });
+
+        txtRepassword.setToolTipText("*");
 
         jLabel5.setText("UserName:");
 
@@ -111,9 +106,6 @@ public class StudentRegister extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
                                 .addComponent(jLabel8))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(349, 349, 349)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,9 +134,7 @@ public class StudentRegister extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(backButton)
-                .addGap(5, 5, 5)
+                .addGap(45, 45, 45)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -199,16 +189,14 @@ public class StudentRegister extends javax.swing.JPanel {
         }
         Student student = new Student(DataGenerator.generateID(),name,email,user,password);
         StudentDBUtil.add(student);
+        JOptionPane.showMessageDialog(null, "Registered!");
 
         txtName.setText("");
         txtRepassword.setText(""); 
         txtPassword.setText("");
-        txtEmail.setText("");    
+        txtEmail.setText("");  
+        txtUser.setText(""); 
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        Router.getInstance(null).back(0);
-    }//GEN-LAST:event_backButtonActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
@@ -216,7 +204,6 @@ public class StudentRegister extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
