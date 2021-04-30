@@ -65,4 +65,9 @@ public class Student extends User {
     public void setCourseIDs(List<String> courseIDs) {
         this.courseIDs = courseIDs;
     }
+
+    public Student(String id, String name, String email, String username, String password) {
+        super(id, name, email, username, password);
+    }
+    
 }
