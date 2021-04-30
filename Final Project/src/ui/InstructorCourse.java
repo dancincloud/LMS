@@ -10,8 +10,7 @@ package ui;
  * @date 4/27/21 23:18
  */
 
-import DBUtil.CourseDBUtil;
-import DBUtil.StudentDBUtil;
+import DBUtil.*;
 import model.*;
 
 import javax.swing.*;
@@ -580,6 +579,7 @@ public class InstructorCourse extends javax.swing.JPanel {
 
                 course.getFileDirectory().add(file);
 
+                FileDBUtil.add(file);
                 CourseDBUtil.update(course);
             }
 
@@ -594,6 +594,7 @@ public class InstructorCourse extends javax.swing.JPanel {
 
                 course.getZoomMeetingDirectory().add(zoomMeeting);
 
+                ZoomMeetingDBUtil.add(zoomMeeting);
                 CourseDBUtil.update(course);
             }
             break;
@@ -606,6 +607,7 @@ public class InstructorCourse extends javax.swing.JPanel {
 
                 course.getAssignmentDirectory().add(assignment);
 
+                AssignmentDBUtil.add(assignment);
                 CourseDBUtil.update(course);
             }
 
