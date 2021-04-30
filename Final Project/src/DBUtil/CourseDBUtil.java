@@ -388,6 +388,15 @@ public class CourseDBUtil {
     }
 
     public static List<Course> select(List<String> courseIDs) {
+
+        if (courseIDs == null) {
+            return new ArrayList<>();
+        }
+
+        if (courseIDs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Course where courseID = ?";
         PreparedStatement stat = null;

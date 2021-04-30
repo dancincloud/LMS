@@ -230,6 +230,15 @@ public class ZoomMeetingDBUtil {
     }
 
     public static List<ZoomMeeting> select(List<String> zoomMeetingIDs) {
+
+        if (zoomMeetingIDs == null) {
+            return new ArrayList<>();
+        }
+
+        if (zoomMeetingIDs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from ZoomMeeting where zoomMeetingID = ?";
         PreparedStatement stat = null;

@@ -287,7 +287,9 @@ public class StudentDBUtil {
                 double gpa = resultSet.getDouble("gpa");
                 Student student = new Student(studentID, name, email, username, password, gpa);
 
-                student.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
+                if (resultSet.getString("courseIDs") != null) {
+                    student.setCourseIDs(Arrays.asList(resultSet.getString("courseIDs").split("\\|")));
+                }
 
                 student.setCreateTime(resultSet.getLong("createTime"));
                 student.setUpdateTime(resultSet.getLong("updateTime"));
@@ -304,6 +306,15 @@ public class StudentDBUtil {
     }
 
     public static List<Student> select(List<String> studentIDs) {
+
+        if (studentIDs == null) {
+            return new ArrayList<>();
+        }
+
+        if (studentIDs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         if(studentIDs == null) return new ArrayList<>();
 
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);

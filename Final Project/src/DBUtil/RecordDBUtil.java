@@ -229,6 +229,15 @@ public class RecordDBUtil {
     }
 
     public static List<Record> select(List<String> recordIDs) {
+
+        if (recordIDs == null) {
+            return new ArrayList<>();
+        }
+
+        if (recordIDs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Record where name = ?";
         PreparedStatement stat = null;
