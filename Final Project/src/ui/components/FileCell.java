@@ -119,7 +119,7 @@ public class FileCell extends javax.swing.JPanel {
     private void click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_click
         int i = 1;
         if(i<=3){
-            java.io.File file = new java.io.File("src\\resource\\"+i+".ppt");
+            java.io.File file = new java.io.File(".\\Final Project\\src\\resource\\"+i+".ppt");
             i++;
             try {
             java.awt.Desktop.getDesktop().open(file);
@@ -129,7 +129,7 @@ public class FileCell extends javax.swing.JPanel {
         }
         else {
             i =1;
-            java.io.File file = new java.io.File("src\\resource\\"+i+".ppt");
+            java.io.File file = new java.io.File(".\\Final Project\\src\\resource\\"+i+".ppt");
             i++;
             try {
             java.awt.Desktop.getDesktop().open(file);
