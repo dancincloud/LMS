@@ -141,6 +141,7 @@ public class UploadAssignment extends javax.swing.JPanel {
             if(!file1.exists()){
                 try {
                         file1.createNewFile();
+                        JOptionPane.showMessageDialog(this, "Uploaded.");
                         } catch (IOException e) {
                         e.printStackTrace();
                         }
