@@ -129,12 +129,23 @@ public class UploadAssignment extends javax.swing.JPanel {
         chooser.setFileFilter(filter);
         chooser.setCurrentDirectory(new File("."));
         int result = chooser.showOpenDialog(null);
+        File file=chooser.getSelectedFile();
         if(result==JFileChooser.APPROVE_OPTION){
-            File f1 = new File(chooser.getSelectedFile().getPath());
-            File f2 = new File(".\\Final Project\\src\\resource\\Assignment.zip");
-            copyFile(f1, f2);
-            JOptionPane.showMessageDialog(this, "Uploaded.");
-        }       
+            String path = ".\\src\\resource";
+            File f = new File(path);
+            if(!f.exists()){
+                f.mkdirs();
+            }
+            String fileName = chooser.getSelectedFile().getName();
+            File file1 = new File(path, fileName);
+            if(!file1.exists()){
+                try {
+                        file1.createNewFile();
+                        } catch (IOException e) {
+                        e.printStackTrace();
+                        }
+            }
+        }      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
