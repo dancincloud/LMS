@@ -117,11 +117,25 @@ public class FileCell extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_click
-        java.io.File file = new java.io.File("src\\resource\\"+titleLabel.getText());
-        try {
+        int i = 1;
+        if(i<=3){
+            java.io.File file = new java.io.File(".\\Final Project\\src\\resource\\"+i+".ppt");
+            i++;
+            try {
             java.awt.Desktop.getDesktop().open(file);
         } catch (IOException ex) {
             Logger.getLogger(FileJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        else {
+            i =1;
+            java.io.File file = new java.io.File(".\\Final Project\\src\\resource\\"+i+".ppt");
+            i++;
+            try {
+            java.awt.Desktop.getDesktop().open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(FileJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_click
 

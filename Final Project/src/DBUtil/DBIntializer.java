@@ -14,7 +14,7 @@ public class DBIntializer {
     static final String ASSIGNMENT_CREATION = "CREATE TABLE `Assignment` (" +
             "  `assignmentID` varchar(255) NOT NULL," +
             "  `name` varchar(255) NOT NULL," +
-            "  `content` Text NOT NULL," +
+            "  `content` varchar(2000) NOT NULL," +
             "  `type` varchar(255) NOT NULL," +
             "  `grade` double(255, 1) NULL," +
             "  `createTime` bigint NOT NULL," +
