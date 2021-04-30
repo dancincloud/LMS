@@ -184,12 +184,32 @@ public class StudentDBUtil {
         }
     }
 
+    public static boolean updateCreateTime(String studentID) {
+        Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
+        String sql = "update Student set createTime = ? where studentID = ?";
+
+        System.out.println(sql);
+        PreparedStatement stat = null;
+
+        try {
+            stat = conn.prepareStatement(sql);
+            stat.setLong(1, System.currentTimeMillis());
+            stat.setString(2, studentID);
+            stat.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DBConnection.closeDB(conn, stat, null);
+        }
+    }
+
     public static boolean update(List<Student> students) {
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "update Student set name = ?, email = ?, username = ?, password = ?, gpa = ?, " +
                 " courseIDs = ?, updateTime = ? where studentID = ?";
         PreparedStatement stat = null;
-
         try {
             stat = conn.prepareStatement(sql);
             for (Student student : students) {
