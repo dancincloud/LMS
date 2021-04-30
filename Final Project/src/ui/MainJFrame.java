@@ -53,6 +53,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         loginJLabel = new javax.swing.JLabel();
         accountTypeCheckBox = new javax.swing.JCheckBox();
+        loginJButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,7 +72,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel4.setText("@ Team 8");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(590, 400, 100, 16);
+        jLabel4.setBounds(590, 400, 100, 18);
 
         userProcessContainer.add(jPanel1, "card2");
 
@@ -87,11 +88,11 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         LoginJPanel.add(loginJButton);
-        loginJButton.setBounds(10, 320, 130, 37);
+        loginJButton.setBounds(10, 330, 130, 37);
         LoginJPanel.add(userNameJTextField);
-        userNameJTextField.setBounds(10, 170, 118, 26);
+        userNameJTextField.setBounds(10, 170, 118, 24);
         LoginJPanel.add(passwordField);
-        passwordField.setBounds(10, 240, 118, 26);
+        passwordField.setBounds(10, 240, 118, 24);
 
         jLabel1.setFont(new java.awt.Font("PingFang HK", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -115,7 +116,16 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         LoginJPanel.add(accountTypeCheckBox);
-        accountTypeCheckBox.setBounds(10, 270, 130, 23);
+        accountTypeCheckBox.setBounds(10, 270, 130, 25);
+
+        loginJButton1.setText("New Student");
+        loginJButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginJButton1ActionPerformed(evt);
+            }
+        });
+        LoginJPanel.add(loginJButton1);
+        loginJButton1.setBounds(10, 480, 130, 37);
 
         jSplitPane1.setLeftComponent(LoginJPanel);
 
@@ -160,6 +170,12 @@ public class MainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         isInstructor = accountTypeCheckBox.isSelected();
     }//GEN-LAST:event_accountTypeCheckBoxActionPerformed
+
+    private void loginJButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButton1ActionPerformed
+        // TODO add your handling code here:
+        StudentRegister studentregister = new StudentRegister();
+        jSplitPane1.setRightComponent(studentregister);
+    }//GEN-LAST:event_loginJButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,6 +222,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JButton loginJButton;
+    private javax.swing.JButton loginJButton1;
     private javax.swing.JLabel loginJLabel;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField userNameJTextField;

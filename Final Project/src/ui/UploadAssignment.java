@@ -131,7 +131,7 @@ public class UploadAssignment extends javax.swing.JPanel {
         int result = chooser.showOpenDialog(null);
         File file=chooser.getSelectedFile();
         if(result==JFileChooser.APPROVE_OPTION){
-            String path = ".\\src\\resource";
+            String path = ".\\Final Project\\src\\resource\\";
             File f = new File(path);
             if(!f.exists()){
                 f.mkdirs();
