@@ -628,8 +628,9 @@ public class InstructorCourse extends javax.swing.JPanel {
                 Student student = course.getStudentDirectory().get(row);
 
                 course.setStudentIDs(course.getStudentIDs().stream().filter(id -> !id.equals(student.getId())).collect(Collectors.toList()));
+                student.setCourseIDs(student.getCourseIDs().stream().filter(id -> !id.equals(course.getCourseID())).collect(Collectors.toList()));
 
-               if(CourseDBUtil.update(course)){
+               if(CourseDBUtil.update(course) && StudentDBUtil.update(student)){
                    studentButtonActionPerformed(null);
                }
 
