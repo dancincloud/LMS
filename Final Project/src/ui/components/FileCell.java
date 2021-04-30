@@ -121,11 +121,21 @@ public class FileCell extends javax.swing.JPanel {
         if(i<=3){
             java.io.File file = new java.io.File("src\\resource\\"+i+".ppt");
             i++;
+            try {
+            java.awt.Desktop.getDesktop().open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(FileJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
         else {
             i =1;
             java.io.File file = new java.io.File("src\\resource\\"+i+".ppt");
             i++;
+            try {
+            java.awt.Desktop.getDesktop().open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(FileJPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_click
 
