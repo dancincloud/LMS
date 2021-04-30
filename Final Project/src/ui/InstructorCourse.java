@@ -22,9 +22,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author Ke
@@ -140,17 +142,11 @@ public class InstructorCourse extends javax.swing.JPanel {
         courseLabel = new javax.swing.JLabel();
         line = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable() {
-            public boolean isCellEditable(int row, int column) {
-                if (mode == TableMode.edit) {
-                    return true;
-                }
-                return false;
-            }
-        };
+        table = new javax.swing.JTable();
         AddButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         confirmButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
         SideBar = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
@@ -166,15 +162,15 @@ public class InstructorCourse extends javax.swing.JPanel {
         courseLabel.setText("Course Name");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null}
-                },
-                new String[]{
-                        "Title 1", "Title 2", "Title 3", "Title 4"
-                }
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
         ));
         jScrollPane1.setViewportView(table);
 
@@ -192,6 +188,8 @@ public class InstructorCourse extends javax.swing.JPanel {
             }
         });
 
+        confirmButton.setBackground(new java.awt.Color(0, 72, 200));
+        confirmButton.setForeground(new java.awt.Color(255, 255, 255));
         confirmButton.setText("Confirm");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,39 +197,51 @@ public class InstructorCourse extends javax.swing.JPanel {
             }
         });
 
+        deleteButton.setBackground(new java.awt.Color(238, 0, 0));
+        deleteButton.setForeground(new java.awt.Color(255, 255, 255));
+        deleteButton.setLabel("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout containerLayout = new javax.swing.GroupLayout(container);
         container.setLayout(containerLayout);
         containerLayout.setHorizontalGroup(
-                containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(containerLayout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(containerLayout.createSequentialGroup()
-                                                .addComponent(courseLabel)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(AddButton)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(confirmButton)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cancelButton))
-                                        .addComponent(line, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
-                                        .addComponent(jScrollPane1))
-                                .addContainerGap(589, Short.MAX_VALUE))
+            containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(containerLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(containerLayout.createSequentialGroup()
+                        .addComponent(courseLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AddButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(confirmButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelButton))
+                    .addComponent(line, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap(589, Short.MAX_VALUE))
         );
         containerLayout.setVerticalGroup(
-                containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(containerLayout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(courseLabel)
-                                        .addComponent(AddButton)
-                                        .addComponent(cancelButton)
-                                        .addComponent(confirmButton))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(line, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(9, Short.MAX_VALUE))
+            containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(containerLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(courseLabel)
+                    .addComponent(AddButton)
+                    .addComponent(cancelButton)
+                    .addComponent(confirmButton)
+                    .addComponent(deleteButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(line, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(container);
@@ -285,45 +295,45 @@ public class InstructorCourse extends javax.swing.JPanel {
         javax.swing.GroupLayout SideBarLayout = new javax.swing.GroupLayout(SideBar);
         SideBar.setLayout(SideBarLayout);
         SideBarLayout.setHorizontalGroup(
-                SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jSeparator1)
-                        .addGroup(SideBarLayout.createSequentialGroup()
-                                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(SideBarLayout.createSequentialGroup()
-                                                .addGap(30, 30, 30)
-                                                .addComponent(backButton))
-                                        .addGroup(SideBarLayout.createSequentialGroup()
-                                                .addGap(25, 25, 25)
-                                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(SideBarLayout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(assignmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(SideBarLayout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(studentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addGroup(SideBarLayout.createSequentialGroup()
+                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SideBarLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(backButton))
+                    .addGroup(SideBarLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(SideBarLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(assignmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(SideBarLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(zoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(studentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         SideBarLayout.setVerticalGroup(
-                SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(SideBarLayout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(studentButton)
-                                .addGap(28, 28, 28)
-                                .addComponent(fileButton)
-                                .addGap(38, 38, 38)
-                                .addComponent(zoomButton)
-                                .addGap(32, 32, 32)
-                                .addComponent(assignmentButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
-                                .addComponent(backButton)
-                                .addGap(47, 47, 47))
+            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SideBarLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(studentButton)
+                .addGap(28, 28, 28)
+                .addComponent(fileButton)
+                .addGap(38, 38, 38)
+                .addComponent(zoomButton)
+                .addGap(32, 32, 32)
+                .addComponent(assignmentButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                .addComponent(backButton)
+                .addGap(47, 47, 47))
         );
 
         jSplitPane1.setLeftComponent(SideBar);
@@ -331,12 +341,12 @@ public class InstructorCourse extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1504, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1504, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jSplitPane1)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane1)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -608,6 +618,55 @@ public class InstructorCourse extends javax.swing.JPanel {
 
     }//GEN-LAST:event_confirmButtonActionPerformed
 
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        int row = table.getSelectedRow();
+        switch (type) {
+            case student:
+                Student student = course.getStudentDirectory().get(row);
+
+                course.setStudentIDs(course.getStudentIDs().stream().filter(id -> !id.equals(student.getId())).collect(Collectors.toList()));
+
+               if(CourseDBUtil.update(course)){
+                   studentButtonActionPerformed(null);
+               }
+
+                break;
+            case file:{
+                File file = course.getFileDirectory().get(row);
+
+                course.getFileDirectory().remove(file);
+
+                if(CourseDBUtil.update(course)){
+                    fileButtonActionPerformed(null);
+                }
+            }
+                break;
+            case zoom:{
+                ZoomMeeting zoom = course.getZoomMeetingDirectory().get(row);
+
+                course.getZoomMeetingDirectory().remove(zoom);
+
+                if(CourseDBUtil.update(course)){
+                    zoomButtonActionPerformed(null);
+                }
+            }
+                break;
+            case assignment:{
+                Assignment assignment = course.getAssignmentDirectory().get(row);
+
+                course.getAssignmentDirectory().remove(assignment);
+
+                if(CourseDBUtil.update(course)){
+                    assignmentButtonActionPerformed(null);
+                }
+            }
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddButton;
     private javax.swing.JPanel SideBar;
@@ -617,6 +676,7 @@ public class InstructorCourse extends javax.swing.JPanel {
     private javax.swing.JButton confirmButton;
     private javax.swing.JPanel container;
     private javax.swing.JLabel courseLabel;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JButton fileButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
