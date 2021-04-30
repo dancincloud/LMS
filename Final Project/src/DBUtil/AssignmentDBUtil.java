@@ -239,6 +239,15 @@ public class AssignmentDBUtil {
     }
 
     public static List<Assignment> select(List<String> assignmentIDs) {
+
+        if (assignmentIDs == null) {
+            return new ArrayList<>();
+        }
+
+        if (assignmentIDs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Assignment where assignmentID = ?";
         PreparedStatement stat = null;

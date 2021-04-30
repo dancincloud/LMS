@@ -227,6 +227,15 @@ public class FileDBUtil {
     }
 
     public static List<File> select(List<String> fileIDs) {
+
+        if (fileIDs == null) {
+            return new ArrayList<>();
+        }
+
+        if (fileIDs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from File where fileID = ?";
         PreparedStatement stat = null;

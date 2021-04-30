@@ -256,6 +256,15 @@ public class InstructorDBUtil {
     }
 
     public static List<Instructor> select(List<String> instructorIDs) {
+
+        if (instructorIDs == null) {
+            return new ArrayList<>();
+        }
+
+        if (instructorIDs.size() == 0) {
+            return new ArrayList<>();
+        }
+
         Connection conn = DBConnection.getConnection(DBConnection.DB_URL);
         String sql = "SELECT * from Instructor where instructorID = ?";
         PreparedStatement stat = null;
